@@ -5,13 +5,13 @@ jobs:
   build-and-test:
     executor:
       name: node/default
+      tags: '12'
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm test
+      - node/install-packages:
+        - pkg-manager: yarn
+      - yarn test
 workflows:
     build-and-test:
       jobs:
-        - build-and-test
+        - build-and-tests
