@@ -6,7 +6,10 @@ jobs:
     executor: 'node/default'
     steps:
       - checkout
-      - node/install-packages
+      - run: node --version
+      - node/install:
+          node-version: '12'
+          install-yarn: true
       - run: yarn test
 workflows:
     build-and-test:
