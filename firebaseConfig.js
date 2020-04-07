@@ -1,5 +1,5 @@
 module.exports = {
-  apiKey: '#',
+  apiKey: process.env.API_KEY,
   authDomain: '#',
   databaseURL: '#',
   projectId: '#',
