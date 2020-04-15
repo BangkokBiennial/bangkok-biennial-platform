@@ -7,7 +7,10 @@ import config from '../../../firebaseConfig';
 
 class Firebase {
   constructor() {
-    app.initializeApp(config);
+    
+    if (!app.apps.length) {
+      app.initializeApp(config);
+    }
 
     /* Helper */
 
