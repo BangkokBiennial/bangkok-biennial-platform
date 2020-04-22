@@ -10,18 +10,17 @@
 
   border-width: 0;
   outline: none;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 
-  background-color: $color-main;
-  color: #ecf0f1;
+  border: 1px solid $color-main;
+  color: $color-main;
 
   transition: background-color 0.3s;
   width: 100%;
   cursor: pointer;
   &:hover,
   &:focus {
-    background-color: #302b63;
+    color: $color-secondary;
+    border-color: $color-secondary;
   }
   > * {
     position: relative;
@@ -42,8 +41,6 @@
     padding-top: 0;
 
     border-radius: 100%;
-
-    background-color: rgba(236, 240, 241, 0.3);
 
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);

@@ -12,6 +12,10 @@ const Input = ({
 }) => {
   return (
     <div className={classNames('input', className)}>
+      <div className="input__label__container">
+        {required && <div className="input__label__asterisk">*</div>}
+        <label className="input__label__text">{labelName}</label>
+      </div>
       <input
         name={name}
         value={value}
@@ -20,9 +24,6 @@ const Input = ({
         required={required}
         className="input__element"
       />
-      <span className="input__highlight" />
-      <span className="input__bar" />
-      <label className="input__label">{labelName}</label>
     </div>
   );
 };

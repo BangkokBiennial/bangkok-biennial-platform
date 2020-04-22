@@ -5,15 +5,30 @@ import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
 import Loading from '../../atoms/Loading';
 import Image from '../../atoms/Image';
+import UploadImage from '../../atoms/UploadImage'
+import { FiPlusCircle } from "react-icons/fi";
+
 
 class Home extends Component {
   _initFirebase = false;
 
   state = {
-    posts: [],
     loading: true,
-    title: '',
-    description: '',
+    pavillionName: '',
+    pavilionBriefDescription: '',
+    pavilionLongDescription: '',
+    personNameContact: '',
+    personEmailContact: '',
+    pavilionWebsite: '',
+    pavilionPublicEmail: '',
+    pavilionOtherContact: '',
+    pavilionMailingAddress: '',
+    pavilionFacebook: '',
+    pavilionInstagram: '',
+    pavilionTwitter: '',
+    pavilionOtherSocialMedias: '',
+    videoMaterial: '',
+    audioMaterial: ''
   };
 
   firebaseInit = () => {
@@ -90,78 +105,201 @@ class Home extends Component {
   };
 
   render() {
-    const { posts, description, title, loading } = this.state;
+    const {
+      loading,
+      pavillionName,
+      pavilionBriefDescription,
+      pavilionLongDescription,
+      personNameContact,
+      personEmailContact,
+      pavilionWebsite,
+      pavilionPublicEmail,
+      pavilionOtherContact,
+      pavilionMailingAddress,
+      pavilionFacebook,
+      pavilionInstagram,
+      pavilionTwitter,
+      pavilionOtherSocialMedias,
+      videoMaterial,
+      audioMaterial
+    } = this.state;
 
     if (loading) return <Loading />;
 
     return (
       <div className="home container">
         <div className="home__details">
-          <h1 className="home__title">Home Page</h1>
-          <p className="home__description">
-            The Home Page is accessible by every signed in user.
-          </p>
+          <h1 className="home__title">Register Form</h1>
         </div>
 
-        <div className="home__posts">
-          <div className="home__posts__form">
-            <div className="home__posts__form__title">Add Posts</div>
+        <div className="home__register">
+          <div className="home__register__form">
             <form onSubmit={this.handleSubmit}>
+              <div className="home__register__form__title">The Pavillion</div>
               <Input
-                name="title"
+                name="pavillionName"
                 type="text"
-                value={title}
-                labelName="Title"
+                value={pavillionName}
+                labelName="Name of Pavillion"
                 onChange={this.handleChange}
                 required
               />
               <Input
-                name="description"
+                name="pavilionBriefDescription"
                 type="text"
-                value={description}
-                labelName="Description"
+                value={pavilionBriefDescription}
+                labelName="Brief description of the pavilion"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="pavilionLongDescription"
+                type="text"
+                value={pavilionLongDescription}
+                labelName="Longer description of pavilion (curatorial statement, etc)"
+                onChange={this.handleChange}
+                required
+              />
+
+              <div className="home__register__form__title">Artists</div>
+              <Button
+                className="home__register__form__add-artist-btn"
+                component={<span> <FiPlusCircle/> add more artist </span>}
+              />
+
+
+
+              <div className="home__register__form__title">Curators</div>
+
+              <div className="home__register__form__title">Organizers</div>
+
+              <div className="home__register__form__title">Contacts</div>
+              <Input
+                name="personNameContact"
+                type="text"
+                value={personNameContact}
+                labelName="Contact Person’s name"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="personEmailContact"
+                type="text"
+                value={personEmailContact}
+                labelName="Contact Person’s Email (will not be made public)"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="pavilionWebsite"
+                type="text"
+                value={pavilionWebsite}
+                labelName="Pavilion website"
+                onChange={this.handleChange}
+              />
+              <Input
+                name="pavilionPublicEmail"
+                type="text"
+                value={pavilionPublicEmail}
+                labelName="Public email"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="pavilionOtherContact"
+                type="text"
+                value={pavilionOtherContact}
+                labelName="Other contacts (public)"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="pavilionMailingAddress"
+                type="text"
+                value={pavilionMailingAddress}
+                labelName="Mailing address (private, only used if we need to send you materials such as posters or guidebooks, etc)"
+                onChange={this.handleChange}
+                required
+              />
+
+              <div className="home__register__form__title">Venue</div>
+              
+              <div className="home__register__form__title">Social Media</div>
+              <p className="home__register__form__paragraph">
+                Pavilions should create social media 
+                identities specifically for the pavilion, 
+                rather than using existing pages for your 
+                previous/existing work (those pages 
+                can be listed above in the curators/ 
+                artists/organizers’s individual links).
+              </p>
+              <Input
+                name="pavilionFacebook"
+                type="text"
+                value={pavilionFacebook}
+                labelName="Facebook"
+                onChange={this.handleChange}
+              />
+              <Input
+                name="pavilionInstagram"
+                type="text"
+                value={pavilionInstagram}
+                labelName="Instagram"
+                onChange={this.handleChange}
+              />
+              <Input
+                name="pavilionTwitter"
+                type="text"
+                value={pavilionTwitter}
+                labelName="Twitter"
+                onChange={this.handleChange}
+              />
+              <Input
+                name="pavilionOtherSocialMedias"
+                type="text"
+                value={pavilionOtherSocialMedias}
+                labelName="Others"
+                onChange={this.handleChange}
+              />
+
+              <div className="home__register__form__title">Open Calls</div>
+
+              <div className="home__register__form__title">Support Materials</div>
+              <p className="home__register__form__paragraph">
+                Upload 3-5 publicity images (without text). Permission must be granted
+                to BB to use images for publicity, minimum file size 1 - 2 mb. 
+                Label the images by <br/>
+                BB2020_Pavilion_Artist_ Titleofwork.jpg
+              </p>
+              <UploadImage/>
+              <p className="home__register__form__paragraph">
+                Upload 1-2 poster images to represent the pavilion.
+              </p>
+              <UploadImage/>
+              <Input
+                name="videoMaterial"
+                type="text"
+                value={videoMaterial}
+                labelName="Youtube or vimeo links for video material"
+                onChange={this.handleChange}
+                required
+              />
+              <Input
+                name="audioMaterial"
+                type="text"
+                value={audioMaterial}
+                labelName="Links for audio material (soundcloud, bandcamp, etc)"
                 onChange={this.handleChange}
                 required
               />
 
               <Button
-                className="home__posts__form__btn"
+                className="home__register__form__btn"
                 type="submit"
               />
             </form>
           </div>
 
-          <div className="home__posts__items">
-            {posts &&
-              posts.length > 0 &&
-              posts.map((item, id) => (
-                <div key={id} className="home__post">
-                  <Link
-                    className="home__post__title"
-                    to={'/post/' + item.slug}
-                  >
-                    <Image
-                      className="home__post__image"
-                      filename="gatsby-post-bg.jpg"
-                    />
-                    <div className="home__post__text">
-                      {item.title && item.title < 30
-                        ? item.title
-                        : item.title.slice(0, 30) + '...'}
-                      <div
-                        className="home__post__description"
-                        key={id}
-                      >
-                        {item.description &&
-                        item.description.length > 150
-                          ? item.description.slice(0, 150)
-                          : item.description + '...'}
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-          </div>
         </div>
       </div>
     );

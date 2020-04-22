@@ -7,6 +7,7 @@ const Button = ({
   type,
   onClick,
   className,
+  component
 }) => {
   return (
     <button
@@ -17,7 +18,11 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      <span>{text}</span>
+      {
+        component
+          ? component
+          : <span>{text}</span>
+      }
     </button>
   );
 };

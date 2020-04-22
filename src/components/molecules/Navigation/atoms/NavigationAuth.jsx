@@ -7,14 +7,6 @@ const NavigationAuth = () => (
   <div className="navbar">
     <div className="navbar__inner">
       <div className="navbar__left">
-        <div className="navbar__logo">
-          <Link to={LANDING}>
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPQpF9FqbFiuhAohxs9UkTIkkJbAv_IU0cXHRxsKpoFFSgfXC7"
-              alt="logo"
-            />
-          </Link>
-        </div>
         <div className="navbar__links">
           <div className="navbar__link">
             <Link to={LANDING}>Landing</Link>
@@ -24,32 +16,6 @@ const NavigationAuth = () => (
           </div>
           <div className="navbar__link">
             <Link to={ACCOUNT}>Account</Link>
-          </div>
-          <div className="navbar__link navbar__link--github">
-            <span className="navbar__link--github__a">
-              Created By{' '}
-              <a href="https://github.com/ovidiumihaibelciug">
-                Ovidiu Mihai Belciug
-              </a>
-            </span>
-            <div>
-              <iframe
-                src="https://ghbtns.com/github-btn.html?user=ovidiumihaibelciug&type=follow&count=true"
-                frameborder="0"
-                scrolling="0"
-                width="170px"
-                height="20px"
-              />
-            </div>
-            <div>
-              <iframe
-                src="https://ghbtns.com/github-btn.html?user=ovidiumihaibelciug&repo=gatsby-firebase-starter&type=star&count=true"
-                frameborder="0"
-                scrolling="0"
-                width="170px"
-                height="20px"
-              />
-            </div>
           </div>
         </div>
       </div>

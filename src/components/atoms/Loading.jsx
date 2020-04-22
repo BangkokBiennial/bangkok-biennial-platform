@@ -1,19 +1,14 @@
 import React from 'react';
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 const Loading = () => (
-  <div className="spinner__container">
-    <div className="spinner__container__inner">
-      <div className="spinner">
-        <div className="set-one">
-          <div className="circle"></div>
-          <div className="circle"></div>
-        </div>
-        <div className="set-two">
-          <div className="circle"></div>
-          <div className="circle"></div>
-        </div>
-      </div>
-    </div>
+  <div className="loading__container">
+    <ClipLoader
+      size={100}
+      color={"#2F2E2E"}
+      loading={true}
+    />
   </div>
 );
 
