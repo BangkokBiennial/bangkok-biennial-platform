@@ -10,7 +10,7 @@ jobs:
       - node/install:
           node-version: '12.9.1'
           install-yarn: true
-      - run: yarn test
+      - run: gatsby build
 workflows:
     build-and-test:
       jobs:
