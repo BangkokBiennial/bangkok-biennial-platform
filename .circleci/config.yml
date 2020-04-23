@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: node --version
       - node/install:
-          node-version: 'v12.13.0'
+          node-version: '12.9.1'
           install-yarn: true
       - run: yarn test
 workflows:
