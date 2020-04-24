@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: node --version
       - node/install:
-          node-version: '12.9.1'
+          node-version: '13.11.0'
           install-yarn: true
       - run:
           name: Install Dependencies
