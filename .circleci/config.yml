@@ -11,6 +11,9 @@ jobs:
           node-version: '13.11.0'
           install-yarn: true
       - run:
+          name: update tools
+          command: sudo apt-get update 
+      - run:
           name: Install Dependencies
           command: npm install
       - save_cache:
