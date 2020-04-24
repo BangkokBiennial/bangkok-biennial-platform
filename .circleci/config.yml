@@ -11,8 +11,8 @@ jobs:
           node-version: '13.11.0'
           install-yarn: true
       - run:
-          name: update tools
-          command: sudo apt-get update 
+          name: update gcc to v6
+          command: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-6 
       - run:
           name: Install Dependencies
           command: npm install
