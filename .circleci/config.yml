@@ -12,7 +12,7 @@ jobs:
           install-yarn: true
       - run:
           name: update gcc to v6
-          command: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-6 
+          command: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-9
       - run:
           name: Install Dependencies
           command: npm install
