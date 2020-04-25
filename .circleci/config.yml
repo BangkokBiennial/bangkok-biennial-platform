@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: node --version
       - node/install:
-          node-version: '13.11.0'
+          node-version: '12.11.1'
           install-yarn: true
       - run:
           name: update gcc to v9
@@ -22,7 +22,7 @@ jobs:
             - ./node_modules
       - run:
           name: build
-          command: gatsby build
+          command: npm run build
 workflows:
     build-and-test:
       jobs:
