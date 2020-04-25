@@ -11,7 +11,7 @@ jobs:
           node-version: '13.11.0'
           install-yarn: true
       - run:
-          name: update gcc to v6
+          name: update gcc to v9
           command: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-9
       - run:
           name: Install Dependencies
@@ -22,7 +22,7 @@ jobs:
             - ./node_modules
       - run:
           name: build
-          command: npm run build
+          command: gatsby build
 workflows:
     build-and-test:
       jobs:
