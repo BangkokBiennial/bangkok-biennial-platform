@@ -23,9 +23,16 @@ jobs:
       - run:
           name: build
           command: npm run build
+      - store_artifacts:
+          path: ./build/
       - run:
           name: Firebase Deploy
           command: ./node_module/.bin/firebase deploy --token "$FIREBASE_TOKEN"
+  deploy:
+    executor: 'node/default'
+    steps:
+      - checkout
+
 workflows:
     build-and-test:
       jobs:
