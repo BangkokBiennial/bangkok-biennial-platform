@@ -4,7 +4,7 @@ import PasswordForgetForm from '../../../../molecules/PasswordForget/PasswordFor
 class PasswordForget extends Component {
   render() {
     return (
-      <div>
+      <div class="password-forget__container">
         <h1>PasswordForget</h1>
         <PasswordForgetForm />
       </div>

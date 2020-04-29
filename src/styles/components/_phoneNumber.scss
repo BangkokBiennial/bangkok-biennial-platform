@@ -1,0 +1,23 @@
+.PhoneInputInput {
+  margin-top: 10px;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  width: 100%;
+  border: 1px solid $color-main;
+  &:focus {
+    outline: none;
+    border: 1px solid $color-secondary;
+  }
+  &:valid {
+    & ~ .input__label {
+      top: -20px;
+      font-size: 14px;
+      color: $color-main;
+    }
+  }
+}
+
+.PhoneInput {
+  margin-bottom: 35px;
+}

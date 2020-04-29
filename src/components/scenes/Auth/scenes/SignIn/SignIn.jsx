@@ -3,10 +3,8 @@ import React, { Component } from 'react';
 import SignInForm from '../../molecules/SignInForm';
 import SignInGoogle from '../../molecules/SignInGoogle';
 import SignInFacebook from '../../molecules/SignInFacebook';
-import SignInTwitter from '../../molecules/SignInTwitter';
 import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink';
 import PasswordForgetLink from '../../../../molecules/PasswordForget/atoms/PasswordForgetLink';
-import SignInGithub from '../../molecules/SignInGithub';
 
 class SignIn extends Component {
   render() {
@@ -15,13 +13,8 @@ class SignIn extends Component {
         <div className="login__content">
           <div className="login__content__inner">
             <div className="login__content__header">
-              <img
-                className="login__content__header__logo"
-                src="https://user-images.githubusercontent.com/21834/34442516-fb1a1a3c-ecc2-11e7-8fe8-530435f22336.jpg"
-                alt="logo"
-              />
               <div className="login__content__header__title">
-                Gatsby + Firebase Starter
+                Sign in to Bangkok Biennial Platform
               </div>
             </div>
             <div className="login__content__login-form">
@@ -37,35 +30,19 @@ class SignIn extends Component {
                 <span className="login__content__or__line" />
               </div>
               <div className="login__content__providers">
-                <div className="login__content__providers--left">
                   <SignInGoogle />
-                  <SignInGithub />
-                </div>
-                <div className="login__content__providers--right">
-                  <SignInTwitter />
                   <SignInFacebook />
-                </div>
               </div>{' '}
               <div className="login__content__creator">
                 <div className="login__content__creator__inner">
-                  <div>
-                    <iframe
-                      src="https://ghbtns.com/github-btn.html?user=ovidiumihaibelciug&type=follow&count=true"
-                      frameborder="0"
-                      scrolling="0"
-                      width="170px"
-                      height="20px"
-                    />
-                  </div>
-                  <div>
-                    <iframe
-                      src="https://ghbtns.com/github-btn.html?user=ovidiumihaibelciug&repo=gatsby-firebase-starter&type=star&count=true"
-                      frameborder="0"
-                      scrolling="0"
-                      width="170px"
-                      height="20px"
-                    />
-                  </div>
+                  <p>This project is an opensource.</p>
+                  <iframe
+                    src="https://ghbtns.com/github-btn.html?user=BangkokBiennial&repo=bangkok-biennial-platform&type=star&count=true"
+                    frameborder="0"
+                    scrolling="0"
+                    width="80px"
+                    height="20px"
+                  />
                 </div>
               </div>
             </div>
@@ -74,7 +51,6 @@ class SignIn extends Component {
             </div>
           </div>
         </div>
-        <div className="login__image" />
       </div>
     );
   }

@@ -4,10 +4,10 @@ class Landing extends Component {
   render() {
     return (
       <div className="landing container">
-        <h1>Landing</h1>
+        <h1>Bangkok Biennial 2020</h1>
         <p>
-          The Landing Page is open to everyone, even though the user
-          isn't signed in.
+          This is the Bangkok Biennial 2020. <br/>
+          The art event in Bangkok.
         </p>
       </div>
     );

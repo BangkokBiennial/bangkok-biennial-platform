@@ -1,5 +1,5 @@
 .signout-btn {
-  color: white;
+  color: $color-main;
   text-decoration: none;
   border: none;
   cursor: pointer;
@@ -8,6 +8,6 @@
   padding: 5px;
   padding-right: 0;
   &:hover {
-    color: rgba(white, 0.8);
+    color: $color-secondary;
   }
 }

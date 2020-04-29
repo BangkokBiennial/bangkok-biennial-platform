@@ -17,8 +17,7 @@
   transition: background-color 0.3s;
   width: 100%;
   cursor: pointer;
-  &:hover,
-  &:focus {
+  &:hover {
     color: $color-secondary;
     border-color: $color-secondary;
   }
@@ -59,9 +58,12 @@
   &--disabled {
     cursor: not-allowed;
     user-select: none;
-    background-color: darken($color-main, 25%);
+    background-color: darken(white, 5%);
+    color: lighten($color-main, 50%);
     &:hover {
-      background-color: darken($color-main, 25%);
+      background-color: darken(white, 5%);
+      color: lighten($color-main, 50%);
+      border: 1px solid $color-main;
     }
     > * {
       pointer-events: none;

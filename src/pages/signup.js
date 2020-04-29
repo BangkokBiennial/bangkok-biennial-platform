@@ -3,7 +3,7 @@ import Layout from '../utils/layout';
 import SignUp from '../components/scenes/Auth/scenes/SignUp/SignUp';
 
 export default () => (
-  <Layout hideNav>
+  <Layout>
     <SignUp />
   </Layout>
 );

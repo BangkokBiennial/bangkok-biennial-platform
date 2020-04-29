@@ -7,7 +7,7 @@ const Button = ({
   type,
   onClick,
   className,
-  component
+  component,
 }) => {
   return (
     <button

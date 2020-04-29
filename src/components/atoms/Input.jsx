@@ -9,6 +9,7 @@ const Input = ({
   required,
   labelName,
   className,
+  maxlength
 }) => {
   return (
     <div className={classNames('input', className)}>
@@ -23,9 +24,14 @@ const Input = ({
         type={type}
         required={required}
         className="input__element"
+        maxlength={maxlength}
       />
     </div>
   );
 };
+
+Input.defaultProps = {
+  maxlength: 1000
+}
 
 export default Input;

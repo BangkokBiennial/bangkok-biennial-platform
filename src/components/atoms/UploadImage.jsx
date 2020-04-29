@@ -85,15 +85,19 @@ class UploadImage extends React.Component {
     const {singleImage} = this.props;
 
     Promise.all(allFilePromises).then(newFilesData => {
-      const dataURLs = singleImage?[]:this.state.pictures.slice();
-      const files = singleImage?[]:this.state.files.slice();
+      const dataURLs = singleImage
+        ? []
+        : this.state.pictures.slice();
+      const files = singleImage
+        ? []
+        : this.state.files.slice();
 
       newFilesData.forEach(newFileData => {
         dataURLs.push(newFileData.dataURL);
         files.push(newFileData.file);
       });
 
-      this.setState({pictures: dataURLs, files: files});
+      this.setState({ pictures: dataURLs, files: files });
     });
   }
 

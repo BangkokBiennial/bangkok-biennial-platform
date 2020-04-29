@@ -4,6 +4,10 @@
   padding: 0 50px;
   margin: 0 auto;
   background-color: white;
+  border-bottom: 1px solid $color-main;
+  position: fixed;
+  top: 0;
+  z-index: 999;
   @include breakpoint('phone') {
     height: auto;
   }
@@ -33,20 +37,6 @@
   }
   &__link {
     margin: 0 10px;
-    &--github {
-      display: flex;
-      align-items: center;
-      color: white;
-      @include breakpoint('phone') {
-        display: none;
-      }
-      &__a {
-        margin-right: 10px;
-      }
-      > div {
-        margin-right: 10px;
-      }
-    }
     &:first-child {
       margin-left: 0;
     }
