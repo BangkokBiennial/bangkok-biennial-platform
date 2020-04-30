@@ -26,6 +26,11 @@ jobs:
       - run:
           name: build
           command: npm run build 
+      - store_artifacts:
+          path: ./public
+      - run:
+          name: Firebase Deploy
+          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project bangkok-biennial
           environment:
             API_KEY: $API_KEY
             AUTH_DOMAIN: $AUTH_DOMAIN
@@ -35,11 +40,6 @@ jobs:
             MESSAGING_SENDER_ID: $MESSAGING_SENDER_ID
             APP_ID: $APP_ID
             MEASUREMENT_ID: $MEASUREMENT_ID
-      - store_artifacts:
-          path: ./public
-      - run:
-          name: Firebase Deploy
-          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project bangkok-biennial
   deploy:
     executor: 'node/default'
     steps:
