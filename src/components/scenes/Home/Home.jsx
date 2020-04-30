@@ -75,8 +75,6 @@ class Home extends Component {
   firebaseInit = () => {
     if (this.props.firebase && !this._initFirebase) {
       this._initFirebase = true;
-
-      this.getPosts();
     }
   };
 
@@ -87,21 +85,6 @@ class Home extends Component {
   componentDidUpdate() {
     this.firebaseInit();
   }
-
-  getPosts = () => {
-    const { firebase } = this.props;
-
-    firebase
-      .posts()
-      .get()
-      .then(querySnapshot => {
-        const data = querySnapshot.docs.map(item => item.data());
-        this.setState({
-          posts: data,
-          loading: false,
-        });
-      });
-  };
 
   handleSubmit = e => {
     e.preventDefault();
