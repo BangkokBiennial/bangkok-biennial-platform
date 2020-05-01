@@ -29,15 +29,15 @@ module.exports = {
     twitterUsername: 'gatsby-firebase-starter',
   },
   author: {
-    name: 'Ovidiu-Mihai Belciug',
+    name: 'Bangkok Biennial, ThoughtWorks Arts TH',
     photo: '/photo.jpg',
     bio:
-      'Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu.',
+      '#',
     contacts: {
       email: '#',
       telegram: '#',
       twitter: '#',
-      github: 'ovidiumihaibelciug',
+      github: 'https://github.com/BangkokBiennial/',
       rss: '#',
       vkontakte: '#',
     },

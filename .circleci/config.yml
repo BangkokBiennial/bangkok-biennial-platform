@@ -24,8 +24,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: check env var
-          command: echo $API_KEY
+          name: load in environment variables
+          command: ./deploy_config.sh
       - run:
           name: build
           command: npm run build 
