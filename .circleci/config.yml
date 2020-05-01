@@ -4,15 +4,6 @@ orbs:
 jobs:
   build-and-tests:
     executor: 'node/default'
-    environment:
-      API_KEY: $API_KEY
-      AUTH_DOMAIN: $AUTH_DOMAIN
-      DATABASE_URL: $DATABASE_URL
-      PROJECT_ID: $PROJECT_ID
-      STORAGE_BUCKET: $STORAGE_BUCKET
-      MESSAGING_SENDER_ID: $MESSAGING_SENDER_ID
-      APP_ID: $APP_ID
-      MEASUREMENT_ID: $MEASUREMENT_ID
     steps:
       - checkout
       - run: node --version
