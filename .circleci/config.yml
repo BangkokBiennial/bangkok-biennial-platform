@@ -25,9 +25,9 @@ jobs:
             - ./node_modules
       - run:
           name: build
-          command: API_KEY=$API_KEY npm run build 
+          command: npm run build 
           environment:
-            API_KEY: $API_KEY
+            API_KEY: API_KEY
             AUTH_DOMAIN: $AUTH_DOMAIN
             DATABASE_URL: $DATABASE_URL
             PROJECT_ID: $PROJECT_ID
