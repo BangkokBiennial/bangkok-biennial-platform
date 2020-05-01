@@ -9,6 +9,7 @@ class Firebase {
   constructor() {
     
     if (!app.apps.length) {
+      console.log(config.apiKey)
       app.initializeApp(config);
     }
 
