@@ -27,6 +27,9 @@ jobs:
           name: load in environment variables
           command: echo "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}" >> .env.prod
       - run:
+          name: check var
+          command: cat .env.prod
+      - run:
           name: build
           command: npm run build 
       - store_artifacts:
