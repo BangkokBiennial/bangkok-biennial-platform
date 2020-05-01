@@ -25,7 +25,7 @@ jobs:
             - ./node_modules
       - run:
           name: load in environment variables
-          command: ./deploy_config.sh
+          command: ./set_variable.sh
       - run:
           name: build
           command: npm run build 
