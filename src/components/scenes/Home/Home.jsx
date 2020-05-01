@@ -72,7 +72,9 @@ class Home extends Component {
     ],
     opencallsPublicEmail: '',
     opencallsPhoneNumber: '',
-    openCallsOtherPublicContact: ''
+    openCallsOtherPublicContact: '',
+    supportMaterials: [],
+    posters: []
   };
 
   firebaseInit = () => {
@@ -165,6 +167,34 @@ class Home extends Component {
         return artist;
       })
     }))
+  }
+
+  handleSupportMaterials = (pictureFiles, pictureDataURLs) => {
+    this.setState({
+      supportMaterials: pictureFiles.reduce((acc, current, index) => {
+        return [
+          ...acc,
+          {
+            file: current,
+            url: pictureDataURLs[index]
+          }
+        ]
+      }, [])
+    })
+  }
+
+  handlePoster = (pictureFiles, pictureDataURLs) => {
+    this.setState({
+      posters: pictureFiles.reduce((acc, current, index) => {
+        return [
+          ...acc,
+          {
+            file: current,
+            url: pictureDataURLs[index]
+          }
+        ]
+      }, [])
+    })
   }
 
   addMoreArtist = (e) => {
@@ -870,11 +900,15 @@ class Home extends Component {
                 Label the images by <br/>
                 BB2020_Pavilion_Artist_ Titleofwork.jpg
               </p>
-              <UploadImage/>
+              <UploadImage
+                onChange={this.handleSupportMaterials}
+              />
               <p className="home__register__form__paragraph">
                 Upload 1-2 poster images to represent the pavilion.
               </p>
-              <UploadImage/>
+              <UploadImage
+                onChange={this.handlePoster}
+              />
               <Input
                 name="videoMaterial"
                 type="text"
