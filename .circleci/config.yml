@@ -25,10 +25,10 @@ jobs:
             - ./node_modules
       - run:
           name: load in environment variables
-          command: echo "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}" >> .env.prod
+          command: echo "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}" >> .env.production
       - run:
           name: check var
-          command: cat .env.prod
+          command: cat .env.production
       - run:
           name: build
           command: npm run build 
