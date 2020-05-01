@@ -1,4 +1,7 @@
 .settings {
+  &__title {
+    padding-top: 20px;
+  }
   &__login-management {
     p {
       margin-top: 40px;
@@ -7,5 +10,8 @@
   &__password-forget,
   &__password-change {
     margin: 50px 0;
+  }
+  &__page-container {
+    width: 25%;
   }
 }

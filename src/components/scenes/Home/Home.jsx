@@ -41,7 +41,10 @@ class Home extends Component {
         name: '',
         artistLink: '',
         shortBio: '',
-        workImage: null
+        workImage: {
+          file: null,
+          url: '',
+        },
       }
     ],
     curators: [],
@@ -75,6 +78,7 @@ class Home extends Component {
   firebaseInit = () => {
     if (this.props.firebase && !this._initFirebase) {
       this._initFirebase = true;
+      this.setState({ loading: false })
     }
   };
 
@@ -144,6 +148,24 @@ class Home extends Component {
       })
     }))
   }
+  
+  handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
+    this.setState((prevState) => ({
+      artists: prevState.artists.map((artist, index) => {
+        if (artistIndex === index) {
+          return {
+            ...artist,
+            workImage: {
+              file: pictureFiles,
+              url: pictureDataURLs
+            },
+          };
+        }
+
+        return artist;
+      })
+    }))
+  }
 
   addMoreArtist = (e) => {
     e.preventDefault()
@@ -154,7 +176,10 @@ class Home extends Component {
           name: '',
           artistLink: '',
           shortBio: '',
-          workImage: null
+          workImage: {
+            file: null,
+            url: ''
+          }
         }
       ]
     }))
@@ -419,6 +444,7 @@ class Home extends Component {
                       </div>
                       <UploadImage
                         singleImage={true}
+                        onChange={(pictureFiles, pictureDataURLs) => this.handleArtistWorkImage(pictureFiles, pictureDataURLs, index)}
                       />
                     </div>
                   ))

@@ -10,15 +10,17 @@ class Account extends Component {
       <div className="settings container">
         <AuthUserContext.Consumer>
           {authUser => (
-            <div>
-              <h1>Account: {authUser.email}</h1>
-              <PasswordForget className="settings__password-forget" />
-              <PasswordChange className="settings__password-change" />
-              <LoginManagement
-                className="settings__login-management"
-                authUser={authUser}
-              />
-            </div>
+            <>
+              <h1 className="settings__title">Account: {authUser.email}</h1>
+              <div className="settings__page-container">
+                <PasswordForget className="settings__password-forget" />
+                <PasswordChange className="settings__password-change" />
+                <LoginManagement
+                  className="settings__login-management"
+                  authUser={authUser}
+                />
+              </div>
+            </>
           )}
         </AuthUserContext.Consumer>
       </div>
