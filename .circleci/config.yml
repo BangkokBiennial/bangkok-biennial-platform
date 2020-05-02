@@ -25,7 +25,7 @@ jobs:
             - ./node_modules
       - run:
           name: load in environment variables
-          command: echo "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}" >> .env.production
+          command: echo -e "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}\nSTORAGE_BUCKET=${STORAGE_BUCKET}" >> .env.production
       - run:
           name: check var
           command: cat .env.production
