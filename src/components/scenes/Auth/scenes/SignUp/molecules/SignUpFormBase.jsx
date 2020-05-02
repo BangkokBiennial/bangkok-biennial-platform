@@ -101,6 +101,7 @@ class SignUpFormBase extends Component {
           type="password"
           required={true}
           labelName="Password"
+          maxlength={20}
         />
 
         <Input
@@ -111,6 +112,7 @@ class SignUpFormBase extends Component {
           required={true}
           labelName="Confirm Password"
           className="input--no-margin"
+          maxlength={20}
         />
 
         <Button

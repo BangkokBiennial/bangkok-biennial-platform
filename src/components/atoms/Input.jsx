@@ -31,7 +31,7 @@ const Input = ({
 };
 
 Input.defaultProps = {
-  maxlength: 1000
+  maxlength: 100
 }
 
 export default Input;
