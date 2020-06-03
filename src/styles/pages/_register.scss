@@ -226,6 +226,10 @@
         display: flex;
         flex-direction: column;
       }
+
+      &__error {
+        color: $color-dangerous
+      }
     }
   }
 }

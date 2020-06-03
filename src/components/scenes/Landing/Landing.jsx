@@ -3,12 +3,9 @@ import React, { Component } from 'react';
 class Landing extends Component {
   render() {
     return (
-      <div className="landing container">
-        <h1>Bangkok Biennial 2020</h1>
-        <p>
-          This is the Bangkok Biennial 2020. <br/>
-          The art event in Bangkok.
-        </p>
+      <div className="landing__container">
+        <h1 className="landing__title__main"> Bangkok Biennial 2020</h1>
+        <h2 className="landing__title__secondary">The Platform</h2>
       </div>
     );
   }

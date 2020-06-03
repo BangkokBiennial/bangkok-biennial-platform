@@ -31,24 +31,23 @@ class SignUpFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
+  onSubmit = async (event) => {
     const { email, passwordOne } = this.state;
+    try {
+      await this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+      await this.props.firebase.doSendEmailVerification()
+      await this.setState({ ...INITIAL_STATE })
+      navigate(HOME);
 
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        navigate(HOME);
-      })
-      .catch(error => {
-        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          error.message = ERROR_MSG_ACCOUNT_EXISTS;
-        }
+      event.preventDefault();
+    } catch (error) {
+      if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+        error.message = ERROR_MSG_ACCOUNT_EXISTS;
+      }
+      console.log(error)
 
-        this.setState({ error });
-      });
-
-    event.preventDefault();
+      this.setState({ error });
+    }
   };
 
   onChange = event => {
@@ -120,7 +119,7 @@ class SignUpFormBase extends Component {
           text="Sign Up"
         />
 
-        {error && <p>{error.message}</p>}
+        {error && <p class="register__form__error">{error.message}</p>}
       </div>
     );
   }

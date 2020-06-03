@@ -9,7 +9,8 @@ const Input = ({
   required,
   labelName,
   className,
-  maxlength
+  maxlength,
+  ref
 }) => {
   return (
     <div className={classNames('input', className)}>
@@ -25,6 +26,7 @@ const Input = ({
         required={required}
         className="input__element"
         maxlength={maxlength}
+        ref={ref}
       />
     </div>
   );

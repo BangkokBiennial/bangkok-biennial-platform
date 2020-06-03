@@ -1,2 +1,25 @@
-.landing {
+.landing__container {
+  padding: 100px;
+  @include breakpoint('to-tablet-l') {
+    padding: 40px;
+  }
+}
+
+.landing__title {
+  &__main {
+    font-size: 100px;
+    margin-bottom: 0px;
+    @include breakpoint('to-tablet-l') {
+      font-size: 40px;
+    }
+  }
+  
+  &__secondary {
+    font-size: 60px;
+    color: $color-secondary;
+    margin-top: 20px;
+    @include breakpoint('to-tablet-l') {
+      font-size: 36px;
+    }
+  }
 }
