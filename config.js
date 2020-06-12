@@ -15,7 +15,7 @@ module.exports = {
     image: 'gatsby-firebase-starter',
     twitterUsername: 'gatsby-firebase-starter',
   },
-  home: {
+  pavilionInfoRegister: {
     url: 'http://gatsby-firebase-starter.com',
     title: 'gatsby-firebase-starter',
     description: 'gatsby-firebase-starter',

@@ -179,6 +179,14 @@ class UploadImage extends React.Component {
   }
 
   render() {
+
+    const {
+      errors,
+      fieldArrayTopic,
+      fieldArrayIndex,
+      fieldArrayName
+    } = this.props
+
     return (
       <div className={"fileUploader " + this.props.className} style={this.props.style}>
         <div className="fileContainer" style={this.props.fileContainerStyle}>
@@ -204,6 +212,15 @@ class UploadImage extends React.Component {
             onClick={this.onUploadClick}
             accept={this.props.accept}
           />
+          {
+            errors 
+              && errors[fieldArrayTopic]
+              && errors[fieldArrayTopic][fieldArrayIndex]
+              && errors[fieldArrayTopic][fieldArrayIndex][fieldArrayName] 
+              && <p style={{ color: '#FC0000' }}>
+                {errors[fieldArrayTopic][fieldArrayIndex][fieldArrayName].message}
+              </p>
+          }
           { this.props.withPreview ? this.renderPreview() : null }
         </div>
       </div>
@@ -235,6 +252,11 @@ UploadImage.defaultProps = {
   errorStyle: {},
   singleImage: false,
   onChange: () => {},
+  erros: {},
+  reference: () => {},
+  fieldArrayName: "",
+  fieldArrayTopic: "",
+  fieldArrayIndex: -1
 };
 
 UploadImage.propTypes = {
@@ -262,6 +284,11 @@ UploadImage.propTypes = {
   errorClass: PropTypes.string,
   errorStyle: PropTypes.object,
   singleImage: PropTypes.bool,
+  reference: PropTypes.func,
+  erros: PropTypes.object,
+  fieldArrayName: PropTypes.string,
+  fieldArrayIndex: PropTypes.number,
+  fieldArrayTopic: PropTypes.string,
 };
 
 export default UploadImage;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import Layout from '../utils/layout';
-import { graphql } from 'gatsby';
+
 import {
   withAuthorization,
   withEmailVerification,
@@ -22,19 +22,3 @@ export default () => {
   );
 };
 
-export const query = graphql`
-  query HomeSeo {
-    site {
-      siteMetadata {
-        home {
-          defaultTitle: title
-          titleTemplate
-          defaultDescription: description
-          siteUrl: url
-          defaultImage: image
-          twitterUsername
-        }
-      }
-    }
-  }
-`;

@@ -28,6 +28,7 @@ class Firebase {
     this.googleProvider = new app.auth.GoogleAuthProvider();
     this.facebookProvider = new app.auth.FacebookAuthProvider();
     this.twitterProvider = new app.auth.TwitterAuthProvider();
+
   }
 
   // *** Auth API ***
@@ -59,6 +60,8 @@ class Firebase {
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
 
+  getCurrentUserId = () => this.auth.currentUser.uid
+
   // *** Merge Auth and DB User API *** //
 
   onAuthUserListener = (next, fallback) =>
@@ -68,6 +71,7 @@ class Firebase {
           .get()
           .then(snapshot => {
             const dbUser = snapshot.data();
+            this.uid = authUser.uid
 
             // merge auth and db user
             authUser = {
@@ -94,6 +98,9 @@ class Firebase {
   posts = () => this.db.collection('posts');
 
   post = post => this.posts().where('slug', '==', post.slug);
+
+  // *** pavilion register ****
+  savePavilionBasicInfo = (data, uid) => this.db.collection('pavilion-basic').doc(uid).set(data)
 }
 
 let firebase;

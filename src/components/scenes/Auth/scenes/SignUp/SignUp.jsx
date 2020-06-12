@@ -11,7 +11,7 @@ const SignUp = () => {
         <div className="register__content__inner">
           <div className="register__content__header">
             <div className="register__content__header__title">
-              Sign up to join Bangkok Biennial Pavillion
+              Sign up to join Bangkok Biennial Pavilion
             </div>
           </div>
           <div className="register__content__fields">

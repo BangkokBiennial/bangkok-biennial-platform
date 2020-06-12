@@ -31,16 +31,18 @@
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
     "react-hook-form": "^5.5.1",
+    "react-hook-form-input": "^1.1.10",
     "react-icons": "^3.10.0",
     "react-images-upload": "^1.2.8",
     "react-phone-number-input": "^3.0.22",
     "react-spinners": "^0.8.1",
     "react-switch": "^5.0.1",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "yup": "^0.29.1"
   },
   "devDependencies": {
     "babel-preset-gatsby": "^0.3.3",
-    "node-pre-gyp": "0.12.0",
-    "firebase-tools": "^8.0.3"
+    "firebase-tools": "^8.0.3",
+    "node-pre-gyp": "0.12.0"
   }
 }
