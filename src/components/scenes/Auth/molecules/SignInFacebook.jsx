@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { HOME } from '../../../../constants/routes';
+import { PAVILION_INFO_REGISTER } from '../../../../constants/routes';
 import { FaFacebookF } from 'react-icons/fa';
 
 const ERROR_CODE_ACCOUNT_EXISTS =
@@ -35,7 +35,7 @@ class SignInFacebook extends Component {
       })
       .then(() => {
         this.setState({ error: null });
-        navigate(HOME);
+        navigate(PAVILION_INFO_REGISTER);
       })
       .catch(error => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
