@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { HOME } from '../../../../constants/routes';
+import { PAVILION_INFO_REGISTER } from '../../../../constants/routes';
 import Input from '../../../atoms/Input';
 import Button from '../../../atoms/Button';
 
@@ -45,7 +45,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        navigate(HOME);
+        navigate(PAVILION_INFO_REGISTERz5);
       })
       .catch(error => {
         this.setState({ error });
