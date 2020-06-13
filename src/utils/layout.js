@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { ToastProvider } from 'react-toast-notifications'
+
 
 import Navigation from '../components/molecules/Navigation/Navigation';
 import getFirebase, { FirebaseContext } from './Firebase';
@@ -25,9 +27,12 @@ class Layout extends Component {
 
   render() {
     return (
-      <FirebaseContext.Provider value={this.state.firebase}>
-        <AppWithAuthentication {...this.props} />
-      </FirebaseContext.Provider>
+      <ToastProvider autoDismiss={true} autoDismissTimeout={3000}>
+        <FirebaseContext.Provider value={this.state.firebase}>
+          <AppWithAuthentication {...this.props} />
+        </FirebaseContext.Provider>
+      </ToastProvider>
+      
     );
   }
 }

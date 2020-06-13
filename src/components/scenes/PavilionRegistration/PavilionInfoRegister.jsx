@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useToasts } from 'react-toast-notifications'
 import { useForm, useFieldArray } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
 import Input from '../../atoms/Input';
@@ -12,6 +13,8 @@ import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
 const PavilionInfoRegister = ({
   firebase,
 }) => {
+
+  const { addToast } = useToasts()
 
   const { handleSubmit, register, errors, control, setValue, watch } = useForm({
     mode: 'onBlur',
@@ -50,21 +53,29 @@ const PavilionInfoRegister = ({
     try {
       e.preventDefault();
       await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
+      await addToast('Successfully submitted!', { appearance: 'success' })
       navigate(PAVILION_DETAIL_REGISTER)
     } catch (error) {
-      console.log(error)
+      await addToast(error.message, { appearance: 'error', autoDismiss: false })
     }
   }
 
   const addMoreArtist = () => {
     append({
       name: '',
-      artistLink: ''
+      artistLink: '',
+      shortBio: '',
+      workImage: {
+        file: '',
+        url: ''
+      }
     })
+    addToast('Successfully artist added', { appearance: 'success' })
   }
 
   const removeArtist = (artistIndex) => {
     remove(artistIndex)
+    addToast('Successfully artist removed', { appearance: 'info' })
   }
 
   const handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
