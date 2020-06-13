@@ -74,6 +74,7 @@ class SignInForm extends Component {
             onChange={this.onChange}
             type="text"
             labelName="Email"
+            errors={error}
             required
           />
 
@@ -84,12 +85,13 @@ class SignInForm extends Component {
             type="password"
             labelName="Password"
             className="input--no-margin"
+            errors={error}
             required
           />
 
           <Button disabled={isInvalid} type="submit" text="Log in" />
 
-          {error && <p>{error.message}</p>}
+          { error &&  <p style={{ color: '#FC0000' }}>{error.message}</p> }
         </form>
       </>
     );
