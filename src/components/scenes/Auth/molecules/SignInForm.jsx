@@ -45,7 +45,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        navigate(PAVILION_INFO_REGISTERz5);
+        navigate(PAVILION_INFO_REGISTER);
       })
       .catch(error => {
         this.setState({ error });
