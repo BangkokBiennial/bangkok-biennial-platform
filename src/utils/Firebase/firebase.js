@@ -101,7 +101,7 @@ class Firebase {
 
   // *** pavilion register ****
 
-  pavilionBasicInfo = (data, uid) => this.db.collection('pavilion-basic').doc(uid).set(data)
+  savePavilionBasicInfo = (data, uid) => this.db.collection('pavilion-basic').doc(uid).set(data)
 }
 
 let firebase;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import Layout from '../utils/layout';
-
 import {
   withAuthorization,
   withEmailVerification,

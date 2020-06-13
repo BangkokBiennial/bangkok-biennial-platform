@@ -1,9 +1,7 @@
 import React from 'react'
-import withFirebase from '../../../utils/Firebase/firebase'
+import { withFirebase } from '../../../utils/Firebase';
 
-const PavilionDetailRegister = ({
-  firebase
-}) => {
+const PavilionDetailRegister = () => {
 
   return (
     <div class="home container">
