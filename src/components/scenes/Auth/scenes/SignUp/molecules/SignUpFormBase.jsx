@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../../../../../../utils/Firebase';
-import { HOME } from '../../../../../../constants/routes';
+import { PAVILION_INFO_REGISTER } from '../../../../../../constants/routes';
 import { navigate } from 'gatsby';
 import Input from '../../../../../atoms/Input';
 import Button from '../../../../../atoms/Button';
@@ -37,7 +37,7 @@ class SignUpFormBase extends Component {
       await this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
       await this.props.firebase.doSendEmailVerification()
       await this.setState({ ...INITIAL_STATE })
-      navigate(HOME);
+      navigate(PAVILION_INFO_REGISTER);
 
       event.preventDefault();
     } catch (error) {
