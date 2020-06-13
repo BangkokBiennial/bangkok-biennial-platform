@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import React, { useEffect } from 'react';
+import { useForm, useFieldArray } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
 import Input from '../../atoms/Input';
 import Textarea from '../../atoms/Textarea';
 import Button from '../../atoms/Button';
 import { FiPlusCircle, FiXCircle } from "react-icons/fi";
 import UploadImage from '../../atoms/UploadImage';
+import { navigate } from 'gatsby';
+import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
 
 const PavilionInfoRegister = ({
   firebase,
@@ -35,6 +37,7 @@ const PavilionInfoRegister = ({
   });
 
   useEffect(() => {
+    watch()
     fields.forEach((artist, index) => {
       register({
         name: `artists[${index}].workImage`,
@@ -44,9 +47,13 @@ const PavilionInfoRegister = ({
   }, [register, fields])
 
   const onSubmit = async (value, e) => {
-    e.preventDefault();
-    console.log(`submit! with ${JSON.stringify(value)}`)
-    firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
+    try {
+      e.preventDefault();
+      await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
+      navigate(PAVILION_DETAIL_REGISTER)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const addMoreArtist = () => {

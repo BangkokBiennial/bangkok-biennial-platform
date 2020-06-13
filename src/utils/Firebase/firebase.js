@@ -100,7 +100,8 @@ class Firebase {
   post = post => this.posts().where('slug', '==', post.slug);
 
   // *** pavilion register ****
-  savePavilionBasicInfo = (data, uid) => this.db.collection('pavilion-basic').doc(uid).set(data)
+
+  pavilionBasicInfo = (data, uid) => this.db.collection('pavilion-basic').doc(uid).set(data)
 }
 
 let firebase;
