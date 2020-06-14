@@ -193,10 +193,6 @@ const PavilionInfoRegister = ({
                       reference={
                         register({
                           required: "This field is required",
-                          pattern: {
-                            value: /^[a-zA-Z0-9_ ]*$/g,
-                            message: "Invalid pavilion's name"
-                          }
                         })
                       }
                       errors={errors}
