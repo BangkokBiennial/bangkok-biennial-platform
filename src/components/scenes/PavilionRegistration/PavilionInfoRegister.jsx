@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications'
 import { useForm, useFieldArray } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
@@ -9,12 +9,14 @@ import { FiPlusCircle, FiXCircle } from "react-icons/fi";
 import UploadImage from '../../atoms/UploadImage';
 import { navigate } from 'gatsby';
 import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
+import Loading from '../../atoms/Loading'
 
 const PavilionInfoRegister = ({
   firebase,
 }) => {
 
   const { addToast } = useToasts()
+  const [loading, setLoading] = useState(false);
 
   const { handleSubmit, register, errors, control, setValue, watch } = useForm({
     mode: 'onBlur',
@@ -25,10 +27,7 @@ const PavilionInfoRegister = ({
           name: '',
           artistLink: '',
           shortBio: '',
-          workImage: {
-            file: '',
-            url: ''
-          }
+          workImageUrl: ''
         }
       ]
     }
@@ -43,7 +42,7 @@ const PavilionInfoRegister = ({
     watch()
     fields.forEach((artist, index) => {
       register({
-        name: `artists[${index}].workImage`,
+        name: `artists[${index}].workImageUrl`,
         required: "this picture is required"
       })
     });
@@ -52,24 +51,28 @@ const PavilionInfoRegister = ({
   const onSubmit = async (value, e) => {
     try {
       e.preventDefault();
+      console.log(value)
+      setLoading(true)
       await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
-      await addToast('Successfully submitted!', { appearance: 'success' })
+      addToast('Successfully submitted!', { appearance: 'success' })
+      await setLoading(false)
       navigate(PAVILION_DETAIL_REGISTER)
     } catch (error) {
-      await addToast(error.message, { appearance: 'error', autoDismiss: false })
+      await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
+      await setLoading(false)
     }
   }
 
   const addMoreArtist = () => {
     append({
-      name: '',
-      artistLink: '',
-      shortBio: '',
-      workImage: {
-        file: '',
-        url: ''
+      artists: {
+        name: '',
+        artistLink: '',
+        shortBio: '',
+        workImageUrl: ''
       }
     })
+    console.log(fields)
     addToast('Successfully artist added', { appearance: 'success' })
   }
 
@@ -79,7 +82,15 @@ const PavilionInfoRegister = ({
   }
 
   const handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
-    setValue(`artists[${artistIndex}].workImage`, { url: pictureDataURLs })
+    setValue(`artists[${artistIndex}].workImageUrl`, pictureDataURLs )
+  }
+
+  if (loading) {
+    return (
+      <div className="home container">
+         <Loading />
+      </div>
+    )
   }
 
   return(
@@ -210,9 +221,9 @@ const PavilionInfoRegister = ({
                       <div className="home__register__form__label">One image of artist’s work</div>
                     </div>
                     <UploadImage
-                      name={`artists[${index}].workImage`}
+                      name={`artists[${index}].workImageUrl`}
                       fieldArrayTopic="artists"
-                      fieldArrayName="workImage"
+                      fieldArrayName="workImageUrl"
                       fieldArrayIndex={index}
                       singleImage={true}
                       errors={errors}

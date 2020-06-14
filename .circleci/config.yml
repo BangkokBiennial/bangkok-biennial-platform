@@ -30,6 +30,9 @@ jobs:
           name: check var
           command: cat .env.production
       - run:
+          name: clean up
+          command: npm run clean
+      - run:
           name: build
           command: npm run build 
       - store_artifacts:

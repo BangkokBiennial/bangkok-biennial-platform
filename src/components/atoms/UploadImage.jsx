@@ -187,6 +187,8 @@ class UploadImage extends React.Component {
       fieldArrayName
     } = this.props
 
+    console.log(errors)
+
     return (
       <div className={"fileUploader " + this.props.className} style={this.props.style}>
         <div className="fileContainer" style={this.props.fileContainerStyle}>
