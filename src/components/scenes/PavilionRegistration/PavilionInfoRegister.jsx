@@ -58,6 +58,7 @@ const PavilionInfoRegister = ({
   }, [register, fields])
 
   const onSubmit = async (value, e) => {
+    console.log(value)
     try {
       // workaround for validating artists' work image url
       value.artists.forEach((artist, index) => {
