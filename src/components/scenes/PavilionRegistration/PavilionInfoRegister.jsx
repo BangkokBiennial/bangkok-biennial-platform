@@ -106,6 +106,7 @@ const PavilionInfoRegister = ({
   }
 
   const handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
+    console.log(fields)
     setValue(`artists[${artistIndex}].workImageUrl`, pictureDataURLs[0] )
   }
 
