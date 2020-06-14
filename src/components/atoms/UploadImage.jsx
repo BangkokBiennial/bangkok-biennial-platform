@@ -179,15 +179,12 @@ class UploadImage extends React.Component {
   }
 
   render() {
-
     const {
       errors,
       fieldArrayTopic,
       fieldArrayIndex,
       fieldArrayName
     } = this.props
-
-    console.log(errors)
 
     return (
       <div className={"fileUploader " + this.props.className} style={this.props.style}>
@@ -258,7 +255,7 @@ UploadImage.defaultProps = {
   reference: () => {},
   fieldArrayName: "",
   fieldArrayTopic: "",
-  fieldArrayIndex: -1
+  fieldArrayIndex: -1,
 };
 
 UploadImage.propTypes = {

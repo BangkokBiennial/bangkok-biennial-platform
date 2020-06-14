@@ -16,9 +16,9 @@ const PavilionInfoRegister = ({
 }) => {
 
   const { addToast } = useToasts()
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const { handleSubmit, register, errors, control, setValue, watch } = useForm({
+  const { handleSubmit, register, setError, errors, control, setValue, watch } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
@@ -38,26 +38,49 @@ const PavilionInfoRegister = ({
     name: 'artists',
   });
 
+  const [_initFirebase, setInitFirebase] = useState(false)
+
+  useEffect(() => {
+    if (firebase && !_initFirebase) {
+      setInitFirebase(true)
+      setLoading(false)
+    }
+  }, [firebase])
+
   useEffect(() => {
     watch()
     fields.forEach((artist, index) => {
       register({
         name: `artists[${index}].workImageUrl`,
-        required: "this picture is required"
+        required: 'this picture is required'
       })
     });
   }, [register, fields])
 
   const onSubmit = async (value, e) => {
     try {
+      // workaround for validating artists' work image url
+      value.artists.forEach((artist, index) => {
+        if (!artist.workImageUrl) {
+          setError(`artists[${index}].workImageUrl`, 'required', 'this file is required')
+        }
+      })
+
+      if (value.artists.filter(artist => !artist.workImageUrl).length > 0) {
+        await addToast('some fields are missing', { appearance: 'error', autoDismiss: false })
+        return
+      }
+
       e.preventDefault();
-      console.log(value)
+
       setLoading(true)
+      addToast('sending data ... please wait', { appearance: 'info' })
       await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
-      addToast('Successfully submitted!', { appearance: 'success' })
       await setLoading(false)
       navigate(PAVILION_DETAIL_REGISTER)
+      addToast('Successfully submitted!', { appearance: 'success' })
     } catch (error) {
+      console.log(error)
       await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
       await setLoading(false)
     }
@@ -72,7 +95,6 @@ const PavilionInfoRegister = ({
         workImageUrl: ''
       }
     })
-    console.log(fields)
     addToast('Successfully artist added', { appearance: 'success' })
   }
 
