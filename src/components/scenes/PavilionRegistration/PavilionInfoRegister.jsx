@@ -76,9 +76,10 @@ const PavilionInfoRegister = ({
       setLoading(true)
       addToast('sending data ... please wait', { appearance: 'info' })
       await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
+      addToast('Successfully submitted!', { appearance: 'success' })
       await setLoading(false)
       navigate(PAVILION_DETAIL_REGISTER)
-      addToast('Successfully submitted!', { appearance: 'success' })
+     
     } catch (error) {
       console.log(error)
       await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
@@ -104,7 +105,7 @@ const PavilionInfoRegister = ({
   }
 
   const handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
-    setValue(`artists[${artistIndex}].workImageUrl`, pictureDataURLs )
+    setValue(`artists[${artistIndex}].workImageUrl`, pictureDataURLs[0] )
   }
 
   if (loading) {
