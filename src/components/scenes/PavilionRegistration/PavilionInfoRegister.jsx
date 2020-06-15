@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useToasts } from 'react-toast-notifications'
 import { useForm, useFieldArray } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
@@ -10,6 +10,7 @@ import UploadImage from '../../atoms/UploadImage';
 import { navigate } from 'gatsby';
 import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
 import Loading from '../../atoms/Loading'
+import { encodeFileToData } from '../../../utils/file'
 
 const PavilionInfoRegister = ({
   firebase,
@@ -18,7 +19,7 @@ const PavilionInfoRegister = ({
   const { addToast } = useToasts()
   const [loading, setLoading] = useState(true);
 
-  const { handleSubmit, register, setError, errors, control, setValue, watch } = useForm({
+  const { handleSubmit, register, setError, errors, control, setValue, watch, unregister } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
@@ -47,36 +48,28 @@ const PavilionInfoRegister = ({
     }
   }, [firebase])
 
-  useEffect(() => {
-    watch()
-    fields.forEach((artist, index) => {
-      register({
-        name: `artists[${index}].workImageUrl`,
-        required: 'this picture is required'
-      })
-    });
-  }, [register, fields])
-
   const onSubmit = async (value, e) => {
-    console.log(value)
     try {
-      // workaround for validating artists' work image url
-      value.artists.forEach((artist, index) => {
-        if (!artist.workImageUrl) {
-          setError(`artists[${index}].workImageUrl`, 'required', 'this file is required')
-        }
-      })
-
-      if (value.artists.filter(artist => !artist.workImageUrl).length > 0) {
-        await addToast('some fields are missing', { appearance: 'error', autoDismiss: false })
-        return
-      }
 
       e.preventDefault();
 
+      const finalArtists = await Promise.all(
+        value.artists.map(async (artist) => {
+          const dataUri = await encodeFileToData(artist.workImageUrl[0])
+          return {
+            ...artist,
+            workImageUrl: dataUri
+          }
+        })
+      )
+
+      const data = {
+        ...value,
+        artists: finalArtists
+      }
+
       setLoading(true)
-      addToast('sending data ... please wait', { appearance: 'info' })
-      await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
+      await firebase.savePavilionBasicInfo(data, firebase.getCurrentUserId())
       addToast('Successfully submitted!', { appearance: 'success' })
       await setLoading(false)
       navigate(PAVILION_DETAIL_REGISTER)
@@ -104,13 +97,6 @@ const PavilionInfoRegister = ({
     remove(artistIndex)
     addToast('Successfully artist removed', { appearance: 'info' })
   }
-
-  const handleArtistWorkImage = (pictureFiles, pictureDataURLs, artistIndex) => {
-    setValue(`artists[${artistIndex}].workImageUrl`, pictureDataURLs[0] )
-  }
-
-  const watchAll = watch()
-  console.log(watchAll)
 
   if (loading) {
     return (
@@ -250,7 +236,7 @@ const PavilionInfoRegister = ({
                       fieldArrayIndex={index}
                       singleImage={true}
                       errors={errors}
-                      onChange={(pictureFiles, pictureDataURLs) => handleArtistWorkImage(pictureFiles, pictureDataURLs, index)}
+                      reference={register({ required: 'file is required' })}
                     />
                   </div>
                 ))

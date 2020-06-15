@@ -171,7 +171,7 @@ class UploadImage extends React.Component {
   }
 
   triggerFileUpload() {
-    this.inputElement.click();
+    this.fileContainer.childNodes[4].click()
   }
 
   clearPictures() {
@@ -183,12 +183,14 @@ class UploadImage extends React.Component {
       errors,
       fieldArrayTopic,
       fieldArrayIndex,
-      fieldArrayName
+      fieldArrayName,
+      reference,
+      name
     } = this.props
 
     return (
       <div className={"fileUploader " + this.props.className} style={this.props.style}>
-        <div className="fileContainer" style={this.props.fileContainerStyle}>
+        <div className="fileContainer" style={this.props.fileContainerStyle} ref={(ref) => this.fileContainer = ref}>
           <FiUpload/>
           {this.renderLabel()}
           <div className="errorsContainer">
@@ -203,9 +205,9 @@ class UploadImage extends React.Component {
             {this.props.buttonText}
           </button>
           <input
+            name={name}
             type="file"
-            ref={input => this.inputElement = input}
-            name={this.props.name}
+            ref={reference}
             multiple={!this.props.singleImage}
             onChange={this.onDropFile}
             onClick={this.onUploadClick}
@@ -256,6 +258,7 @@ UploadImage.defaultProps = {
   fieldArrayName: "",
   fieldArrayTopic: "",
   fieldArrayIndex: -1,
+  reference: {}
 };
 
 UploadImage.propTypes = {
