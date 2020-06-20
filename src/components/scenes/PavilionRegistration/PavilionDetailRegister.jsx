@@ -3,18 +3,20 @@ import { useForm, useFieldArray, FormContext, useFormContext } from "react-hook-
 import { withFirebase } from '../../../utils/Firebase'
 import { FiPlusCircle, FiXCircle } from "react-icons/fi"
 import Input from '../../atoms/Input'
+import Textarea from '../../atoms/Textarea'
 import Button from '../../atoms/Button'
 import CheckBox from '../../atoms/CheckBox'
 import Switch from 'react-switch';
 import DatePicker from 'react-datepicker'
 import PhoneInput from 'react-phone-number-input'
+import UploadImage from '../../atoms/UploadImage';
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const PavilionDetailRegister = () => {
 
-  const { handleSubmit, register, errors, control, setValue, getValues, watch } = useForm({
+  const { handleSubmit, register, errors, control, setValue, watch } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
@@ -26,8 +28,6 @@ const PavilionDetailRegister = () => {
     control,
     name: 'curators',
   });
-
-  const onSubmit = () => {}
   const addMoreCurator = () => {
     append({
       curators: {
@@ -45,6 +45,12 @@ const PavilionDetailRegister = () => {
   const [isVenueChecked, setIsVenueChecked] = useState(true)
   const [isVenueSecured, setIsVenueSecured] = useState(true)
   const [isJoinedSeekingVenues, setIsJoinedSeekingVenues] = useState(true)
+  const [isOpenCalls, setIsOpenCalls] = useState(true)
+
+  const onSubmit = () => {}
+  const handleOnClickSubmit = () => {}
+  const handleSupportMaterials = () => {}
+  const handlePoster = () => {}
   
   useEffect(() => {
     console.log(watch())
@@ -81,13 +87,13 @@ const PavilionDetailRegister = () => {
   const handleSwitchVenue = () => setIsVenueChecked(!isVenueChecked)
   const handleSwitchVenueSecured = () => setIsVenueSecured(!isVenueSecured)
   const handleToggleIsJoinedSeekingVenues = () => setIsJoinedSeekingVenues(!isJoinedSeekingVenues)
+  const handleSwitchOpenCalls = () => setIsOpenCalls(!isOpenCalls)
 
   const handleStartDate = (startDate) => setValue('startDate', startDate)
   const handleEndDate = (endDate) => setValue('endDate', endDate)
   const handleOpeningHours = (hours) => setValue('openingHours', hours)
   const handleClosingHours = (hours) => setValue('closingHours', hours)
   const handleChangeTelephoneNumber = (telephoneNumber) => setValue('telephoneNumber', telephoneNumber)
-  
 
   const startDate = watch('startDate')
   const endDate = watch('endDate')
@@ -262,6 +268,7 @@ const PavilionDetailRegister = () => {
                             reference={register({
                               required: 'this field is required'
                             })}
+                            errors={errors}
                           />
                           <Input
                             name="streetAddress"
@@ -271,6 +278,7 @@ const PavilionDetailRegister = () => {
                             reference={register({
                               required: 'this field is required'
                             })}
+                            errors={errors}
                           />
                           <Input
                             name="googleMapLink"
@@ -280,6 +288,7 @@ const PavilionDetailRegister = () => {
                             reference={register({
                               required: 'this field is required'
                             })}
+                            errors={errors}
                           />
                           <div className="input__label__container">
                             <div className="input__label__asterisk">*</div>
@@ -347,6 +356,158 @@ const PavilionDetailRegister = () => {
                 </div>
                 : null
               }
+
+              <div className="home__register__form__title">Social Media</div>
+              <p className="home__register__form__paragraph">
+                Pavilions should create social media 
+                identities specifically for the pavilion, 
+                rather than using existing pages for your 
+                previous/existing work (those pages 
+                can be listed above in the curators/ 
+                artists/organizers’s individual links).
+              </p>
+              <Input
+                name="pavilionFacebook"
+                type="text"
+                labelName="Facebook"
+                reference={register}
+              />
+              <Input
+                name="pavilionInstagram"
+                type="text"
+                labelName="Instagram"
+                reference={register}
+              />
+              <Input
+                name="pavilionTwitter"
+                type="text"
+                labelName="Twitter"
+                reference={register}
+              />
+              <Input
+                name="pavilionOtherSocialMedias"
+                type="text"
+                labelName="Others"
+                reference={register}
+              />
+
+              <div className="home__register__form__title">Open Calls</div>
+              <p className="home__register__form__paragraph">
+                We encourage pavilions to use open calls to further
+                broaden the reach and scope of the work within your
+                pavilion and within the biennial. We will be actively
+                promoting all of the various open calls from pavilions.
+              </p>
+              <div className="input__label__container">
+                <div className="home__register__form__label">
+                  Will your pavilion involve any kind of Open Call?
+                </div>
+              </div>
+              <div className="home__register__form__switch-container">
+                <Switch
+                  className="home__register__form__switch-container"
+                  onChange={handleSwitchOpenCalls} 
+                  checked={isOpenCalls}
+                  onColor="#3fb557"
+                  offColor="#2F2E2E"
+                />
+              </div>
+              {
+                isOpenCalls
+                  ? <>
+                    <Input
+                      name="shortTextOpenCalls"
+                      type="text"
+                      labelName="Short text for open call (maximum 250 characters)"
+                      reference={
+                        register({
+                          maxLength: {
+                            value: 250,
+                            message: 'Maximum 250 characters'
+                          }
+                        })
+                      }
+                    />
+                    <Textarea
+                      name="longerTextOpenCalls"
+                      type="textarea"
+                      labelName="Longer description of Open Call"
+                    />
+                    <Input
+                      name="opencallsUrl"
+                      type="text"
+                      labelName="URL for more information (website, social media link)"
+                    />
+                    <Textarea
+                      name="submissionRequirements"
+                      type="text"
+                      labelName="Describe the submission requirements and process in 250 words or less"
+                    />
+                    <Input
+                      name="opencallsPublicEmail"
+                      type="text"
+                      labelName="Public Email"
+                    />
+                    <Input
+                      name="opencallsPhoneNumber"
+                      type="text"
+                      labelName="Phone Number"
+                    />
+                    <Input
+                      name="openCallsOtherPublicContact"
+                      type="text"
+                      labelName="Other Public Contact"
+                    />
+                  </>
+                  : null
+              }
+
+              <div className="home__register__form__title">Support Materials</div>
+              <p className="home__register__form__paragraph">
+                Upload 3-5 publicity images (without text). Permission must be granted
+                to BB to use images for publicity, minimum file size 1 - 2 mb. 
+                Label the images by <br/>
+                BB2020_Pavilion_Artist_ Titleofwork.jpg
+              </p>
+              <UploadImage
+                onChange={handleSupportMaterials}
+              />
+              <p className="home__register__form__paragraph">
+                Upload 1-2 poster images to represent the pavilion.
+              </p>
+              <UploadImage
+                onChange={handlePoster}
+              />
+              <Input
+                name="videoMaterial"
+                type="text"
+                labelName="Youtube or vimeo links for video material"
+                required
+                reference={
+                  register({
+                    required: 'this field is required'
+                  })
+                }
+                errors={errors}
+              />
+              <Input
+                name="audioMaterial"
+                type="text"
+                labelName="Links for audio material (soundcloud, bandcamp, etc)"
+                required
+                reference={
+                  register({
+                    required: 'this field is required'
+                  })
+                }
+                errors={errors}
+              />
+
+              <Button
+                className="home__register__form__submit-btn"
+                type="submit"
+                onClick={handleOnClickSubmit}
+              />
           </form>
         </div>
       </div>

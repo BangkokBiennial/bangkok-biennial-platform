@@ -19,7 +19,7 @@ const PavilionInfoRegister = ({
   const { addToast } = useToasts()
   const [loading, setLoading] = useState(true);
 
-  const { handleSubmit, register, setError, errors, control, setValue, watch, unregister } = useForm({
+  const { handleSubmit, register, errors, control } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
