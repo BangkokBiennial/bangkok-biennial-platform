@@ -36,11 +36,12 @@ class UploadImage extends React.Component {
     }
 
     if(prevProps.loadingPictures !== this.props.loadingPictures) {
-      console.log(this.props.loadingPictures)
-      this.setState({
-        pictures: this.props.loadingPictures.pictures,
-        files: this.props.loadingPictures.files
-      })
+      if (this.props.loadingPictures) {
+        this.setState({
+          pictures: this.props.loadingPictures.pictures,
+          files: this.props.loadingPictures.files
+        })
+      }
     }
   }
 
