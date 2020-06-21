@@ -10,36 +10,60 @@ import Switch from 'react-switch';
 import DatePicker from 'react-datepicker'
 import PhoneInput from 'react-phone-number-input'
 import UploadImage from '../../atoms/UploadImage';
+import { useToasts } from 'react-toast-notifications'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const PavilionDetailRegister = () => {
+const PavilionDetailRegister = ({
+  firebase
+}) => {
+
+  const { addToast } = useToasts()
 
   const { handleSubmit, register, errors, control, setValue, watch } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: {
-      curators: [],
-    }
   });
+  console.log(watch())
 
-  const { fields, append, remove } = useFieldArray({
+  const Curators = useFieldArray({
     control,
     name: 'curators',
   });
   const addMoreCurator = () => {
-    append({
+    Curators.append({
       curators: {
         name: '',
         curatorLink: '',
         shortBio: '',
       }
     })
+    addToast('Successfully curator added', { appearance: 'success' })
   }
-  const removeCurator = (curatorIndex) => remove(curatorIndex)
+  const removeCurator = (curatorIndex) => {
+    Curators.remove(curatorIndex)
+    addToast('Successfully curator removed', { appearance: 'info' })
+  }
 
-  const addMoreOrganizer = () => {}
+  const Organizers = useFieldArray({
+    control,
+    name: 'organizers'
+  })
+  const addMoreOrganizer = () => {
+    Organizers.append({ 
+      organizers: {
+        name: '',
+        organizerLink: '',
+        shortBio: '',
+      }
+    })
+    addToast('Successfully organizer added', { appearance: 'success' })
+  }
+  const removeOrganizer = (organizerIndex) => {
+    Organizers.remove(organizerIndex)
+    addToast('Successfully organizer removed', { appearance: 'info' })
+  }
 
   const [isWillingToBeContactedByMedia, setIsWillingToBeContactedByMedia] = useState(true)
   const [isVenueChecked, setIsVenueChecked] = useState(true)
@@ -81,7 +105,7 @@ const PavilionDetailRegister = () => {
         defaultValues: ''
       })
     }
-  }, [fields, register, isVenueChecked, isVenueSecured])
+  }, [register, isVenueChecked, isVenueSecured])
 
   const handleToggleIsWillingToBeContactedByMedia = () => setIsWillingToBeContactedByMedia(!isWillingToBeContactedByMedia);
   const handleSwitchVenue = () => setIsVenueChecked(!isVenueChecked)
@@ -114,7 +138,7 @@ const PavilionDetailRegister = () => {
             <p className="home__register__form__paragraph">​Curator(s) involved (if applicable)</p>
             <div className="home__register__form__list__container">
               {
-                fields.map((curator, index) => (
+                Curators.fields.map((curator, index) => (
                   <div className="home__register__form__list__element" key={curator.id}>
                     <div className="home__register__form__list__element__close">
                       <FiXCircle
@@ -125,22 +149,19 @@ const PavilionDetailRegister = () => {
                       name={`curators[${index}].name`}
                       type="text"
                       labelName="Name"
-                      reference={register}
-                      errors={errors}
+                      reference={register()}
                     />
                     <Input
                       name={`curators[${index}].curatorLink`}
                       type="text"
                       labelName="Individual curators’s links (website, portfolio, etc)"
-                      reference={register}
-                      errors={errors}
+                      reference={register()}
                     />
                     <Input
                       name={`curators[${index}].shortBio`}
                       type="textarea"
                       labelName="​Short Bio of each artist (Max 250 words)"
-                      reference={register}
-                      errors={errors}
+                      reference={register()}
                     />
                   </div>
                 ))
@@ -157,7 +178,35 @@ const PavilionDetailRegister = () => {
             <div className="home__register__form__title">Organizers</div>
             <p className="home__register__form__paragraph">​Organizations/Groups/Collectives/ Etc involved (if applicable)</p>
             <div className="home__register__form__list__container">
-              
+            {
+              Organizers.fields.map((organizer, index) => (
+                <div className="home__register__form__list__element" key={organizer.id}>
+                  <div className="home__register__form__list__element__close">
+                    <FiXCircle
+                      onClick={() => removeOrganizer(index)}
+                    />
+                  </div>
+                  <Input
+                    name={`organizers[${index}].name`}
+                    type="text"
+                    labelName="Name"
+                    reference={register()}
+                  />
+                  <Input
+                    name={`organizers[${index}].organizerLink`}
+                    type="text"
+                    labelName="Individual artist’s links (website, portfolio, etc)"
+                    reference={register()}
+                  />
+                  <Input
+                    name={`organizers[${index}].shortBio`}
+                    type="textarea"
+                    labelName="​Short Bio of each artist (Max 250 words)"
+                    reference={register()}
+                  />
+                </div>
+              ))
+            }
             </div>
             <Button
               onClick={addMoreOrganizer}
