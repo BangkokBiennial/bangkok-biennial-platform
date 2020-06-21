@@ -148,6 +148,13 @@ const PavilionDetailRegister = ({
     }
   }
 
+  const errorStyle = { 
+    color: '#FC0000',
+    position: 'relative',
+    margin: '0px',
+    marginTop: '10px'
+  }
+
   return (
     <div className="home container">
       <div className="home__details">
@@ -368,29 +375,39 @@ const PavilionDetailRegister = ({
                           </div>
                           <div className="home__register__form__date-container">
                             <div className="home__register__form__label__date">Start</div>
-                            <DatePicker
-                              name="startDate"
-                              selected={startDate} 
-                              onChange={(startDate) => handleDatePickerOnChange(startDate, 'startDate')}
-                              onBlur={handleDatePickerOnBlur}
-                            />
-                            {
-                              errors 
-                                && errors.startDate 
-                                && <p style={{ color: '#FC0000' }}>{errors.startDate.message}</p>
-                            }
+                            <div className="home__register__form__datepicker">
+                              <DatePicker
+                                name="startDate"
+                                selected={startDate} 
+                                onChange={(startDate) => handleDatePickerOnChange(startDate, 'startDate')}
+                                onBlur={handleDatePickerOnBlur}
+                                startDate={startDate}
+                                endDate={endDate}
+                              />
+                              {
+                                errors 
+                                  && errors.startDate 
+                                  && <p style={errorStyle}>{errors.startDate.message}</p>
+                              }
+                            </div>
+                            
                             <div className="home__register__form__label__date">End</div>
-                            <DatePicker
-                              name="endDate"
-                              selected={endDate} 
-                              onChange={(endDate) => handleDatePickerOnChange(endDate, 'endDate')}
-                              onBlur={handleDatePickerOnBlur}
-                            />
-                            {
-                              errors 
-                                && errors.endDate 
-                                && <p style={{ color: '#FC0000' }}>{errors.endDate.message}</p>
-                            }
+                            <div className="home__register__form__datepicker">
+                              <DatePicker
+                                name="endDate"
+                                selected={endDate} 
+                                onChange={(endDate) => handleDatePickerOnChange(endDate, 'endDate')}
+                                onBlur={handleDatePickerOnBlur}
+                                startDate={startDate}
+                                endDate={endDate}
+                                minDate={startDate}
+                              />
+                              {
+                                errors 
+                                  && errors.endDate 
+                                  && <p style={errorStyle}>{errors.endDate.message}</p>
+                              }
+                            </div>
                           </div>
                           <div className="input__label__container">
                             <div className="input__label__asterisk">*</div>
@@ -398,37 +415,41 @@ const PavilionDetailRegister = ({
                           </div>
                           <div className="home__register__form__date-container">
                             <div className="home__register__form__label__date">Start</div>
-                            <DatePicker
-                              name="openingHours"
-                              selected={openingHours} 
-                              onChange={(openingHours) => handleDatePickerOnChange(openingHours, 'openingHours')}
-                              showTimeSelect
-                              showTimeSelectOnly
-                              timeCaption="Time"
-                              dateFormat="h:mm aa"
-                              onBlur={handleDatePickerOnBlur}
-                            />
-                            {
-                              errors 
-                                && errors.openingHours 
-                                && <p style={{ color: '#FC0000' }}>{errors.openingHours.message}</p>
-                            }
+                            <div className="home__register__form__datepicker">
+                              <DatePicker
+                                name="openingHours"
+                                selected={openingHours} 
+                                onChange={(openingHours) => handleDatePickerOnChange(openingHours, 'openingHours')}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                timeCaption="Time"
+                                dateFormat="h:mm aa"
+                                onBlur={handleDatePickerOnBlur}
+                              />
+                              {
+                                errors 
+                                  && errors.openingHours 
+                                  && <p style={errorStyle}>{errors.openingHours.message}</p>
+                              }
+                            </div>
                             <div className="home__register__form__label__date">End</div>
-                            <DatePicker
-                              name="closingHours"
-                              selected={closingHours} 
-                              onChange={(closingHours) => handleDatePickerOnChange(closingHours, 'closingHours')}
-                              showTimeSelect
-                              showTimeSelectOnly
-                              timeCaption="Time"
-                              dateFormat="h:mm aa"
-                              onBlur={handleDatePickerOnBlur}
-                            />
-                            {
-                              errors 
-                                && errors.closingHours 
-                                && <p style={{ color: '#FC0000' }}>{errors.closingHours.message}</p>
-                            }
+                            <div className="home__register__form__datepicker">
+                              <DatePicker
+                                name="closingHours"
+                                selected={closingHours} 
+                                onChange={(closingHours) => handleDatePickerOnChange(closingHours, 'closingHours')}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                timeCaption="Time"
+                                dateFormat="h:mm aa"
+                                onBlur={handleDatePickerOnBlur}
+                              />
+                              {
+                                errors 
+                                  && errors.closingHours 
+                                  && <p style={errorStyle}>{errors.closingHours.message}</p>
+                              }
+                            </div>
                           </div>
                           <div className="input__label__container">
                             <div className="input__label__asterisk">*</div>

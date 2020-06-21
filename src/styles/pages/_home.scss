@@ -22,10 +22,12 @@
       @include breakpoint('to-tablet-l') {
         width: 100%;
       }
+
       &__title {
         font-size: 1.5rem;
         margin-bottom: 20px;
       }
+
       &__paragraph {
         @include breakpoint('from-laptop') {
           width: 200%;
@@ -34,6 +36,7 @@
         line-height: 22px;
         color: $color-secondary;
       }
+
       &__add-to-list-btn {
         margin-bottom: 20px;
         &:hover {
@@ -41,6 +44,7 @@
           cursor: pointer;
         }
       }
+
       &__add-btn {
         width: 65%;
         margin: 0;
@@ -49,6 +53,7 @@
           width: 100%;
         }
       }
+
       &__submit-btn {
         width: 50%;
         margin: 0;
@@ -65,6 +70,10 @@
         display: flex;
         flex-direction: row;
         margin-bottom: 35px;
+      }
+      &__datepicker {
+        display: flex;
+        flex-direction: column;
       }
       &__list {
         &__container {
