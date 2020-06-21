@@ -279,7 +279,49 @@ const PavilionDetailRegister = ({
     }
   }
 
-  const onSubmit = () => {}
+  const onSubmit = async (value, e) => {
+    e.preventDefault()
+
+    try { 
+      const finalSupportedMaterials = value.supportMaterials.length > 0
+        ? await Promise.all(
+          Array.from(value.supportMaterials).map(async (supportMaterial) => {
+            const dataUrl = await encodeFileToData(supportMaterial)
+            return {
+              url: dataUrl,
+              name: supportMaterial.name
+            }
+          })
+        )
+        : ''
+      const finalPosters = value.posters.length > 0
+        ? await Promise.all(
+          Array.from(value.posters).map(async (poster) => {
+            const dataUrl = await encodeFileToData(poster)
+            return { 
+              url: dataUrl,
+              name: poster.name
+            }
+          })
+        )
+        : ''
+      const finalizedData = {
+        ...value,
+        supportMaterials: finalSupportedMaterials,
+        posters: finalPosters,
+        telephoneNumber: value.telephoneNumber || '',
+        startDate: value.startDate || '',
+        endDate: value.endDate || '',
+        openingHours: value.openingHours || '',
+        closingHours: value.closingHours || '',
+      }
+      await firebase.savePavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
+      addToast('the information is saved successfully', { appearance: 'success' })
+    } catch (error) {
+      console.log(error)
+      await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
+    }
+  }
  
   const errorStyle = { 
     color: '#FC0000',
@@ -302,7 +344,7 @@ const PavilionDetailRegister = ({
   return (
     <>
       {
-        saving && <Loading />
+        saving && <Loading style={{ position: 'fixed', top: '50%' }} />
       }
       <div className="home container" style={{ opacity }}>
         <div className="home__details">

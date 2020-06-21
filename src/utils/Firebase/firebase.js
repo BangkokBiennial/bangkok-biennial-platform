@@ -103,6 +103,8 @@ class Firebase {
   
   saveTemporaryPavilionAdvanceInfo = (data, uid) => this.db.collection('pavilion-temporary-save-info').doc(uid).set(data)
   getTemporaryPavilionAdvanceInfo = (uid) => this.db.collection('pavilion-temporary-save-info').doc(uid).get()
+
+  savePavilionAdvanceInfo = (data, uid) => this.db.collection('pavilion-advance-info').doc(uid).set(data)
 }
 
 let firebase;
