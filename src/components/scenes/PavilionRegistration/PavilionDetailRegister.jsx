@@ -25,6 +25,7 @@ const PavilionDetailRegister = ({
 
   const { addToast } = useToasts()
   const [loading, setLoading] = useState(true);
+  const [fetched, setFetched] = useState(false);
 
   const { 
     handleSubmit, 
@@ -46,22 +47,6 @@ const PavilionDetailRegister = ({
       setInitFirebase(true)
     }
   }, [firebase])
-
-  useEffect(() => {
-    if (firebase && firebase.auth && firebase.auth.currentUser) {
-      const fetch = async () => {
-          const savedPavilionInfo = await firebase
-            .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
-          const data = savedPavilionInfo.data()
-          console.log(data)
-          Object.keys(data).map(async key => {
-            setValue(key, data[key])
-          })
-          setLoading(false)
-        }
-      fetch()
-    }
-  }, [firebase && firebase.auth && firebase.auth.currentUser, loading])
 
   const Curators = useFieldArray({
     control,
@@ -100,6 +85,46 @@ const PavilionDetailRegister = ({
     Organizers.remove(organizerIndex)
     addToast('Successfully organizer removed', { appearance: 'info' })
   }
+
+  useEffect(() => {
+    if (firebase && firebase.auth && firebase.auth.currentUser) {
+      const fetch = async () => {
+        const savedPavilionInfo = await firebase
+          .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
+        const data = savedPavilionInfo.data()
+        console.log(data)
+        if (data.curators && data.curators.length > 0 && !fetched) {
+          data.curators.forEach(curator => {
+            Curators.append({
+              curators: {
+                name: curator.name,
+                curatorLink: curator.curatorLink,
+                shortBio: curator.shortBio,
+              }
+            })
+          })
+          setFetched(true)
+        }
+        if (data.organizers && data.organizers.length > 0 && !fetched) {
+          data.organizers.forEach(organizer => {
+            Organizers.append({
+              organizers: {
+                name: organizer.name,
+                organizerLink: organizer.organizerLink,
+                shortBio: organizer.shortBio,
+              }
+            })
+          })
+          setFetched(true)
+        }
+        Object.keys(data).map(async key => {
+          setValue(key, data[key])
+        })
+        setLoading(false)
+      }
+      fetch()
+    }
+  }, [firebase && firebase.auth && firebase.auth.currentUser, loading])
 
   const [isWillingToBeContactedByMedia, setIsWillingToBeContactedByMedia] = useState(true)
   const [isVenueChecked, setIsVenueChecked] = useState(true)
@@ -178,7 +203,8 @@ const PavilionDetailRegister = ({
     }
   }
   const handleOnClickSave = async () => {
-    const watchedData = watch()
+    const watchedData = watch({ nest: true })
+    console.log(watchedData)
     try { 
       const finalSupportedMaterials = watchedData.supportMaterials.length > 0
         ? await Promise.all(
