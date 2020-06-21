@@ -11,6 +11,7 @@ import DatePicker from 'react-datepicker'
 import PhoneInput from 'react-phone-number-input'
 import UploadImage from '../../atoms/UploadImage';
 import { useToasts } from 'react-toast-notifications'
+import { encodeFileToData } from '../../../utils/file'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -79,11 +80,6 @@ const PavilionDetailRegister = ({
   const [isVenueSecured, setIsVenueSecured] = useState(true)
   const [isJoinedSeekingVenues, setIsJoinedSeekingVenues] = useState(true)
   const [isOpenCalls, setIsOpenCalls] = useState(true)
-
-  const onSubmit = () => {}
-  const handleOnClickSubmit = () => {}
-  const handleSupportMaterials = () => {}
-  const handlePoster = () => {}
   
   useEffect(() => {
     if(isVenueChecked && isVenueSecured) {
@@ -129,7 +125,10 @@ const PavilionDetailRegister = ({
   const handleToggleIsJoinedSeekingVenues = () => setIsJoinedSeekingVenues(!isJoinedSeekingVenues)
   const handleSwitchOpenCalls = () => setIsOpenCalls(!isOpenCalls)
 
-  const handleChangeTelephoneNumber = (telephoneNumber) => setValue('telephoneNumber', telephoneNumber)
+  const handleChangeTelephoneNumber = (telephoneNumber) => {
+    setValue('telephoneNumber', telephoneNumber)
+    clearError('telephoneNumber')
+  }
 
   const startDate = watch('startDate')
   const endDate = watch('endDate')
@@ -147,7 +146,57 @@ const PavilionDetailRegister = ({
       setError(e.target.name, 'required', 'this field is required')
     }
   }
+  const handleOnBlurTelephoneNumber = () => {
+    if (!telephoneNumber) {
+      setError('telephoneNumber', 'required', 'this field is required')
+    }
+  }
+  const handleOnClickSave = async () => {
+    const watchedData = watch()
+    try { 
+      const finalSupportedMaterials = watchedData.supportMaterials.length > 0
+        ? await Promise.all(
+          watchedData.supportMaterials.map(async (artist) => {
+            const dataUri = await encodeFileToData(artist.workImageUrl[0])
+            return {
+              ...artist,
+              workImageUrl: dataUri
+            }
+          })
+        )
+        : null
+      const finalPosters = watchedData.supportMaterials.length > 0
+        ? await Promise.all(
+          watchedData.posters.map(async (artist) => {
+            const dataUri = await encodeFileToData(artist.workImageUrl[0])
+            return {
+              ...artist,
+              workImageUrl: dataUri
+            }
+          })
+        )
+        : null
+      const finalizedData = {
+        ...watchedData,
+        supportMaterials: finalSupportedMaterials,
+        posters: finalPosters,
+        telephoneNumber: watchedData.telephoneNumber || '',
+        startDate: watchedData.startDate || '',
+        endDate: watchedData.endDate || '',
+        openingHours: watchedData.openingHours || '',
+        closingHours: watchedData.closingHours || '',
+      }
+      console.log(finalizedData)
+      await firebase.saveTemporaryPavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
+      addToast('the information is saved successfully', { appearance: 'success' })
+    } catch (error) {
+      console.log(error)
+      await addToast(`${error.message}, ${JSON.stringify(watchedData)}`, { appearance: 'error', autoDismiss: false })
+    }
+  }
 
+  const onSubmit = () => {}
+ 
   const errorStyle = { 
     color: '#FC0000',
     position: 'relative',
@@ -338,7 +387,7 @@ const PavilionDetailRegister = ({
                   </div>
                   {
                     isVenueSecured
-                      ? <>
+                      ? <div className="home__register__form__venue">
                           <Input
                             name="venueLocation"
                             type="text"
@@ -455,14 +504,22 @@ const PavilionDetailRegister = ({
                             <div className="input__label__asterisk">*</div>
                             <div className="home__register__form__label">telephone number</div>
                           </div>
-                          <PhoneInput
-                            name="telephoneNumber"
-                            placeholder=""
-                            value={telephoneNumber}
-                            onChange={telephone => handleChangeTelephoneNumber(telephone)}
-                            defaultCountry="TH"
-                          />
-                        </>
+                          <div className="home__register__form__datepicker">
+                            <PhoneInput
+                              name="telephoneNumber"
+                              placeholder=""
+                              value={telephoneNumber}
+                              onChange={telephone => handleChangeTelephoneNumber(telephone)}
+                              onBlur={handleOnBlurTelephoneNumber}
+                              defaultCountry="TH"
+                            />
+                            {
+                              errors 
+                                && errors.telephoneNumber 
+                                && <p style={errorStyle}>{errors.telephoneNumber.message}</p>
+                            }
+                          </div>
+                        </div>
                       : <CheckBox
                           value={isJoinedSeekingVenues}
                           labelName="Would you like to be added to a register of Pavilions Seeking Venues?"
@@ -487,25 +544,25 @@ const PavilionDetailRegister = ({
                 name="pavilionFacebook"
                 type="text"
                 labelName="Facebook"
-                reference={register}
+                reference={register()}
               />
               <Input
                 name="pavilionInstagram"
                 type="text"
                 labelName="Instagram"
-                reference={register}
+                reference={register()}
               />
               <Input
                 name="pavilionTwitter"
                 type="text"
                 labelName="Twitter"
-                reference={register}
+                reference={register()}
               />
               <Input
                 name="pavilionOtherSocialMedias"
                 type="text"
                 labelName="Others"
-                reference={register}
+                reference={register()}
               />
 
               <div className="home__register__form__title">Open Calls</div>
@@ -532,7 +589,7 @@ const PavilionDetailRegister = ({
               {
                 isOpenCalls
                   ? <>
-                    <Input
+                    <Textarea
                       name="shortTextOpenCalls"
                       type="text"
                       labelName="Short text for open call (maximum 250 characters)"
@@ -549,31 +606,39 @@ const PavilionDetailRegister = ({
                       name="longerTextOpenCalls"
                       type="textarea"
                       labelName="Longer description of Open Call"
+                      rows={8}
+                      cols={100}
+                      reference={register()}
                     />
                     <Input
                       name="opencallsUrl"
                       type="text"
                       labelName="URL for more information (website, social media link)"
+                      reference={register()}
                     />
                     <Textarea
                       name="submissionRequirements"
                       type="text"
                       labelName="Describe the submission requirements and process in 250 words or less"
+                      reference={register()}
                     />
                     <Input
                       name="opencallsPublicEmail"
                       type="text"
                       labelName="Public Email"
+                      reference={register()}
                     />
                     <Input
                       name="opencallsPhoneNumber"
                       type="text"
                       labelName="Phone Number"
+                      reference={register()}
                     />
                     <Input
                       name="openCallsOtherPublicContact"
                       type="text"
                       labelName="Other Public Contact"
+                      reference={register()}
                     />
                   </>
                   : null
@@ -587,13 +652,19 @@ const PavilionDetailRegister = ({
                 BB2020_Pavilion_Artist_ Titleofwork.jpg
               </p>
               <UploadImage
-                onChange={handleSupportMaterials}
+                name="supportMaterials"
+                singleImage={false}
+                errors={errors}
+                reference={register({ required: 'file is required' })}
               />
               <p className="home__register__form__paragraph">
                 Upload 1-2 poster images to represent the pavilion.
               </p>
               <UploadImage
-                onChange={handlePoster}
+                name="posters"
+                singleImage={false}
+                errors={errors}
+                reference={register({ required: 'file is required' })}
               />
               <Input
                 name="videoMaterial"
@@ -619,12 +690,19 @@ const PavilionDetailRegister = ({
                 }
                 errors={errors}
               />
-
+            <div className="home__register__form__footer">
               <Button
-                className="home__register__form__submit-btn"
+                className="home__register__form__footer__button"
+                type="primary"
+                onClick={handleOnClickSave}
+              >
+                Save
+              </Button>
+              <Button
+                className="home__register__form__footer__button"
                 type="submit"
-                onClick={handleOnClickSubmit}
               />
+            </div>
           </form>
         </div>
       </div>
