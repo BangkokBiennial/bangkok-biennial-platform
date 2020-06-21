@@ -107,7 +107,6 @@ const PavilionDetailRegister = ({
               }
             })
           })
-          setFetched(true)
         }
         if (data.organizers && data.organizers.length > 0 && !fetched) {
           data.organizers.forEach(organizer => {
@@ -119,7 +118,6 @@ const PavilionDetailRegister = ({
               }
             })
           })
-          setFetched(true)
         }
         Object.keys(data).map(async key => {
           if (key === 'posters' || key === 'supportMaterials') {
@@ -146,8 +144,9 @@ const PavilionDetailRegister = ({
         setLoading(false)
       }
       fetch()
+      setFetched(true)
     }
-  }, [firebase && firebase.auth && firebase.auth.currentUser, loading])
+  }, [firebase && firebase.auth && firebase.auth.currentUser, fetched])
 
   const [isWillingToBeContactedByMedia, setIsWillingToBeContactedByMedia] = useState(true)
   const [isVenueChecked, setIsVenueChecked] = useState(true)
