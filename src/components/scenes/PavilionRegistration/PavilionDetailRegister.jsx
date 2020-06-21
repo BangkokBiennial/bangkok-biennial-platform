@@ -11,7 +11,7 @@ import DatePicker from 'react-datepicker'
 import PhoneInput from 'react-phone-number-input'
 import UploadImage from '../../atoms/UploadImage';
 import { useToasts } from 'react-toast-notifications'
-import { encodeFileToData } from '../../../utils/file'
+import { encodeFileToData, dataUrlToFileList } from '../../../utils/file'
 import Loading from '../../atoms/Loading'
 
 import 'react-phone-number-input/style.css'
@@ -118,7 +118,20 @@ const PavilionDetailRegister = ({
           setFetched(true)
         }
         Object.keys(data).map(async key => {
-          setValue(key, data[key])
+          if (key === 'posters' || key === 'supportMaterials') {
+            if (data[key].length > 0) {
+              const urls = data[key].map(k => k.url)
+              const names = data[key].map(k => k.name)
+              const fileList = dataUrlToFileList(urls, names)
+              const link = new DataTransfer();
+              fileList.forEach(file => {
+                link.items.add(file)
+              })
+              setValue(key, link.files)
+            }
+          } else {
+            setValue(key, data[key])
+          }
         })
         setLoading(false)
       }
@@ -191,7 +204,6 @@ const PavilionDetailRegister = ({
     setValue(name, changedDate)
     clearError(name)
   }
-
   const handleDatePickerOnBlur = (e) => {
     if (!watch(e.target.name)) {
       setError(e.target.name, 'required', 'this field is required')
@@ -202,32 +214,40 @@ const PavilionDetailRegister = ({
       setError('telephoneNumber', 'required', 'this field is required')
     }
   }
+  const handleUploadImage = (name, files, _urls) => {
+    const link = new DataTransfer();
+    files.forEach(file => {
+      link.items.add(file)
+    })
+    setValue(name, link.files)
+  }
+
   const handleOnClickSave = async () => {
     const watchedData = watch({ nest: true })
-    console.log(watchedData)
+    console.log('watched', watchedData, watch('supportMaterials'))
     try { 
       const finalSupportedMaterials = watchedData.supportMaterials.length > 0
         ? await Promise.all(
-          watchedData.supportMaterials.map(async (artist) => {
-            const dataUri = await encodeFileToData(artist.workImageUrl[0])
+          Array.from(watchedData.supportMaterials).map(async (supportMaterial) => {
+            const dataUrl = await encodeFileToData(supportMaterial)
             return {
-              ...artist,
-              workImageUrl: dataUri
+              url: dataUrl,
+              name: supportMaterial.name
             }
           })
         )
-        : null
-      const finalPosters = watchedData.supportMaterials.length > 0
+        : ''
+      const finalPosters = watchedData.posters.length > 0
         ? await Promise.all(
-          watchedData.posters.map(async (artist) => {
-            const dataUri = await encodeFileToData(artist.workImageUrl[0])
-            return {
-              ...artist,
-              workImageUrl: dataUri
+          Array.from(watchedData.posters).map(async (poster) => {
+            const dataUrl = await encodeFileToData(poster)
+            return { 
+              url: dataUrl,
+              name: poster.name
             }
           })
         )
-        : null
+        : ''
       const finalizedData = {
         ...watchedData,
         supportMaterials: finalSupportedMaterials,
@@ -255,6 +275,8 @@ const PavilionDetailRegister = ({
     margin: '0px',
     marginTop: '10px'
   }
+
+  console.log(watch())
 
   if (loading) {
     return (
@@ -716,6 +738,7 @@ const PavilionDetailRegister = ({
                 singleImage={false}
                 errors={errors}
                 reference={register({ required: 'file is required' })}
+                onChange={(files, urls) => handleUploadImage('supportMaterials', files, urls)}
               />
               <p className="home__register__form__paragraph">
                 Upload 1-2 poster images to represent the pavilion.
