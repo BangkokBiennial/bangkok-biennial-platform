@@ -26,6 +26,10 @@ const PavilionDetailRegister = ({
   const { addToast } = useToasts()
   const [loading, setLoading] = useState(true);
   const [fetched, setFetched] = useState(false);
+  const [loadingPics, setLoadingPics] = useState({ 
+    posters: [],
+    supportMaterials: []
+  })
 
   const { 
     handleSubmit, 
@@ -128,6 +132,12 @@ const PavilionDetailRegister = ({
                 link.items.add(file)
               })
               setValue(key, link.files)
+              setLoadingPics({
+                [key]: {
+                  pictures: urls,
+                  files: fileList
+                }
+              })
             }
           } else {
             setValue(key, data[key])
@@ -222,9 +232,9 @@ const PavilionDetailRegister = ({
     setValue(name, link.files)
   }
 
-  const handleOnClickSave = async () => {
+  const handleOnClickSave = async (e) => {
+    e.preventDefault()
     const watchedData = watch({ nest: true })
-    console.log('watched', watchedData, watch('supportMaterials'))
     try { 
       const finalSupportedMaterials = watchedData.supportMaterials.length > 0
         ? await Promise.all(
@@ -739,6 +749,7 @@ const PavilionDetailRegister = ({
                 errors={errors}
                 reference={register({ required: 'file is required' })}
                 onChange={(files, urls) => handleUploadImage('supportMaterials', files, urls)}
+                loadingPictures={loadingPics.supportMaterials}
               />
               <p className="home__register__form__paragraph">
                 Upload 1-2 poster images to represent the pavilion.
@@ -748,6 +759,8 @@ const PavilionDetailRegister = ({
                 singleImage={false}
                 errors={errors}
                 reference={register({ required: 'file is required' })}
+                onChange={(files, urls) => handleUploadImage('posters', files, urls)}
+                loadingPictures={loadingPics.posters}
               />
               <Input
                 name="videoMaterial"
