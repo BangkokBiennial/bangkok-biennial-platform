@@ -21,11 +21,20 @@ const PavilionDetailRegister = ({
 
   const { addToast } = useToasts()
 
-  const { handleSubmit, register, errors, control, setValue, watch } = useForm({
+  const { 
+    handleSubmit, 
+    register, 
+    unregister,
+    errors, 
+    control, 
+    setValue, 
+    watch, 
+    setError, 
+    clearError
+  } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
-  console.log(watch())
 
   const Curators = useFieldArray({
     control,
@@ -77,7 +86,6 @@ const PavilionDetailRegister = ({
   const handlePoster = () => {}
   
   useEffect(() => {
-    console.log(watch())
     if(isVenueChecked && isVenueSecured) {
       register({
         name: 'startDate',
@@ -105,6 +113,14 @@ const PavilionDetailRegister = ({
         defaultValues: ''
       })
     }
+
+    return () => {
+      unregister('startDate')
+      unregister('endDate')
+      unregister('openingHours')
+      unregister('closingHours')
+      unregister('telephoneNumber')
+    }
   }, [register, isVenueChecked, isVenueSecured])
 
   const handleToggleIsWillingToBeContactedByMedia = () => setIsWillingToBeContactedByMedia(!isWillingToBeContactedByMedia);
@@ -113,10 +129,6 @@ const PavilionDetailRegister = ({
   const handleToggleIsJoinedSeekingVenues = () => setIsJoinedSeekingVenues(!isJoinedSeekingVenues)
   const handleSwitchOpenCalls = () => setIsOpenCalls(!isOpenCalls)
 
-  const handleStartDate = (startDate) => setValue('startDate', startDate)
-  const handleEndDate = (endDate) => setValue('endDate', endDate)
-  const handleOpeningHours = (hours) => setValue('openingHours', hours)
-  const handleClosingHours = (hours) => setValue('closingHours', hours)
   const handleChangeTelephoneNumber = (telephoneNumber) => setValue('telephoneNumber', telephoneNumber)
 
   const startDate = watch('startDate')
@@ -124,6 +136,17 @@ const PavilionDetailRegister = ({
   const openingHours = watch('openingHours')
   const closingHours = watch('closingHours')
   const telephoneNumber = watch('telephoneNumber')
+
+  const handleDatePickerOnChange = (changedDate, name) => {
+    setValue(name, changedDate)
+    clearError(name)
+  }
+
+  const handleDatePickerOnBlur = (e) => {
+    if (!watch(e.target.name)) {
+      setError(e.target.name, 'required', 'this field is required')
+    }
+  }
 
   return (
     <div className="home container">
@@ -348,14 +371,26 @@ const PavilionDetailRegister = ({
                             <DatePicker
                               name="startDate"
                               selected={startDate} 
-                              onChange={date => handleStartDate(date)}
+                              onChange={(startDate) => handleDatePickerOnChange(startDate, 'startDate')}
+                              onBlur={handleDatePickerOnBlur}
                             />
+                            {
+                              errors 
+                                && errors.startDate 
+                                && <p style={{ color: '#FC0000' }}>{errors.startDate.message}</p>
+                            }
                             <div className="home__register__form__label__date">End</div>
                             <DatePicker
                               name="endDate"
                               selected={endDate} 
-                              onChange={date => handleEndDate(date)}
+                              onChange={(endDate) => handleDatePickerOnChange(endDate, 'endDate')}
+                              onBlur={handleDatePickerOnBlur}
                             />
+                            {
+                              errors 
+                                && errors.endDate 
+                                && <p style={{ color: '#FC0000' }}>{errors.endDate.message}</p>
+                            }
                           </div>
                           <div className="input__label__container">
                             <div className="input__label__asterisk">*</div>
@@ -366,22 +401,34 @@ const PavilionDetailRegister = ({
                             <DatePicker
                               name="openingHours"
                               selected={openingHours} 
-                              onChange={hour => handleOpeningHours(hour)}
+                              onChange={(openingHours) => handleDatePickerOnChange(openingHours, 'openingHours')}
                               showTimeSelect
                               showTimeSelectOnly
                               timeCaption="Time"
                               dateFormat="h:mm aa"
+                              onBlur={handleDatePickerOnBlur}
                             />
+                            {
+                              errors 
+                                && errors.openingHours 
+                                && <p style={{ color: '#FC0000' }}>{errors.openingHours.message}</p>
+                            }
                             <div className="home__register__form__label__date">End</div>
                             <DatePicker
                               name="closingHours"
                               selected={closingHours} 
-                              onChange={hour => handleClosingHours(hour)}
+                              onChange={(closingHours) => handleDatePickerOnChange(closingHours, 'closingHours')}
                               showTimeSelect
                               showTimeSelectOnly
                               timeCaption="Time"
                               dateFormat="h:mm aa"
+                              onBlur={handleDatePickerOnBlur}
                             />
+                            {
+                              errors 
+                                && errors.closingHours 
+                                && <p style={{ color: '#FC0000' }}>{errors.closingHours.message}</p>
+                            }
                           </div>
                           <div className="input__label__container">
                             <div className="input__label__asterisk">*</div>
