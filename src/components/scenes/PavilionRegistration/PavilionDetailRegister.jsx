@@ -12,6 +12,7 @@ import PhoneInput from 'react-phone-number-input'
 import UploadImage from '../../atoms/UploadImage';
 import { useToasts } from 'react-toast-notifications'
 import { encodeFileToData } from '../../../utils/file'
+import Loading from '../../atoms/Loading'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -20,7 +21,10 @@ const PavilionDetailRegister = ({
   firebase
 }) => {
 
+  const [_initFirebase, setInitFirebase] = useState(false)
+
   const { addToast } = useToasts()
+  const [loading, setLoading] = useState(true);
 
   const { 
     handleSubmit, 
@@ -36,6 +40,29 @@ const PavilionDetailRegister = ({
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
+
+  useEffect(() => {
+    if (firebase && !_initFirebase) {
+      setInitFirebase(true)
+      setLoading(true)
+    }
+  }, [firebase])
+
+  useEffect(() => {
+    if (firebase && firebase.auth && firebase.auth.currentUser) {
+      const fetch = async () => {
+          const savedPavilionInfo = await firebase
+            .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
+          const data = savedPavilionInfo.data()
+          console.log(data)
+          Object.keys(data).map(async key => {
+            setValue(key, data[key])
+          })
+          setLoading(false)
+        }
+      fetch()
+    }
+  }, [firebase && firebase.auth && firebase.auth.currentUser, loading])
 
   const Curators = useFieldArray({
     control,
@@ -202,6 +229,14 @@ const PavilionDetailRegister = ({
     position: 'relative',
     margin: '0px',
     marginTop: '10px'
+  }
+
+  if (loading) {
+    return (
+      <div className="home container">
+         <Loading />
+      </div>
+    )
   }
 
   return (
