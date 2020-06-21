@@ -44,7 +44,6 @@ const PavilionDetailRegister = ({
   useEffect(() => {
     if (firebase && !_initFirebase) {
       setInitFirebase(true)
-      setLoading(true)
     }
   }, [firebase])
 
