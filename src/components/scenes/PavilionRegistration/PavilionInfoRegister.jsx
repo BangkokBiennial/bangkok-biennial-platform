@@ -52,6 +52,8 @@ const PavilionInfoRegister = ({
 
       e.preventDefault();
 
+      await setLoading(true)
+
       const finalArtists = await Promise.all(
         value.artists.map(async (artist) => {
           const file = artist.workImageUrl[0]
@@ -69,7 +71,6 @@ const PavilionInfoRegister = ({
         artists: finalArtists
       }
 
-      setLoading(true)
       await firebase.savePavilionBasicInfo(data, firebase.getCurrentUserId())
       addToast('Successfully submitted!', { appearance: 'success' })
       await setLoading(false)
