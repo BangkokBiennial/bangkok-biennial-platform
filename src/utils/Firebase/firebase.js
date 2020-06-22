@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
+import 'firebase/storage'
 
 import config from '../../../firebaseConfig';
 
@@ -27,7 +28,14 @@ class Firebase {
 
     this.googleProvider = new app.auth.GoogleAuthProvider();
     this.facebookProvider = new app.auth.FacebookAuthProvider();
+
+    /* storage */
+    this.storage = app.storage()
   }
+
+  // *** storage url ***
+
+  uploadImage = (uid, subfile, fileName, file) => this.storage.ref().child(`${uid}/${subfile}/${fileName}`).put(file)
 
   // *** Auth API ***
 

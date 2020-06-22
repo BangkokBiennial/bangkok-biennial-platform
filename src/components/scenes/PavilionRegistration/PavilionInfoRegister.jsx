@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications'
 import { useForm, useFieldArray } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
@@ -10,7 +10,6 @@ import UploadImage from '../../atoms/UploadImage';
 import { navigate } from 'gatsby';
 import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
 import Loading from '../../atoms/Loading'
-import { encodeFileToData } from '../../../utils/file'
 
 const PavilionInfoRegister = ({
   firebase,
@@ -55,10 +54,12 @@ const PavilionInfoRegister = ({
 
       const finalArtists = await Promise.all(
         value.artists.map(async (artist) => {
-          const dataUri = await encodeFileToData(artist.workImageUrl[0])
+          const file = artist.workImageUrl[0]
+          const response = await firebase
+            .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
           return {
             ...artist,
-            workImageUrl: dataUri
+            workImageUrl: response.ref.fullPath,
           }
         })
       )
