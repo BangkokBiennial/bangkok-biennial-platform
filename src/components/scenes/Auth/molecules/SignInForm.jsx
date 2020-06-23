@@ -4,7 +4,7 @@ import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
 import { PAVILION_INFO_REGISTER, PAVILION_DETAIL_REGISTER, ACCOUNT } from '../../../../constants/routes';
-import RegistrationStatus from '../../../../constants/RegistrationStatus';
+import RegistrationStatus from '../../../../constants/registrationStatus';
 import Input from '../../../atoms/Input';
 import Button from '../../../atoms/Button';
 import Loading from '../../../atoms/Loading'
