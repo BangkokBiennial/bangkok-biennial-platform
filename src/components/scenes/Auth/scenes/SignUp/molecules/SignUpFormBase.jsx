@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../../../../../../utils/Firebase';
 import { PAVILION_INFO_REGISTER } from '../../../../../../constants/routes';
+import RegistrationStatus from '../../../../../../constants/registrationStatus';
 import { navigate } from 'gatsby';
 import Input from '../../../../../atoms/Input';
 import Button from '../../../../../atoms/Button';
+import Loading from '../../../../../atoms/Loading'
 
 const INITIAL_STATE = {
   username: '',
@@ -12,6 +14,7 @@ const INITIAL_STATE = {
   passwordTwo: '',
   isAdmin: false,
   error: null,
+  loading: false
 };
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
@@ -33,10 +36,19 @@ class SignUpFormBase extends Component {
 
   onSubmit = async (event) => {
     const { email, passwordOne } = this.state;
+    await this.setState({ loading: true });
     try {
-      await this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+      const socialAuthUser = await this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+      await this.props.firebase.user(socialAuthUser.user.uid).set({
+        username: this.state.username,
+        email: socialAuthUser.user.email,
+        roles: 'user',
+        registrationStatus: RegistrationStatus.NEW_USER
+      });
       await this.props.firebase.doSendEmailVerification()
       await this.setState({ ...INITIAL_STATE })
+      await this.setState({ loading: false });
+      
       navigate(PAVILION_INFO_REGISTER);
 
       event.preventDefault();
@@ -46,7 +58,7 @@ class SignUpFormBase extends Component {
       }
       console.log(error)
 
-      this.setState({ error });
+      await this.setState({ loading: false, error });
     }
   };
 

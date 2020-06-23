@@ -4,6 +4,7 @@ import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
 import { PAVILION_INFO_REGISTER } from '../../../../constants/routes';
+import RegistrationStatus from '../../../../constants/registrationStatus';
 
 import { FaGoogle } from 'react-icons/fa';
 
@@ -28,12 +29,13 @@ class SignInGoogle extends Component {
     this.props.firebase
       .doSignInWithGoogle()
       .then(socialAuthUser => {
-        // Create a user in your Firebase Realtime Database too
-        return this.props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.user.displayName,
-          email: socialAuthUser.user.email,
-          roles: {},
-        });
+        return this.props.firebase.user(socialAuthUser.user.uid)
+          .set({
+            username: socialAuthUser.user.displayName,
+            email: socialAuthUser.user.email,
+            roles: 'user',
+            registrationStatus: RegistrationStatus.NEW_USER
+          });
       })
       .then(() => {
         this.setState({ error: null });

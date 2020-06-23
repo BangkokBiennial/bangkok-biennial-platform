@@ -98,63 +98,65 @@ const PavilionDetailRegister = ({
         const savedPavilionInfo = await firebase
           .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
         const data = savedPavilionInfo.data()
-        if (data.curators && data.curators.length > 0 && !fetched) {
-          data.curators.forEach(curator => {
-            Curators.append({
-              curators: {
-                name: curator.name,
-                curatorLink: curator.curatorLink,
-                shortBio: curator.shortBio,
-              }
-            })
-          })
-        }
-        if (data.organizers && data.organizers.length > 0 && !fetched) {
-          data.organizers.forEach(organizer => {
-            Organizers.append({
-              organizers: {
-                name: organizer.name,
-                organizerLink: organizer.organizerLink,
-                shortBio: organizer.shortBio,
-              }
-            })
-          })
-        }
-        Object.keys(data).map(async key => {
-          if (key === 'posters' || key === 'supportMaterials') {
-            if (data[key].length > 0) {
-              const fileList = await Promise.all(data[key].map(async (pic) => {
-                const url = await firebase.downloadImage(pic.fullPath)
-                const response = await axios({
-                  url,
-                  method: 'GET',
-                  responseType: 'blob', 
-                })
-                return new File([response.data], pic.name)
-              }))
-              
-              const link = new DataTransfer();
-              fileList.forEach(file => {
-                link.items.add(file)
-              })
-              const urls = await Promise.all(
-                fileList.map(async (file) => {
-                  const dataUrl = await encodeFileToData(file)
-                  return dataUrl
-                })
-              )
-              setValue(key, link.files)
-              setLoadingPics({
-                [key]: {
-                  pictures: urls,
-                  files: fileList
+        if (data) {
+          if (data.curators && data.curators.length > 0 && !fetched) {
+            data.curators.forEach(curator => {
+              Curators.append({
+                curators: {
+                  name: curator.name,
+                  curatorLink: curator.curatorLink,
+                  shortBio: curator.shortBio,
                 }
               })
-            }
-          } else {
-            setValue(key, data[key])
+            })
           }
-        })
+          if (data.organizers && data.organizers.length > 0 && !fetched) {
+            data.organizers.forEach(organizer => {
+              Organizers.append({
+                organizers: {
+                  name: organizer.name,
+                  organizerLink: organizer.organizerLink,
+                  shortBio: organizer.shortBio,
+                }
+              })
+            })
+          }
+          Object.keys(data).map(async key => {
+            if (key === 'posters' || key === 'supportMaterials') {
+              if (data[key].length > 0) {
+                const fileList = await Promise.all(data[key].map(async (pic) => {
+                  const url = await firebase.downloadImage(pic.fullPath)
+                  const response = await axios({
+                    url,
+                    method: 'GET',
+                    responseType: 'blob', 
+                  })
+                  return new File([response.data], pic.name)
+                }))
+                
+                const link = new DataTransfer();
+                fileList.forEach(file => {
+                  link.items.add(file)
+                })
+                const urls = await Promise.all(
+                  fileList.map(async (file) => {
+                    const dataUrl = await encodeFileToData(file)
+                    return dataUrl
+                  })
+                )
+                setValue(key, link.files)
+                setLoadingPics({
+                  [key]: {
+                    pictures: urls,
+                    files: fileList
+                  }
+                })
+              }
+            } else {
+              setValue(key, data[key])
+            }
+          })
+        }
         setLoading(false)
       }
       fetch()

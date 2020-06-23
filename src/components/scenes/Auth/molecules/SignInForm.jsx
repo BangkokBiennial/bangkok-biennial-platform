@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER } from '../../../../constants/routes';
+import { PAVILION_INFO_REGISTER, PAVILION_DETAIL_REGISTER, ACCOUNT } from '../../../../constants/routes';
+import RegistrationStatus from '../../../../constants/routes';
 import Input from '../../../atoms/Input';
 import Button from '../../../atoms/Button';
 
@@ -38,19 +39,26 @@ class SignInForm extends Component {
     this.firebaseInit();
   }
 
-  onSubmit = event => {
+  onSubmit = async event => {
     const { email, password } = this.state;
-
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        navigate(PAVILION_INFO_REGISTER);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-
+    try {
+      const socialAuthUser = await this.props.firebase
+        .doSignInWithEmailAndPassword(email, password)
+      const user = await this.props.firebase.user(socialAuthUser.user.uid)
+      switch (user.registrationStatus) {
+        case RegistrationStatus.FINISHED_BASIC:
+          await navigate(PAVILION_DETAIL_REGISTER);
+          break;
+        case RegistrationStatus.FINISHED_ADVANCE:
+          await navigate(ACCOUNT);
+          break;
+        default:
+          await navigate(PAVILION_INFO_REGISTER);
+      }
+      await this.setState({ ...INITIAL_STATE });
+    } catch (error) {
+      this.setState({ error });
+    }
     event.preventDefault();
   };
 
