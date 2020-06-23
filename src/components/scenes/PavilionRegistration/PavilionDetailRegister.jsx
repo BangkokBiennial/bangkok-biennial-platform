@@ -301,7 +301,7 @@ const PavilionDetailRegister = ({
     try { 
       const finalSupportedMaterials = value.supportMaterials.length > 0
         ? await Promise.all(
-          Array.from(watchedData.supportMaterials).map(async (supportMaterial) => {
+          Array.from(value.supportMaterials).map(async (supportMaterial) => {
             const response = await firebase
               .uploadImage(firebase.getCurrentUserId(), 'supportMaterials', supportMaterial.name, supportMaterial)
             return {
@@ -313,7 +313,7 @@ const PavilionDetailRegister = ({
         : ''
       const finalPosters = value.posters.length > 0
         ? await Promise.all(
-          Array.from(watchedData.posters).map(async (poster) => {
+          Array.from(value.posters).map(async (poster) => {
             const response = await firebase
               .uploadImage(firebase.getCurrentUserId(), 'poster', poster.name, poster)
             return { 
