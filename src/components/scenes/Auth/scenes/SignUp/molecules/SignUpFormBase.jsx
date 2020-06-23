@@ -85,22 +85,6 @@ class SignUpFormBase extends Component {
       email === '' ||
       username === '';
 
-    // if (this.state.loading) {
-    //   return (
-    //     <div style={{ 
-    //       backgroundColor: 'white', 
-    //       width: '100%', 
-    //       height: '100%',
-    //       position: 'absolute',
-    //       top: '0px',
-    //       left: '0px',
-    //       zIndex: 100
-    //     }}>
-    //       <Loading />
-    //     </div>
-    //   )
-    // }
-
     return (
       <div>
         <Input
@@ -142,10 +126,12 @@ class SignUpFormBase extends Component {
 
         <Button
           type="submit"
-          disabled={isInvalid}
+          disabled={isInvalid || this.state.loading}
           onClick={this.onSubmit}
-          text="Sign Up"
-        />
+          style={{ height: '60px' }}
+        >
+          { this.state.loading ? <Loading size={24} containerStyle={{ marginTop: '-10px' }}/> : 'sign up'}
+        </Button>
 
         {error && <p class="register__form__error">{error.message}</p>}
       </div>

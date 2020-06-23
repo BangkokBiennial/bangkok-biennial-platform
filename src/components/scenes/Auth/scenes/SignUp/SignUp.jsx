@@ -29,9 +29,9 @@ const SignUp = () => {
               <SignInGoogle />
               <SignInFacebook />
             </div>
-          </div>
-          <div className="register__content__register">
-            <SignUpLink />
+            <div className="register__content__register">
+              <SignUpLink />
+            </div>
           </div>
         </div>
       </div>
