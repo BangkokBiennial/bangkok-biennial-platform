@@ -301,22 +301,24 @@ const PavilionDetailRegister = ({
     try { 
       const finalSupportedMaterials = value.supportMaterials.length > 0
         ? await Promise.all(
-          Array.from(value.supportMaterials).map(async (supportMaterial) => {
-            const dataUrl = await encodeFileToData(supportMaterial)
+          Array.from(watchedData.supportMaterials).map(async (supportMaterial) => {
+            const response = await firebase
+              .uploadImage(firebase.getCurrentUserId(), 'supportMaterials', supportMaterial.name, supportMaterial)
             return {
-              url: dataUrl,
-              name: supportMaterial.name
+              name: supportMaterial.name,
+              fullPath: response.ref.fullPath,
             }
           })
         )
         : ''
       const finalPosters = value.posters.length > 0
         ? await Promise.all(
-          Array.from(value.posters).map(async (poster) => {
-            const dataUrl = await encodeFileToData(poster)
+          Array.from(watchedData.posters).map(async (poster) => {
+            const response = await firebase
+              .uploadImage(firebase.getCurrentUserId(), 'poster', poster.name, poster)
             return { 
-              url: dataUrl,
-              name: poster.name
+              name: poster.name,
+              fullPath: response.ref.fullPath,
             }
           })
         )
