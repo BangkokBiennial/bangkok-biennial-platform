@@ -4,14 +4,16 @@ import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
 import { PAVILION_INFO_REGISTER, PAVILION_DETAIL_REGISTER, ACCOUNT } from '../../../../constants/routes';
-import RegistrationStatus from '../../../../constants/routes';
+import RegistrationStatus from '../../../../constants/RegistrationStatus';
 import Input from '../../../atoms/Input';
 import Button from '../../../atoms/Button';
+import Loading from '../../../atoms/Loading'
 
 const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
+  loading: false
 };
 
 class SignInForm extends Component {
@@ -41,10 +43,13 @@ class SignInForm extends Component {
 
   onSubmit = async event => {
     const { email, password } = this.state;
+    this.setState({ loading: true })
     try {
       const socialAuthUser = await this.props.firebase
         .doSignInWithEmailAndPassword(email, password)
-      const user = await this.props.firebase.user(socialAuthUser.user.uid)
+      const userSnapshot = await this.props.firebase.getUser(socialAuthUser.user.uid)
+      const user = userSnapshot.data()
+      console.log(user)
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
           await navigate(PAVILION_DETAIL_REGISTER);
@@ -56,8 +61,9 @@ class SignInForm extends Component {
           await navigate(PAVILION_INFO_REGISTER);
       }
       await this.setState({ ...INITIAL_STATE });
+      await this.setState({ loading: false, error: null })
     } catch (error) {
-      this.setState({ error });
+      await this.setState({ error, loading: false });
     }
     event.preventDefault();
   };
@@ -72,6 +78,22 @@ class SignInForm extends Component {
     const { email, password, error } = this.state;
 
     const isInvalid = password === '' || email === '';
+
+    if (this.state.loading) {
+      return(
+        <div style={{ 
+          backgroundColor: 'white', 
+          width: '100%', 
+          height: '100%',
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          zIndex: 100
+        }}>
+          <Loading />
+        </div>
+      )
+    }
 
     return (
       <>

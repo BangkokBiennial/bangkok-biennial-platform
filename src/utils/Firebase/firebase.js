@@ -98,13 +98,16 @@ class Firebase {
 
   // *** User API ***
 
-  user = uid => this.db.doc(`users/${uid}`);
+  user = uid => this.db.collection('users').doc(uid);
 
   users = () => this.db.collection('users');
 
   posts = () => this.db.collection('posts');
 
   post = post => this.posts().where('slug', '==', post.slug);
+
+  // *** user in firestore **
+  getUser = uid => this.db.collection('users').doc(uid).get()
 
   // *** pavilion register ****
 

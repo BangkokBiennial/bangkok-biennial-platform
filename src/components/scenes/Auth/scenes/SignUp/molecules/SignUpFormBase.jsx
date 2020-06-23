@@ -85,6 +85,22 @@ class SignUpFormBase extends Component {
       email === '' ||
       username === '';
 
+    // if (this.state.loading) {
+    //   return (
+    //     <div style={{ 
+    //       backgroundColor: 'white', 
+    //       width: '100%', 
+    //       height: '100%',
+    //       position: 'absolute',
+    //       top: '0px',
+    //       left: '0px',
+    //       zIndex: 100
+    //     }}>
+    //       <Loading />
+    //     </div>
+    //   )
+    // }
+
     return (
       <div>
         <Input
