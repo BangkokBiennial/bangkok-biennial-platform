@@ -9,6 +9,7 @@ import { FiPlusCircle, FiXCircle } from "react-icons/fi";
 import UploadImage from '../../atoms/UploadImage';
 import { navigate } from 'gatsby';
 import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
+import RegistrationStatus from '../../../constants/registrationStatus'
 import Loading from '../../atoms/Loading'
 
 const PavilionInfoRegister = ({
@@ -72,6 +73,7 @@ const PavilionInfoRegister = ({
       }
 
       await firebase.savePavilionBasicInfo(data, firebase.getCurrentUserId())
+      await firebase.updateUser(firebase.getCurrentUserId(), { registrationStatus: RegistrationStatus.FINISHED_BASIC })
       addToast('Successfully submitted!', { appearance: 'success' })
       navigate(PAVILION_DETAIL_REGISTER)
      

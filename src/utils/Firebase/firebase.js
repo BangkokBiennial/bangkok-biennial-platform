@@ -108,6 +108,7 @@ class Firebase {
 
   // *** user in firestore **
   getUser = uid => this.db.collection('users').doc(uid).get()
+  updateUser = (uid, param) => this.db.collection('users').doc(uid).update(param)
 
   // *** pavilion register ****
 

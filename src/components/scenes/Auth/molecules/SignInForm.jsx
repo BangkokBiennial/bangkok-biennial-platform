@@ -49,7 +49,8 @@ class SignInForm extends Component {
         .doSignInWithEmailAndPassword(email, password)
       const userSnapshot = await this.props.firebase.getUser(socialAuthUser.user.uid)
       const user = userSnapshot.data()
-      console.log(user)
+      await this.setState({ ...INITIAL_STATE });
+      await this.setState({ loading: false, error: null })
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
           await navigate(PAVILION_DETAIL_REGISTER);
@@ -60,8 +61,6 @@ class SignInForm extends Component {
         default:
           await navigate(PAVILION_INFO_REGISTER);
       }
-      await this.setState({ ...INITIAL_STATE });
-      await this.setState({ loading: false, error: null })
     } catch (error) {
       await this.setState({ error, loading: false });
     }
