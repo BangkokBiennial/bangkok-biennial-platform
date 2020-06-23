@@ -73,7 +73,6 @@ const PavilionInfoRegister = ({
 
       await firebase.savePavilionBasicInfo(data, firebase.getCurrentUserId())
       addToast('Successfully submitted!', { appearance: 'success' })
-      await setLoading(false)
       navigate(PAVILION_DETAIL_REGISTER)
      
     } catch (error) {

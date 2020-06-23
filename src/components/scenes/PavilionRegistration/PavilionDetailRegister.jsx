@@ -11,8 +11,9 @@ import DatePicker from 'react-datepicker'
 import PhoneInput from 'react-phone-number-input'
 import UploadImage from '../../atoms/UploadImage';
 import { useToasts } from 'react-toast-notifications'
-import { encodeFileToData, dataUrlToFileList } from '../../../utils/file'
+import { encodeFileToData } from '../../../utils/file'
 import Loading from '../../atoms/Loading'
+import axios from 'axios'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -122,13 +123,26 @@ const PavilionDetailRegister = ({
         Object.keys(data).map(async key => {
           if (key === 'posters' || key === 'supportMaterials') {
             if (data[key].length > 0) {
-              const urls = data[key].map(k => k.url)
-              const names = data[key].map(k => k.name)
-              const fileList = dataUrlToFileList(urls, names)
+              const fileList = await Promise.all(data[key].map(async (pic) => {
+                const url = await firebase.downloadImage(pic.fullPath)
+                const response = await axios({
+                  url,
+                  method: 'GET',
+                  responseType: 'blob', 
+                })
+                return new File([response.data], pic.name)
+              }))
+              
               const link = new DataTransfer();
               fileList.forEach(file => {
                 link.items.add(file)
               })
+              const urls = await Promise.all(
+                fileList.map(async (file) => {
+                  const dataUrl = await encodeFileToData(file)
+                  return dataUrl
+                })
+              )
               setValue(key, link.files)
               setLoadingPics({
                 [key]: {
@@ -239,10 +253,11 @@ const PavilionDetailRegister = ({
       const finalSupportedMaterials = watchedData.supportMaterials.length > 0
         ? await Promise.all(
           Array.from(watchedData.supportMaterials).map(async (supportMaterial) => {
-            const dataUrl = await encodeFileToData(supportMaterial)
+            const response = await firebase
+              .uploadImage(firebase.getCurrentUserId(), 'supportMaterials', supportMaterial.name, supportMaterial)
             return {
-              url: dataUrl,
-              name: supportMaterial.name
+              name: supportMaterial.name,
+              fullPath: response.ref.fullPath,
             }
           })
         )
@@ -250,10 +265,11 @@ const PavilionDetailRegister = ({
       const finalPosters = watchedData.posters.length > 0
         ? await Promise.all(
           Array.from(watchedData.posters).map(async (poster) => {
-            const dataUrl = await encodeFileToData(poster)
+            const response = await firebase
+              .uploadImage(firebase.getCurrentUserId(), 'poster', poster.name, poster)
             return { 
-              url: dataUrl,
-              name: poster.name
+              name: poster.name,
+              fullPath: response.ref.fullPath,
             }
           })
         )

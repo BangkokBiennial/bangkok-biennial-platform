@@ -36,6 +36,7 @@ class Firebase {
   // *** storage url ***
 
   uploadImage = (uid, subfile, fileName, file) => this.storage.ref().child(`${uid}/${subfile}/${fileName}`).put(file)
+  downloadImage = (fullpath) => this.storage.ref(fullpath).getDownloadURL()
 
   // *** Auth API ***
 
