@@ -29,9 +29,8 @@ class SignIn extends Component {
                 <span className="login__content__or__text">or</span>
                 <span className="login__content__or__line" />
               </div>
-              <div className="login__content__providers">
+              <div className="login__content__providers register__content__providers">
                   <SignInGoogle />
-                  <SignInFacebook />
               </div>{' '}
               <div className="login__content__creator">
                 <div className="login__content__creator__inner">

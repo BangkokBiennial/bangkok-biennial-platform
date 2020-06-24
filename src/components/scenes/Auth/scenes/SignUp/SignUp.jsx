@@ -27,7 +27,6 @@ const SignUp = () => {
             </div>
             <div className="register__content__providers">
               <SignInGoogle />
-              <SignInFacebook />
             </div>
             <div className="register__content__register">
               <SignUpLink />

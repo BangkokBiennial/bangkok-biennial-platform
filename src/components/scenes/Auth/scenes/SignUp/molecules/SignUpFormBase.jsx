@@ -133,6 +133,7 @@ class SignUpFormBase extends Component {
           { this.state.loading ? <Loading size={24} containerStyle={{ marginTop: '-10px' }}/> : 'sign up'}
         </Button>
 
+        
         {error && <p class="register__form__error">{error.message}</p>}
       </div>
     );

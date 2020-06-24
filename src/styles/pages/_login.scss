@@ -36,6 +36,10 @@
       justify-content: space-between;
       flex-wrap: nowrap;
       width: 100%;
+      &__container {
+        display: flex;
+        flex-direction: column
+      }
       &__item {
         flex: 1;
         &:first-child {
@@ -97,6 +101,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-top: 20px;
       &__inner {
         min-width: 350px;
         display: flex;

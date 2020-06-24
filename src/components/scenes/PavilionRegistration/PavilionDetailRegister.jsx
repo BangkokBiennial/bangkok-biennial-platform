@@ -14,6 +14,7 @@ import { useToasts } from 'react-toast-notifications'
 import { encodeFileToData } from '../../../utils/file'
 import Loading from '../../atoms/Loading'
 import axios from 'axios'
+import RegistrationStatus from '../../../constants/registrationStatus'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -286,7 +287,6 @@ const PavilionDetailRegister = ({
         openingHours: watchedData.openingHours || '',
         closingHours: watchedData.closingHours || '',
       }
-      console.log(finalizedData)
       await firebase.saveTemporaryPavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       setSaving(false)
       addToast('the information is saved successfully', { appearance: 'success' })
@@ -336,6 +336,7 @@ const PavilionDetailRegister = ({
         closingHours: value.closingHours || '',
       }
       await firebase.savePavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
+      await firebase.updateUser(firebase.getCurrentUserId(), { registrationStatus: RegistrationStatus.FINISHED_ADVANCE })
       addToast('the information is saved successfully', { appearance: 'success' })
     } catch (error) {
       console.log(error)

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER } from '../../../../constants/routes';
+import { PAVILION_INFO_REGISTER, ACCOUNT, PAVILION_DETAIL_REGISTER } from '../../../../constants/routes';
 import RegistrationStatus from '../../../../constants/registrationStatus';
 
 import { FaGoogle } from 'react-icons/fa';
@@ -25,30 +25,39 @@ class SignInGoogle extends Component {
     this.state = { error: null };
   }
 
-  onSubmit = event => {
-    this.props.firebase
-      .doSignInWithGoogle()
-      .then(socialAuthUser => {
-        return this.props.firebase.user(socialAuthUser.user.uid)
-          .set({
-            username: socialAuthUser.user.displayName,
-            email: socialAuthUser.user.email,
-            roles: 'user',
-            registrationStatus: RegistrationStatus.NEW_USER
-          });
-      })
-      .then(() => {
-        this.setState({ error: null });
-        navigate(PAVILION_INFO_REGISTER);
-      })
-      .catch(error => {
-        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          error.message = ERROR_MSG_ACCOUNT_EXISTS;
-        }
-
-        this.setState({ error });
-      });
-
+  onSubmit = async event => {
+    event.preventDefault();
+    try {
+      const socialAuthUser = await this.props.firebase
+        .doSignInWithGoogle()
+      const userSnapshot = await this.props.firebase.getUser(socialAuthUser.user.uid)
+      const user = userSnapshot.data()
+      const status = user ? user.registrationStatus : RegistrationStatus.NEW_USER
+      await this.props.firebase.user(socialAuthUser.user.uid)
+        .set({
+          username: socialAuthUser.user.displayName,
+          email: socialAuthUser.user.email,
+          roles: 'user',
+          registrationStatus: status
+        });
+      await this.setState({ error: null });
+      
+      switch (status) {
+        case RegistrationStatus.FINISHED_BASIC:
+          await navigate(PAVILION_DETAIL_REGISTER);
+          break;
+        case RegistrationStatus.FINISHED_ADVANCE:
+          await navigate(ACCOUNT);
+          break;
+        default:
+          await navigate(PAVILION_INFO_REGISTER);
+      } 
+    } catch (error) {
+      if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+        error.message = ERROR_MSG_ACCOUNT_EXISTS;
+      }
+      this.setState({ error });
+    }
     event.preventDefault();
   };
 
@@ -56,16 +65,17 @@ class SignInGoogle extends Component {
     const { error } = this.state;
 
     return (
-      <form
-        className="login__content__providers__item login__content__providers__item--google"
-        onSubmit={this.onSubmit}
-      >
-        <button type="submit">
-          <FaGoogle />
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <div className="login__content__providers__container">
+        <form
+          className="login__content__providers__item login__content__providers__item--google"
+          onSubmit={this.onSubmit}
+        >
+          <button type="submit">
+            <FaGoogle />
+          </button>
+        </form>
+        { error &&  <p style={{ color: '#FC0000' }}>{error.message}</p> }
+      </div>
     );
   }
 }

@@ -15,10 +15,6 @@ class Account extends Component {
               <div className="settings__page-container">
                 <PasswordForget className="settings__password-forget" />
                 <PasswordChange className="settings__password-change" />
-                <LoginManagement
-                  className="settings__login-management"
-                  authUser={authUser}
-                />
               </div>
             </>
           )}

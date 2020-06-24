@@ -8,6 +8,12 @@
     overflow: visible;
     height: auto;
   }
+
+  &__link {
+    display: block;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
   &__image {
     position: relative;
     flex: 4;
@@ -191,8 +197,6 @@
       flex-direction: column;
       justify-content: flex-end;
       width: 100%;
-    }
-    > div {
     }
     &__header {
       display: flex;

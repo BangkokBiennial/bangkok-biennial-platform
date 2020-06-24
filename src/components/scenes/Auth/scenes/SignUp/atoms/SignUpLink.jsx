@@ -3,7 +3,7 @@ import { SIGN_IN, SIGN_UP } from '../../../../../../constants/routes';
 import { Link } from 'gatsby';
 
 const SignUpLink = ({ isRegister }) => (
-  <p>
+  <p className="register__link">
     {isRegister ? (
       <>
         Don't have an account? <Link to={SIGN_UP}>Sign Up</Link>
