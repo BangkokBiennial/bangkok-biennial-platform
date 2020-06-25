@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER, ACCOUNT, PAVILION_DETAIL_REGISTER } from '../../../../constants/routes';
+import { PAVILION_INFO_REGISTER, REGISTRATION_STATUS, PAVILION_DETAIL_REGISTER } from '../../../../constants/routes';
 import RegistrationStatus from '../../../../constants/registrationStatus';
 
 import { FaGoogle } from 'react-icons/fa';
@@ -47,7 +47,7 @@ class SignInGoogle extends Component {
           await navigate(PAVILION_DETAIL_REGISTER);
           break;
         case RegistrationStatus.FINISHED_ADVANCE:
-          await navigate(ACCOUNT);
+          await navigate(REGISTRATION_STATUS);
           break;
         default:
           await navigate(PAVILION_INFO_REGISTER);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import { LANDING, PAVILION_INFO_REGISTER, ACCOUNT } from '../../../../constants/routes';
+import { LANDING, REGISTRATION_STATUS, ACCOUNT } from '../../../../constants/routes';
 import SignOutButton from './SignOutButton';
 
 const NavigationAuth = () => (
@@ -9,10 +9,10 @@ const NavigationAuth = () => (
       <div className="navbar__left">
         <div className="navbar__links">
           <div className="navbar__link">
-            <Link to={LANDING}>Landing</Link>
+            <Link to={LANDING}>Home</Link>
           </div>
           <div className="navbar__link">
-            <Link to={PAVILION_INFO_REGISTER}>Register</Link>
+            <Link to={REGISTRATION_STATUS}>Register</Link>
           </div>
           <div className="navbar__link">
             <Link to={ACCOUNT}>Account</Link>

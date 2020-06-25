@@ -4,9 +4,8 @@ import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
 import Button from '../../components/atoms/Button';
 import Loading from '../../components/atoms/Loading';
-
+ 
 const needsEmailVerification = authUser => {
-  console.log(authUser)
   return authUser &&
     !authUser.emailVerified &&
     authUser.providerData

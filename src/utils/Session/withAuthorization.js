@@ -13,11 +13,8 @@ const withAuthorization = condition => Component => {
       if (this.props.firebase && !this._initFirebase) {
         this._initFirebase = true;
 
-        console.log('test');
-
         this.listener = this.props.firebase.onAuthUserListener(
           authUser => {
-            console.log('test');
 
             if (!condition(authUser)) {
               navigate(SIGN_IN);

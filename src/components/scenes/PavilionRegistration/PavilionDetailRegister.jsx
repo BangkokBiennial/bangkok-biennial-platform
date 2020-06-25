@@ -1,5 +1,6 @@
-import React, { useEffect, memo, useState } from 'react'
-import { useForm, useFieldArray, FormContext, useFormContext } from "react-hook-form"
+import React, { useEffect, useState } from 'react'
+import { useForm, useFieldArray } from "react-hook-form"
+import { navigate } from 'gatsby';
 import { withFirebase } from '../../../utils/Firebase'
 import { FiPlusCircle, FiXCircle } from "react-icons/fi"
 import Input from '../../atoms/Input'
@@ -15,6 +16,7 @@ import { encodeFileToData } from '../../../utils/file'
 import Loading from '../../atoms/Loading'
 import axios from 'axios'
 import RegistrationStatus from '../../../constants/registrationStatus'
+import { REGISTRATION_STATUS } from '../../../constants/routes'
 
 import 'react-phone-number-input/style.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -290,6 +292,7 @@ const PavilionDetailRegister = ({
       await firebase.saveTemporaryPavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       setSaving(false)
       addToast('the information is saved successfully', { appearance: 'success' })
+      navigate(REGISTRATION_STATUS)
     } catch (error) {
       console.log(error)
       setSaving(false)
