@@ -41,9 +41,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       case RegistrationStatus.FINISHED_BASIC:
         navigate(PAVILION_DETAIL_REGISTER);
         break;
-      case RegistrationStatus.FINISHED_ADVANCE:
-        navigate(REGISTRATION_STATUS);
-        break;
       default:
         navigate(PAVILION_INFO_REGISTER);
     }
@@ -78,7 +75,8 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <h2 className="home__title">Status of Pavilion Registration: </h2>
         <h4> { getStatus(user.registrationStatus)} </h4>
       </div>
-      <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />
+      { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
+        && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />}
     </div>
   )
 }
