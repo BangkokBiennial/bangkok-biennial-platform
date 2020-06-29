@@ -155,6 +155,12 @@ const PavilionDetailRegister = ({
                   }
                 })
               }
+            } else if (key === 'startDate' || key === 'endDate' || key === 'openingHours' || key === 'closingHours') {
+              if (data[key]) {
+                setValue(key, data[key].toDate())
+              } else {  
+                setValue(key, '')
+              } 
             } else {
               setValue(key, data[key])
             }
