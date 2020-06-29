@@ -298,7 +298,6 @@ const PavilionDetailRegister = ({
       await firebase.saveTemporaryPavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       setSaving(false)
       addToast('the information is saved successfully', { appearance: 'success' })
-      navigate(REGISTRATION_STATUS)
     } catch (error) {
       console.log(error)
       setSaving(false)
@@ -347,6 +346,7 @@ const PavilionDetailRegister = ({
       await firebase.savePavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       await firebase.updateUser(firebase.getCurrentUserId(), { registrationStatus: RegistrationStatus.FINISHED_ADVANCE })
       addToast('the information is saved successfully', { appearance: 'success' })
+      navigate(REGISTRATION_STATUS)
     } catch (error) {
       console.log(error)
       await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
