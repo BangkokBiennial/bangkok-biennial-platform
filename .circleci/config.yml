@@ -25,10 +25,10 @@ jobs:
             - ./node_modules
       - run:
           name: load in environment variables
-          command: echo -e "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}\nSTORAGE_BUCKET=${STORAGE_BUCKET}" >> .env.production
+          command: echo -e "API_KEY=${API_KEY_DEV}\nAUTH_DOMAIN=${AUTH_DOMAIN_DEV}\nDATABASE_URL=${DATABASE_URL_DEV}\nPROJECT_ID=${PROJECT_ID_DEV}\nAPP_ID=${APP_ID_DEV}\nSTORAGE_BUCKET=${STORAGE_BUCKET_DEV}" >> .env.dev
       - run:
           name: check var
-          command: cat .env.production
+          command: cat .env.dev
       - run:
           name: clean up
           command: npm run clean
@@ -39,13 +39,53 @@ jobs:
           path: ./public
       - run:
           name: Firebase Deploy
-          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project bangkok-biennial
-  deploy:
+          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "FIREBASE_TOKEN_DEV" --project bangkok-biennial
+  deploy-prod:
     executor: 'node/default'
     steps:
       - checkout
-
+      - run: node --version
+      - node/install:
+          node-version: '12.11.1'
+          install-yarn: true
+      - run:
+          name: update gcc to v9
+          command: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-9
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Install firebase tools
+          command: npm install -D firebase-tools
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: load in environment variables
+          command: echo -e "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}\nSTORAGE_BUCKET=${STORAGE_BUCKET}" >> .env.production
+      - run:
+          name: check var
+          command: cat .env.production
+      - run:
+          name: clean up
+          command: npm run clean
+      - run:
+          name: build
+          command: npm run build
+      - store_artifacts:
+          path: ./public
+      - run:
+          name: Firebase Deploy
+          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project bangkok-biennial
 workflows:
     build-and-test:
       jobs:
         - build-and-tests
+        - hold:
+            type: approval
+            requires:
+              - build-and-tests
+        - deploy-prod
+            requires:
+              - hold
