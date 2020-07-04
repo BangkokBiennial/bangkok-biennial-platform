@@ -39,7 +39,7 @@ jobs:
           path: ./public
       - run:
           name: Firebase Deploy
-          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "FIREBASE_TOKEN_DEV" --project bangkok-biennial
+          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN_DEV" --project bangkok-biennial
   deploy-prod:
     executor: 'node/default'
     steps:
