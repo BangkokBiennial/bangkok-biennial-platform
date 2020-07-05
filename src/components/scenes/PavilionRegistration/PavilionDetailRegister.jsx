@@ -32,8 +32,10 @@ const PavilionDetailRegister = ({
   const [fetched, setFetched] = useState(false);
   const [loadingPics, setLoadingPics] = useState({ 
     posters: [],
-    supportMaterials: []
+    supportMaterials: [],
+    artists: []
   })
+  const [loadingPicArtist, setLoadingPicArtist] = useState([])
   const [saving, setSaving] = useState(false)
 
   const { 
@@ -49,13 +51,43 @@ const PavilionDetailRegister = ({
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-  });
+    defaultValues: {
+      artists: [
+        {
+          name: '',
+          artistLink: '',
+          shortBio: '',
+          workImageUrl: '',
+        }
+      ]
+    }
+  }); 
 
   useEffect(() => {
     if (firebase && !_initFirebase) {
       setInitFirebase(true)
     }
   }, [firebase])
+
+  const Artists = useFieldArray({
+    control,
+    name: 'artists',
+  });
+  const addMoreArtist = () => {
+    Artists.append({
+      artists: {
+        name: '',
+        artistLink: '',
+        shortBio: '',
+        workImageUrl: ''
+      }
+    })
+    addToast('Successfully artist added', { appearance: 'success' })
+  }
+  const removeArtist = (artistIndex) => {
+    Artists.remove(artistIndex)
+    addToast('Successfully artist removed', { appearance: 'info' })
+  }
 
   const Curators = useFieldArray({
     control,
@@ -98,10 +130,73 @@ const PavilionDetailRegister = ({
   useEffect(() => {
     if (firebase && firebase.auth && firebase.auth.currentUser) {
       const fetch = async () => {
-        const savedPavilionInfo = await firebase
-          .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
-        const data = savedPavilionInfo.data()
-        if (data) {
+        setLoading(true)
+        try {
+          const savedPavilionInfo = await firebase
+            .getTemporaryPavilionAdvanceInfo(firebase.getCurrentUserId())
+          const data = await savedPavilionInfo.data()
+
+          if (!data) {
+            setLoading(false)
+            return;
+          };
+          
+          if (data.artists && data.artists.length > 0 && !fetched) {
+
+            data.artists.forEach((_, index) => {
+              if(index > 0) {
+                Artists.append({
+                  artists: {
+                    name: '',
+                    artistLink: '',
+                    shortBio: '',
+                    workImageUrl: ''
+                  }
+                })
+              }
+            })
+
+            const artistImages = await Promise.all(
+              data.artists.map(async (artist) => {
+                if (artist.workImageUrl) {
+                  const url = await firebase.downloadImage(artist.workImageUrl.fullPath)
+                  const response = await axios({
+                    url,
+                    method: 'GET',
+                    responseType: 'blob', 
+                  })
+                  const file = new File([response.data], artist.workImageUrl.name)
+                  const link = new DataTransfer();
+                  await link.items.add(file)
+                  const dataUrl = await encodeFileToData(file)
+
+                  return { 
+                    pictures: [dataUrl],
+                    files: link.files
+                  }
+                } else {
+                  return { 
+                    pictures: [],
+                    files: []
+                  }
+                }
+              })
+            )
+
+            await setLoadingPicArtist(artistImages)
+
+            await Promise.all(
+              data.artists.map(async (artist, artistIndex) => {  
+                await setValue(`artists[${artistIndex}].name`, artist.name)
+                await setValue(`artists[${artistIndex}].curatorLink`, artist.curatorLink)
+                await setValue(`artists[${artistIndex}].shortBio`, artist.shortBio)
+                artist.workImageUrl
+                  ? await setValue(`artists[${artistIndex}].workImageUrl`, artistImages[artistIndex].files)
+                  : await setValue(`artists[${artistIndex}].workImageUrl`, '')
+              })
+            )
+          }
+
           if (data.curators && data.curators.length > 0 && !fetched) {
             data.curators.forEach(curator => {
               Curators.append({
@@ -161,13 +256,17 @@ const PavilionDetailRegister = ({
               } else {  
                 setValue(key, '')
               } 
-            } else {
+            } else if (key !== 'artists' && key !== 'organizers' && key !== 'curators') {
               setValue(key, data[key])
             }
           })
+          setLoading(false)
+        } catch (error) {
+          setLoading(false)
+          await addToast(`${error.message}`, { appearance: 'error', autoDismiss: false })
         }
-        setLoading(false)
       }
+
       fetch()
       setFetched(true)
     }
@@ -261,6 +360,23 @@ const PavilionDetailRegister = ({
     setSaving(true)
     const watchedData = watch({ nest: true })
     try { 
+      const finalArtists = watchedData.artists.length > 0
+        ? await Promise.all(
+          watchedData.artists.map(async (artist) => {
+            const file = artist.workImageUrl[0]
+            const response = await firebase
+              .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
+            return {
+              ...artist,
+              workImageUrl: {
+                name: file.name,
+                fullPath: response.ref.fullPath,
+              }
+            }
+          })
+        )
+        : ''
+
       const finalSupportedMaterials = watchedData.supportMaterials.length > 0
         ? await Promise.all(
           Array.from(watchedData.supportMaterials).map(async (supportMaterial) => {
@@ -294,6 +410,7 @@ const PavilionDetailRegister = ({
         endDate: watchedData.endDate || '',
         openingHours: watchedData.openingHours || '',
         closingHours: watchedData.closingHours || '',
+        artists: finalArtists
       }
       await firebase.saveTemporaryPavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       setSaving(false)
@@ -360,8 +477,6 @@ const PavilionDetailRegister = ({
     marginTop: '10px'
   }
 
-  console.log(watch())
-
   if (loading) {
     return (
       <div className="home container">
@@ -370,6 +485,13 @@ const PavilionDetailRegister = ({
     )
   }
   const opacity = saving ? '20%' : '100%'
+
+  const artistPics = (index) => (loadingPicArtist && loadingPicArtist.length > 0)
+    ? loadingPicArtist[index]
+    : {
+      pictures: [],
+      files: []
+    }
 
   return (
     <>
@@ -384,6 +506,94 @@ const PavilionDetailRegister = ({
         <div className="home__register">
           <div className="home__register__form">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="home__register__form__title">Artists</div>
+              <p className="home__register__form__paragraph">​Artist(s) involved</p>  
+              <div className="home__register__form__list__container">
+                {
+                  Artists.fields.map((field, index) => (
+                    <div className="home__register__form__list__element" key={field.id}>
+                      <div className="home__register__form__list__element__close">
+                        <FiXCircle
+                          onClick={() => removeArtist(index)}
+                        />
+                      </div>
+                      <Input
+                        name={`artists[${index}].name`}
+                        type="text"
+                        labelName="Name"
+                        required
+                        reference={
+                          register({
+                            required: "This field is required",
+                          })
+                        }
+                        errors={errors}
+                        fieldArrayTopic="artists"
+                        fieldArrayName="name"
+                        fieldArrayIndex={index}
+                      />
+                      <Input
+                        name={`artists[${index}].artistLink`}
+                        type="text"
+                        labelName="Individual artist’s links (website, portfolio, etc)"
+                        required
+                        reference={
+                          register({ 
+                            required: "This field is required" 
+                          })
+                        }
+                        errors={errors}
+                        fieldArrayTopic="artists"
+                        fieldArrayName="artistLink"
+                        fieldArrayIndex={index}
+                      />
+                      <Textarea
+                        name={`artists[${index}].shortBio`}
+                        type="text"
+                        labelName="Short Bio of each artist (Max 1000 characters)"
+                        required
+                        reference={
+                          register({
+                            required: "This field is required",
+                            maxLength: {
+                              value: 1000,
+                              message: "messages is exceed 1000 lengths"
+                            }
+                          })
+                        }
+                        errors={errors}
+                        fieldArrayTopic="artists"
+                        fieldArrayName="shortBio"
+                        fieldArrayIndex={index}
+                        rows={8}
+                        cols={100}
+                      />
+                      <div className="input__label__container">
+                        <div className="input__label__asterisk">*</div>
+                        <div className="home__register__form__label">One image of artist’s work</div>
+                      </div>
+                      <UploadImage
+                        name={`artists[${index}].workImageUrl`}
+                        fieldArrayTopic="artists"
+                        fieldArrayName="workImageUrl"
+                        fieldArrayIndex={index}
+                        singleImage={true}
+                        errors={errors}
+                        reference={register({ required: 'file is required' })}
+                        loadingPictures={artistPics(index)}
+                      />
+                    </div>
+                  ))
+                }
+              </div>
+              <Button
+                onClick={addMoreArtist}
+                type="button"
+                className="home__register__form__add-btn"
+              >
+                <FiPlusCircle/> &nbsp;&nbsp; add more artist
+              </Button>
+
               <div className="home__register__form__title">Curators</div>
               <p className="home__register__form__paragraph">​Curator(s) involved (if applicable)</p>
               <div className="home__register__form__list__container">

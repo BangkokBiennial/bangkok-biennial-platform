@@ -5,8 +5,6 @@ import { withFirebase } from '../../../utils/Firebase';
 import Input from '../../atoms/Input';
 import Textarea from '../../atoms/Textarea';
 import Button from '../../atoms/Button';
-import { FiPlusCircle, FiXCircle } from "react-icons/fi";
-import UploadImage from '../../atoms/UploadImage';
 import { navigate } from 'gatsby';
 import { PAVILION_DETAIL_REGISTER } from '../../../constants/routes'
 import RegistrationStatus from '../../../constants/registrationStatus'
@@ -22,21 +20,6 @@ const PavilionInfoRegister = ({
   const { handleSubmit, register, errors, control } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: {
-      artists: [
-        {
-          name: '',
-          artistLink: '',
-          shortBio: '',
-          workImageUrl: ''
-        }
-      ]
-    }
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'artists',
   });
 
   const [_initFirebase, setInitFirebase] = useState(false)
@@ -50,55 +33,18 @@ const PavilionInfoRegister = ({
 
   const onSubmit = async (value, e) => {
     try {
-
       e.preventDefault();
 
       await setLoading(true)
-
-      const finalArtists = await Promise.all(
-        value.artists.map(async (artist) => {
-          const file = artist.workImageUrl[0]
-          const response = await firebase
-            .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
-          return {
-            ...artist,
-            workImageUrl: response.ref.fullPath,
-          }
-        })
-      )
-
-      const data = {
-        ...value,
-        artists: finalArtists
-      }
-
-      await firebase.savePavilionBasicInfo(data, firebase.getCurrentUserId())
+      await firebase.savePavilionBasicInfo(value, firebase.getCurrentUserId())
       await firebase.updateUser(firebase.getCurrentUserId(), { registrationStatus: RegistrationStatus.FINISHED_BASIC })
       await addToast('Successfully submitted!', { appearance: 'success' })
       navigate(PAVILION_DETAIL_REGISTER)
-     
     } catch (error) {
       console.log(error)
       await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
       await setLoading(false)
     }
-  }
-
-  const addMoreArtist = () => {
-    append({
-      artists: {
-        name: '',
-        artistLink: '',
-        shortBio: '',
-        workImageUrl: ''
-      }
-    })
-    addToast('Successfully artist added', { appearance: 'success' })
-  }
-
-  const removeArtist = (artistIndex) => {
-    remove(artistIndex)
-    addToast('Successfully artist removed', { appearance: 'info' })
   }
 
   if (loading) {
@@ -152,9 +98,9 @@ const PavilionInfoRegister = ({
             />
 
             <Textarea
-              name="pavilionLongDescription"
+              name="listOfArtistsAndCurators"
               type="text"
-              labelName="Longer description of pavilion (curatorial statement, etc)"
+              labelName="List of artists and curators (draft)"
               required
               reference={
                 register({
@@ -165,93 +111,6 @@ const PavilionInfoRegister = ({
               rows={8}
               cols={100}
             />
-
-            <div className="home__register__form__title">Artists</div>
-            <p className="home__register__form__paragraph">​Artist(s) involved</p>  
-            <div className="home__register__form__list__container">
-              {
-                fields.map((field, index) => (
-                  <div className="home__register__form__list__element" key={field.id}>
-                    <div className="home__register__form__list__element__close">
-                      <FiXCircle
-                        onClick={() => removeArtist(index)}
-                      />
-                    </div>
-                    <Input
-                      name={`artists[${index}].name`}
-                      type="text"
-                      labelName="Name"
-                      required
-                      reference={
-                        register({
-                          required: "This field is required",
-                        })
-                      }
-                      errors={errors}
-                      fieldArrayTopic="artists"
-                      fieldArrayName="name"
-                      fieldArrayIndex={index}
-                    />
-                    <Input
-                      name={`artists[${index}].artistLink`}
-                      type="text"
-                      labelName="Individual artist’s links (website, portfolio, etc)"
-                      required
-                      reference={
-                        register({ 
-                          required: "This field is required" 
-                        })
-                      }
-                      errors={errors}
-                      fieldArrayTopic="artists"
-                      fieldArrayName="artistLink"
-                      fieldArrayIndex={index}
-                    />
-                    <Textarea
-                      name={`artists[${index}].shortBio`}
-                      type="text"
-                      labelName="Short Bio of each artist (Max 1000 characters)"
-                      required
-                      reference={
-                        register({
-                          required: "This field is required",
-                          maxLength: {
-                            value: 1000,
-                            message: "messages is exceed 1000 lengths"
-                          }
-                        })
-                      }
-                      errors={errors}
-                      fieldArrayTopic="artists"
-                      fieldArrayName="shortBio"
-                      fieldArrayIndex={index}
-                      rows={8}
-                      cols={100}
-                    />
-                    <div className="input__label__container">
-                      <div className="input__label__asterisk">*</div>
-                      <div className="home__register__form__label">One image of artist’s work</div>
-                    </div>
-                    <UploadImage
-                      name={`artists[${index}].workImageUrl`}
-                      fieldArrayTopic="artists"
-                      fieldArrayName="workImageUrl"
-                      fieldArrayIndex={index}
-                      singleImage={true}
-                      errors={errors}
-                      reference={register({ required: 'file is required' })}
-                    />
-                  </div>
-                ))
-              }
-            </div>
-            <Button
-              onClick={addMoreArtist}
-              type="button"
-              className="home__register__form__add-btn"
-            >
-              <FiPlusCircle/> &nbsp;&nbsp; add more artist
-            </Button>
 
             <Button type="submit">submit</Button>
           </form>
