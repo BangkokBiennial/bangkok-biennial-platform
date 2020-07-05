@@ -82,7 +82,11 @@ workflows:
     build-and-test:
       jobs:
         - build-and-tests
-        - deploy-prod:
+        - hold:
             type: approval
             requires:
               - build-and-tests
+        - deploy-prod:
+            requires:
+              - hold
+            
