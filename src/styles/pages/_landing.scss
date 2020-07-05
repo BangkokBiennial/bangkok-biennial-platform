@@ -23,3 +23,21 @@
     }
   }
 }
+
+.landing__text-content {
+  font-size: 18px;
+  max-width: 90%;
+  font-weight: 200;
+  line-height: 1.5rem;
+}
+
+.landing__text-content > a {
+  font-weight: 500;
+  text-decoration: underline;
+  color: $color-secondary;
+}
+
+li {
+  list-style: none;
+  line-height: 2rem;
+}
