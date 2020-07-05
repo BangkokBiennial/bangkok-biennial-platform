@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import { navigate } from 'gatsby';
 
-import { withFirebase } from '../../../../utils/Firebase';
 import { PAVILION_INFO_REGISTER, REGISTRATION_STATUS, PAVILION_DETAIL_REGISTER } from '../../../../constants/routes';
 import RegistrationStatus from '../../../../constants/registrationStatus';
 
@@ -18,29 +17,25 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
   your personal account page.
 `;
 
-class SignInGoogle extends Component {
-  constructor(props) {
-    super(props);
+const SignInGoogle = ({ firebase }) => {
+  const [error, setError] = useState(null)
 
-    this.state = { error: null };
-  }
-
-  onSubmit = async event => {
+  const onSubmit = async event => {
     event.preventDefault();
     try {
-      const socialAuthUser = await this.props.firebase
+      const socialAuthUser = await firebase
         .doSignInWithGoogle()
-      const userSnapshot = await this.props.firebase.getUser(socialAuthUser.user.uid)
+      const userSnapshot = await firebase.getUser(socialAuthUser.user.uid)
       const user = userSnapshot.data()
       const status = user ? user.registrationStatus : RegistrationStatus.NEW_USER
-      await this.props.firebase.user(socialAuthUser.user.uid)
+      await firebase.user(socialAuthUser.user.uid)
         .set({
           username: socialAuthUser.user.displayName,
           email: socialAuthUser.user.email,
           roles: 'user',
           registrationStatus: status
         });
-      await this.setState({ error: null });
+      await setError(null);
       
       switch (status) {
         case RegistrationStatus.FINISHED_BASIC:
@@ -56,28 +51,24 @@ class SignInGoogle extends Component {
       if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
         error.message = ERROR_MSG_ACCOUNT_EXISTS;
       }
-      this.setState({ error });
+      setError(error)
     }
     event.preventDefault();
   };
 
-  render() {
-    const { error } = this.state;
-
-    return (
-      <div className="login__content__providers__container">
-        <form
-          className="login__content__providers__item login__content__providers__item--google"
-          onSubmit={this.onSubmit}
-        >
-          <button type="submit">
-            <FaGoogle />
-          </button>
-        </form>
-        { error &&  <p style={{ color: '#FC0000' }}>{error.message}</p> }
-      </div>
-    );
-  }
+  return (
+    <div className="login__content__providers__container">
+      <form
+        className="login__content__providers__item login__content__providers__item--google"
+        onSubmit={onSubmit}
+      >
+        <button type="submit">
+          <FaGoogle />
+        </button>
+      </form>
+      { error &&  <p style={{ color: '#FC0000' }}>{error.message}</p> }
+    </div>
+  );
 }
 
-export default withFirebase(SignInGoogle);
+export default SignInGoogle
