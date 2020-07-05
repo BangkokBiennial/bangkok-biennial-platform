@@ -360,18 +360,25 @@ const PavilionDetailRegister = ({
     setSaving(true)
     const watchedData = watch({ nest: true })
     try { 
-      const finalArtists = watchedData.artists.length > 0
+      const finalArtists = (watchedData.artists.length > 0)
         ? await Promise.all(
           watchedData.artists.map(async (artist) => {
-            const file = artist.workImageUrl[0]
-            const response = await firebase
-              .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
+            console.log(artist)
+            if (artist.workImageUrl.length > 0) {
+              const file = artist.workImageUrl[0]
+              const response = await firebase
+                .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
+              return {
+                ...artist,
+                workImageUrl: {
+                  name: file.name,
+                  fullPath: response.ref.fullPath,
+                }
+              }
+            }
             return {
               ...artist,
-              workImageUrl: {
-                name: file.name,
-                fullPath: response.ref.fullPath,
-              }
+              workImageUrl: ''
             }
           })
         )
@@ -512,11 +519,13 @@ const PavilionDetailRegister = ({
                 {
                   Artists.fields.map((field, index) => (
                     <div className="home__register__form__list__element" key={field.id}>
-                      <div className="home__register__form__list__element__close">
-                        <FiXCircle
-                          onClick={() => removeArtist(index)}
-                        />
-                      </div>
+                      {
+                        index > 0 && <div className="home__register__form__list__element__close">
+                          <FiXCircle
+                            onClick={() => removeArtist(index)}
+                          />
+                        </div>
+                      }
                       <Input
                         name={`artists[${index}].name`}
                         type="text"

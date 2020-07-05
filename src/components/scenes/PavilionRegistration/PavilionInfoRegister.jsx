@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useToasts } from 'react-toast-notifications'
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { withFirebase } from '../../../utils/Firebase';
 import Input from '../../atoms/Input';
 import Textarea from '../../atoms/Textarea';
