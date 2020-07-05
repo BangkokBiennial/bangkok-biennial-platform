@@ -513,6 +513,23 @@ const PavilionDetailRegister = ({
         <div className="home__register">
           <div className="home__register__form">
             <form onSubmit={handleSubmit(onSubmit)}>
+
+              <div className="home__register__form__title">Pavilion</div>
+              <Textarea
+                name="pavilionLongDescription"
+                type="text"
+                labelName="Long description of the pavilion"
+                required
+                reference={
+                  register({
+                    required: "This field is required",
+                  })
+                }
+                errors={errors}
+                rows={5}
+                cols={100}
+              />
+
               <div className="home__register__form__title">Artists</div>
               <p className="home__register__form__paragraph">​Artist(s) involved</p>  
               <div className="home__register__form__list__container">
