@@ -76,7 +76,41 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <h4> { getStatus(user.registrationStatus)} </h4>
       </div>
       { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
-        && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />}
+          && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />}
+      {
+        user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
+          && (
+            <div className="pavilion-registration-status__waiting-for-approval">
+              <p className="pavilion-registration-status__waiting-for-approval__text">
+                Ok! Now you have finished the process of registering your 
+                Pavilion for BB2020 (Bangkok Biennial 2020). What happens next:
+              </p>
+              <ul>
+                <li>
+                  The information and materials you have submitted must be validated. 
+                  This will happen as quickly as we are able to process it.
+                </li>
+                <li>
+                  The information you submitted on the ‘Basic Info’ section will be made public
+                </li>
+                <li>
+                  a page will be created for your pavilion on the BB2020 website. 
+                  You will be able to edit the information and materials on this page 
+                  once it becomes available. There will be a period that 
+                  you will have access to the page before it is launched to the public. 
+                  And even after it is launched to the public, you will still be able to edit it.
+                </li>
+              </ul>
+              <p className="pavilion-registration-status__waiting-for-approval__text">
+                If you have any questions/concerns/thoughts/jokes please contact us 
+                at bbteam@bangkokbiennial.com . If you need a confirmation letter from us 
+                for funding applications of visa applications or anything like that,
+                 please also let us know through the same email address.
+              </p>
+            </div>
+          )
+      }
+
     </div>
   )
 }
