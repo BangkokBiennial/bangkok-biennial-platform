@@ -57,6 +57,29 @@ const PavilionInfoRegister = ({
 
   return(
     <div className="home container">
+
+      <div className="home__intro">
+        <p className="home__intro__text">
+          Welcome to Bangkok Biennial 2020’s Pavilion Platform! 
+          To register your pavilion to be a part of BB2020 (Bangkok Biennial 2020) 
+          please provide the information and materials on this page and the next page. 
+          The information on this page cannot be changed later 
+          (or only in special circumstances and only by contacting the BB Team admins) 
+          and will be used publicly in the lead-up to the Bangkok Biennial in December. 
+          The information on the following page (after you press ‘submit’ on this page) 
+          will later be used to create a page for your pavilion. 
+          Once this page becomes available, you will be able to edit the information at any time. 
+          Please provide the following information and then press “submit” to continue 
+          to the next step in registration.
+        </p>        
+        <p className="home__intro__text">
+          Please be aware that the Bangkok Biennial is run 100% by artist-volunteers and as such, 
+          it can take some time to process information and build this open-source platform, 
+          which is still being developed even as we open it to the public.
+        </p>
+      </div>
+
+
       <div className="home__details">
         <h1 className="home__title">Register Form</h1>
       </div>
