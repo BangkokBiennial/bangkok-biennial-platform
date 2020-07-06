@@ -188,7 +188,7 @@ const PavilionDetailRegister = ({
             await Promise.all(
               data.artists.map(async (artist, artistIndex) => {  
                 await setValue(`artists[${artistIndex}].name`, artist.name)
-                await setValue(`artists[${artistIndex}].curatorLink`, artist.curatorLink)
+                await setValue(`artists[${artistIndex}].artistLink`, artist.artistLink)
                 await setValue(`artists[${artistIndex}].shortBio`, artist.shortBio)
                 artist.workImageUrl
                   ? await setValue(`artists[${artistIndex}].workImageUrl`, artistImages[artistIndex].files)
@@ -431,8 +431,32 @@ const PavilionDetailRegister = ({
 
   const onSubmit = async (value, e) => {
     e.preventDefault()
+    setLoading(true)
 
     try { 
+      const finalArtists = (value.artists.length > 0)
+        ? await Promise.all(
+          value.artists.map(async (artist) => {
+            console.log(artist)
+            if (artist.workImageUrl.length > 0) {
+              const file = artist.workImageUrl[0]
+              const response = await firebase
+                .uploadImage(firebase.getCurrentUserId(), 'artists', file.name, file)
+              return {
+                ...artist,
+                workImageUrl: {
+                  name: file.name,
+                  fullPath: response.ref.fullPath,
+                }
+              }
+            }
+            return {
+              ...artist,
+              workImageUrl: ''
+            }
+          })
+        )
+        : ''
       const finalSupportedMaterials = value.supportMaterials.length > 0
         ? await Promise.all(
           Array.from(value.supportMaterials).map(async (supportMaterial) => {
@@ -466,13 +490,16 @@ const PavilionDetailRegister = ({
         endDate: value.endDate || '',
         openingHours: value.openingHours || '',
         closingHours: value.closingHours || '',
+        artists: finalArtists
       }
       await firebase.savePavilionAdvanceInfo(finalizedData, firebase.getCurrentUserId())
       await firebase.updateUser(firebase.getCurrentUserId(), { registrationStatus: RegistrationStatus.FINISHED_ADVANCE })
+      setLoading(false)
       addToast('the information is saved successfully', { appearance: 'success' })
       navigate(REGISTRATION_STATUS)
     } catch (error) {
       console.log(error)
+      setLoading(false)
       await addToast(`${error.message}, ${JSON.stringify(value)}`, { appearance: 'error', autoDismiss: false })
     }
   }
