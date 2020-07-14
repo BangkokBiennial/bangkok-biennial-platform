@@ -151,21 +151,28 @@ const TermAndCondition = () => {
 
           You may submit a notification pursuant to the Digital Millennium Copyright Act (DMCA) by providing our Copyright Agent with the following information in writing (see 17 U.S.C 512(c)(3) for further detail):
 
-          0.1. an electronic or physical signature of the person authorized to act on behalf of the owner of the copyright’s interest;
+          <ul>
+            <li>
+              0.1. an electronic or physical signature of the person authorized to act on behalf of the owner of the copyright’s interest;
+            </li>
+            <li>
+              0.2. a description of the copyrighted work that you claim has been infringed, including the URL (i.e., web page address) of the location where the copyrighted work exists or a copy of the copyrighted work;
+            </li>
+            <li>
+              0.3. identification of the URL or other specific location on Service where the material that you claim is infringing is located;
+            </li>
+            <li>
+              0.4. your address, telephone number, and email address;
+            </li>
+            <li>
+              0.5. a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;
+            </li>
+            <li>
+              0.6. a statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf.
+            </li>
 
-          0.2. a description of the copyrighted work that you claim has been infringed, including the URL (i.e., web page address) of the location where the copyrighted work exists or a copy of the copyrighted work;
-
-          0.3. identification of the URL or other specific location on Service where the material that you claim is infringing is located;
-
-          0.4. your address, telephone number, and email address;
-
-          0.5. a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;
-
-          0.6. a statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf.
-
-          You can contact our Copyright Agent via email at info@bangkokbiennial.com.
-
-
+            You can contact our Copyright Agent via email at info@bangkokbiennial.com.
+          </ul>
         </p>
         <p className="term-and-condition__text-content">
           12. Error Reporting and Feedback
