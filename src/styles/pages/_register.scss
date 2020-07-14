@@ -235,5 +235,17 @@
         color: $color-dangerous
       }
     }
+
+    &__term-and-condition {
+      padding-top: 30px;
+    }
+    &__term-and-condition > a {
+      text-decoration: none;
+      color: $color-main;
+  
+      &:hover {
+        color: $color-secondary;
+      }
+    }
   }
 }

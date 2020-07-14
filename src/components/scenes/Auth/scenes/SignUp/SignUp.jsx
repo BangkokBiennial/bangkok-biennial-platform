@@ -1,8 +1,9 @@
 import React from 'react';
 import SignUpFormBase from './molecules/SignUpFormBase';
 import SignInGoogle from '../../molecules/SignInGoogle';
-import SignInFacebook from '../../molecules/SignInFacebook';
 import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink';
+import { Link } from 'gatsby';
+import { TERM_AND_CONDITION } from '../../../../../constants/routes'
 
 const SignUp = () => {
   return (
@@ -27,6 +28,9 @@ const SignUp = () => {
             </div>
             <div className="register__content__providers">
               <SignInGoogle />
+            </div>
+            <div className="register__content__term-and-condition">
+              <Link to={TERM_AND_CONDITION}> TERM AND CONDITIONS </Link>
             </div>
             <div className="register__content__register">
               <SignUpLink />

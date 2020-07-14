@@ -8,3 +8,4 @@ export const ADMIN_DETAILS = '/admin/:id';
 export const REGISTRATION_STATUS = '/registration-status'
 export const PAVILION_INFO_REGISTER = '/pavilion-register'
 export const PAVILION_DETAIL_REGISTER = '/pavilion-detail-register'
+export const TERM_AND_CONDITION = '/term-and-condition'
