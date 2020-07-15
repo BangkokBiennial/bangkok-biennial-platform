@@ -1,0 +1,40 @@
+.admin-panel {
+  padding: 100px;
+
+  &__toggle {
+    font-weight: 400;
+    color: $color-main;
+    font-size: 20px;
+    cursor: pointer;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+
+    /*
+      Introduced in Internet Explorer 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+
+  &__content {
+    border: 1px dashed $color-main;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-width: 800px;
+  }
+
+  &__container {
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}

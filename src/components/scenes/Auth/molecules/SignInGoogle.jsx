@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 
 import { navigate } from 'gatsby';
 
-import { PAVILION_INFO_REGISTER, REGISTRATION_STATUS, PAVILION_DETAIL_REGISTER } from '../../../../constants/routes';
+import {
+  PAVILION_INFO_REGISTER,
+  REGISTRATION_STATUS,
+  PAVILION_DETAIL_REGISTER,
+  ADMIN
+} from '../../../../constants/routes';
 import RegistrationStatus from '../../../../constants/registrationStatus';
 
 import { FaGoogle } from 'react-icons/fa';
@@ -32,11 +37,16 @@ const SignInGoogle = ({ firebase }) => {
         .set({
           username: socialAuthUser.user.displayName,
           email: socialAuthUser.user.email,
-          roles: 'user',
+          roles: socialAuthUser.user.roles || user.roles || 'user',
           registrationStatus: status
         });
       await setError(null);
       
+      if (user.roles === 'admin') {
+        await navigate(ADMIN)
+        return
+      }
+
       switch (status) {
         case RegistrationStatus.FINISHED_BASIC:
           await navigate(PAVILION_DETAIL_REGISTER);

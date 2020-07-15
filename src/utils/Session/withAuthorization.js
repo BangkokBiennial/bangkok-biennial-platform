@@ -3,7 +3,7 @@ import { navigate } from 'gatsby';
 
 import AuthUserContext from './context';
 import { withFirebase } from '../Firebase';
-import { SIGN_IN } from '../../constants/routes';
+import { SIGN_IN, ADMIN } from '../../constants/routes';
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
@@ -15,7 +15,6 @@ const withAuthorization = condition => Component => {
 
         this.listener = this.props.firebase.onAuthUserListener(
           authUser => {
-
             if (!condition(authUser)) {
               navigate(SIGN_IN);
             }

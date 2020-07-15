@@ -3,7 +3,12 @@ import React, { Component } from 'react';
 import { navigate } from 'gatsby';
 
 import { withFirebase } from '../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER, PAVILION_DETAIL_REGISTER, REGISTRATION_STATUS } from '../../../../constants/routes';
+import { 
+  PAVILION_INFO_REGISTER, 
+  PAVILION_DETAIL_REGISTER, 
+  REGISTRATION_STATUS,
+  ADMIN 
+} from '../../../../constants/routes';
 import RegistrationStatus from '../../../../constants/registrationStatus';
 import Input from '../../../atoms/Input';
 import Button from '../../../atoms/Button';
@@ -51,6 +56,11 @@ class SignInForm extends Component {
       const user = userSnapshot.data()
       await this.setState({ ...INITIAL_STATE });
       await this.setState({ loading: false, error: null })
+      if (user.roles === 'admin') {
+        await navigate(ADMIN)
+        return
+      }
+
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
           await navigate(PAVILION_DETAIL_REGISTER);

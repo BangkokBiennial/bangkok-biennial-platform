@@ -118,6 +118,10 @@ class Firebase {
   getTemporaryPavilionAdvanceInfo = (uid) => this.db.collection('pavilion-temporary-save-info').doc(uid).get()
 
   savePavilionAdvanceInfo = (data, uid) => this.db.collection('pavilion-advance-info').doc(uid).set(data)
+
+
+  // ** use for admin only **
+  getPavilionAdvanceInfo = () => this.db.collection('pavilion-advance-info').get()
 }
 
 let firebase;
