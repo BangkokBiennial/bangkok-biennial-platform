@@ -33,7 +33,14 @@ const AdminPanel = ({ firebase }) => {
           pavilionAdvanceInfoSnapshot.forEach((pavilionAdvanceInfo => {     
             pavilionData.push({ id: pavilionAdvanceInfo.id, ...pavilionAdvanceInfo.data() })
           }))
-          setData(pavilionData)
+          const pd = await Promise.all(pavilionData.map(async (p) => {
+            const userDataSnapshot = await firebase.getUser(p.id)
+            return {
+              ...p,
+              userInformation: userDataSnapshot.data()
+            }
+          }))
+          setData(pd)
           setIsOpen(pavilionData.map(() => false))
 
           setLoading(false)
@@ -61,7 +68,7 @@ const AdminPanel = ({ firebase }) => {
         data && data.map((proposal, pIndex) => {
           return (<>
             <p className="admin-panel__toggle" onClick={() => handleSetIsOpen(pIndex)}>
-              {isOpen[pIndex] ? '▼' : '►'} {proposal.id}
+              {isOpen[pIndex] ? '▼' : '►'} {proposal.userInformation.username}: {proposal.userInformation.email}
             </p>
             <Collapse isOpened={isOpen[pIndex]}>
               <div className="admin-panel__content" key={`proposal-${proposal.id}`}>
