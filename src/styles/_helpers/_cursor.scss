@@ -1,0 +1,32 @@
+.movable {
+  width: 85px;
+  height: 85px;
+  border: 2px solid $color-dangerous;
+  opacity: 0.7;
+  position: absolute;
+  z-index: 999999999;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: background 0.5s;
+  border-radius: 50%;
+  // animation-name: movable;
+  // animation-duration: 2.5s;
+  // animation-direction: alternate;
+  // animation-iteration-count: infinite;
+}
+
+// @keyframes movable {
+//   from {border-radius: 20%;}
+//   to {border-radius: 50%;}
+// }
+
+.movable.active {
+  background: $color-secondary;
+}
+
+.movable.active:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

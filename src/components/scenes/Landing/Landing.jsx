@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import { SIGN_UP } from '../../../constants/routes';
+import { CursorProvider } from '../../../utils/withCursor'
 
-class Landing extends Component {
-  render() {
-    return (
+const Landing = () => {
+  return (
+    <CursorProvider>
       <div className="landing__container">
-        <h1 className="landing__title__main"> Bangkok Biennial 2020</h1>
-        <h2 className="landing__title__secondary">The Platform</h2>
+        <h1 className="landing__title__main"> BANGKOK BIENNAL </h1>
+        <h2 className="landing__title__secondary">Platform</h2>
         <p className="landing__text-content">
           Welcome to Bangkok Biennial 2020’s Pavilion Platform! This is where 
           you register a pavilion to be part of “BB2020”. 
           There are a few steps in the process of registering and you will need to prepare 
           a variety of information so please read all the instructions carefully. 
           Please review this complete list of materials you need to prepare: 
-          <a href={'https://www.bangkokbiennial.com/registration'}> REGISTRATION REQUIREMENTS LINK. </a>
+          <a target="_blank" href={'https://www.bangkokbiennial.com/registration'}> REGISTRATION REQUIREMENTS LINK. </a>
           There are 3 initial stages to register your pavilion:
           <ul>
             <li> 1. create an account for your pavilion (on this page). </li>
@@ -24,8 +25,8 @@ class Landing extends Component {
           Ready to join BB2020? <Link to={SIGN_UP}> Create an account here </Link>
         </p>
       </div>
-    );
-  }
+    </CursorProvider>
+  );
 }
 
 export default Landing;

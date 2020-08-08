@@ -35,6 +35,10 @@
   font-weight: 500;
   text-decoration: underline;
   color: $color-secondary;
+  &:hover {
+    text-decoration: none;
+    font-weight: 700;
+  }
 }
 
 .landing__text-content > ul > li {
