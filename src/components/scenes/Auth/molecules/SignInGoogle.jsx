@@ -30,24 +30,30 @@ const SignInGoogle = ({ firebase }) => {
     try {
       const socialAuthUser = await firebase
         .doSignInWithGoogle()
+
       const userSnapshot = await firebase.getUser(socialAuthUser.user.uid)
       const user = userSnapshot.data()
-      const status = user ? user.registrationStatus : RegistrationStatus.NEW_USER
-      await firebase.user(socialAuthUser.user.uid)
-        .set({
-          username: socialAuthUser.user.displayName,
-          email: socialAuthUser.user.email,
-          roles: socialAuthUser.user.roles || user.roles || 'user',
-          registrationStatus: status
-        });
-      await setError(null);
+
+      if (!user) {
+        await firebase.user(socialAuthUser.user.uid)
+          .set({
+            username: socialAuthUser.user.displayName,
+            email: socialAuthUser.user.email,
+            roles: 'user',
+            registrationStatus: RegistrationStatus.NEW_USER
+          });
+          await navigate(PAVILION_INFO_REGISTER);
+
+          await setError(null);
+          return
+      }
       
+      await setError(null);
       if (user.roles === 'admin') {
         await navigate(ADMIN)
         return
       }
-
-      switch (status) {
+      switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
           await navigate(PAVILION_DETAIL_REGISTER);
           break;
