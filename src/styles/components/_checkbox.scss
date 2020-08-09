@@ -26,6 +26,7 @@
       line-height: 25px;
       margin-bottom: 0px;
       font-weight: 800;
+      margin-left: 10px;
     }
   }
 
@@ -34,8 +35,10 @@
     &__container {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-      width: 70px;
+    }
+
+    &__container.disabled {
+      opacity: 0.5;
     }
 
     &__check-icon {

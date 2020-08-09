@@ -1,18 +1,30 @@
-.pavilion-registration-status__waiting-for-approval {
-  margin-top: 30px;
-  width: 50%;
+.pavilion-registration-status {
 
-  &__text {
-    font-size: 20px;
+  &____waiting-for-approval {
+    margin-top: 30px;
+    width: 50%;
+  
+    &__text {
+      font-size: 20px;
+    }
+  
+    > ul {
+      list-style-type: circle;
+      padding: 1rem;
+    }
+  
+    > ul > li {
+      line-height: 1.5rem;
+      margin: 0 0 1rem 0;
+    }
   }
-
-  > ul {
-    list-style-type: circle;
-    padding: 1rem;
+  &__date-box {
+    max-width: 500px;
+    padding: 15px;
+    border: 2px dashed $color-dangerous;
+    margin-bottom: 40px;
   }
-
-  > ul > li {
-    line-height: 1.5rem;
-    margin: 0 0 1rem 0;
+  &__cautious-text {
+    color: $color-dangerous;
   }
 }
