@@ -3,6 +3,7 @@ import { Collapse } from 'react-collapse';
 import { withFirebase } from '../../../utils/Firebase'
 import Loading from '../../atoms/Loading'
 import Button from '../../atoms/Button'
+import axios from 'axios'
 
 const AdminPanel = ({ firebase }) => {
 
@@ -40,7 +41,32 @@ const AdminPanel = ({ firebase }) => {
               userInformation: userDataSnapshot.data()
             }
           }))
-          setData(pd)
+          const finalPavilionData = await Promise.all(pd.map(async (pavilion) => {
+            const posterWithPics = await Promise.all(pavilion.posters.map(async (poster) => {
+              const url = await firebase.downloadImage(poster.fullPath)
+              return {
+                ...poster,
+                url,
+              }
+            }))
+            const artistWithPics = await Promise.all(pavilion.artists.map(async (artist) => {
+              const url = await firebase.downloadImage(artist.workImageUrl.fullPath)
+              return {
+                ...artist,
+                workImageUrl: {
+                  ...artist.workImageUrl,
+                  url
+                },
+              }
+            }))
+            return {
+              ...pavilion,
+              artists: artistWithPics,
+              posters: posterWithPics
+            }
+          }))
+          console.log(finalPavilionData)
+          setData(finalPavilionData)
           setIsOpen(pavilionData.map(() => false))
 
           setLoading(false)
@@ -75,8 +101,18 @@ const AdminPanel = ({ firebase }) => {
                 {
                   proposal.artists && (
                     <div className="admin-panel__container">
-                      <p><b>artists</b></p>
-                      { proposal.artists.map((artist) => (<p key={`artist-${artist.name}`}>{artist.name}</p>)) }
+                      <h2>Artists</h2>
+                      { 
+                        proposal.artists.map((artist) => 
+                          (
+                            <div key={`poster-${artist.name}`}>
+                              <p><b>Name</b> {artist.name}</p>
+                              <p><b>Short Bio</b> {artist.shortBio}</p>
+                              <p><b>Image name</b> {artist.workImageUrl.name}</p>
+                              <img height="400" src={artist.workImageUrl.url}/>
+                            </div>
+                          ))
+                      }
                     </div>
                   )
                 }
@@ -89,111 +125,120 @@ const AdminPanel = ({ firebase }) => {
                   )
                 } 
                 <div className="admin-panel__container">
-                  <p><b>audio Material</b></p>
+                  <h2>audio Material</h2>
                   <p>{proposal.audioMaterial}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>longer TextOpenCalls</b></p>
+                  <h2>longer TextOpenCalls</h2>
                   <p>{proposal.longerTextOpenCalls}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>open Calls Other Public Contact</b></p>
+                  <h2>open Calls Other Public Contact</h2>
                   <p>{proposal.openCallsOtherPublicContact}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>opencalls Phone Number</b></p>
+                  <h2>opencalls Phone Number</h2>
                   <p>{proposal.opencallsPhoneNumber}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>opencalls Public Email</b></p>
+                  <h2>opencalls Public Email</h2>
                   <p>{proposal.opencallsPublicEmail}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>opencalls Url</b></p>
+                  <h2>opencalls Url</h2>
                   <p>{proposal.opencallsUrl}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Facebook</b></p>
+                  <h2>pavilion Facebook</h2>
                   <p>{proposal.pavilionFacebook}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Instagram</b></p>
+                  <h2>pavilion Instagram</h2>
                   <p>{proposal.pavilionInstagram}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Long Description</b></p>
+                  <h2>pavilion Long Description</h2>
                   <p>{proposal.pavilionLongDescription}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Mailing Address</b></p>
+                  <h2>pavilion Mailing Address</h2>
                   <p>{proposal.pavilionMailingAddress}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Other Contact</b></p>
+                  <h2>pavilion Other Contact</h2>
                   <p>{proposal.pavilionOtherContact}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Other Social Medias</b></p>
+                  <h2>pavilion Other Social Medias</h2>
                   <p>{proposal.pavilionOtherSocialMedias}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Public Email</b></p>
+                  <h2>pavilion Public Email</h2>
                   <p>{proposal.pavilionPublicEmail}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Twitter</b></p>
+                  <h2>pavilion Twitter</h2>
                   <p>{proposal.pavilionTwitter}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>pavilion Website</b></p>
+                  <h2>pavilion Website</h2>
                   <p>{proposal.pavilionWebsite}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>person Email Contact</b></p>
+                  <h2>person Email Contact</h2>
                   <p>{proposal.personEmailContact}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>person Name Contact</b></p>
+                  <h2>person Name Contact</h2>
                   <p>{proposal.personNameContact}</p>
                 </div>
                 { 
                   proposal.posters && (
                     <div className="admin-panel__container">
-                      <p>posters</p>
-                      { proposal.posters.map(poster => (<p key={`poster-${poster.name}`}>{poster.name}</p>)) }
+                      <h2>Posters</h2>
+                      { 
+                        proposal.posters.map((poster) => {
+                          return (
+                            <div key={`poster-${poster.name}`}>
+                              <p><b>Image Name</b> {poster.name}</p>
+                              <img  height="400" src={poster.url}/>
+                            </div>
+                          )
+                        })
+                      }
                     </div>
                   )
                 }
                 <div className="admin-panel__container">
-                  <p><b>shortTextOpenCalls</b></p>
+                  <h2>shortTextOpenCalls</h2>
                   <p>{proposal.shortTextOpenCalls}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>streetAddress</b></p>
+                  <h2>streetAddress</h2>
                   <p>{proposal.streetAddress}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>submissionRequirements</b></p>
+                  <h2>submissionRequirements</h2>
                   <p>{proposal.submissionRequirements}</p>
                 </div>
                 {
                   proposal.supportMaterials && (
                     <div className="admin-panel__container">
-                      <p><b>supportMaterials</b></p>
+                      <h2>supportMaterials</h2>
                       { proposal.supportMaterials.map(supportMaterial => (<p key={`supportMaterial-${supportMaterial.name}`}>{supportMaterial.name}</p>)) }
                     </div>
                   )
                 }
                 <div className="admin-panel__container">
-                  <p><b>telephoneNumber</b></p>
+                  <h2>telephoneNumber</h2>
                   <p>{proposal.telephoneNumber}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>venueLocation</b></p>
+                  <h2>venueLocation</h2>
                   <p>{proposal.venueLocation}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <p><b>videoMaterial</b></p>
+                  <h2>videoMaterial</h2>
                   <p>{proposal.videoMaterial}</p>
                 </div>
               </div>
