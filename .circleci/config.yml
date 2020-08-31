@@ -27,9 +27,6 @@ jobs:
           name: load in environment variables
           command: echo -e "API_KEY=${API_KEY_DEV}\nAUTH_DOMAIN=${AUTH_DOMAIN_DEV}\nDATABASE_URL=${DATABASE_URL_DEV}\nPROJECT_ID=${PROJECT_ID_DEV}\nAPP_ID=${APP_ID_DEV}\nSTORAGE_BUCKET=${STORAGE_BUCKET_DEV}" >> .env.dev
       - run:
-          name: check var
-          command: cat .env.dev
-      - run:
           name: clean up
           command: npm run clean
       - run:
@@ -39,7 +36,7 @@ jobs:
           path: ./public
       - run:
           name: Firebase Deploy
-          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN_DEV" --project bangkok-biennial
+          command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN_DEV" --project bangkok-biennial-dev
   deploy-prod:
     executor: 'node/default'
     steps:
@@ -64,9 +61,6 @@ jobs:
       - run:
           name: load in environment variables
           command: echo -e "API_KEY=${API_KEY}\nAUTH_DOMAIN=${AUTH_DOMAIN}\nDATABASE_URL=${DATABASE_URL}\nPROJECT_ID=${PROJECT_ID}\nAPP_ID=${APP_ID}\nSTORAGE_BUCKET=${STORAGE_BUCKET}" >> .env.production
-      - run:
-          name: check var
-          command: cat .env.production
       - run:
           name: clean up
           command: npm run clean
