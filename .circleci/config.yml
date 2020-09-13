@@ -79,7 +79,7 @@ workflows:
         - hold:
             type: approval
             requires:
-                - build-and-tests
+                - deploy-dev
         - deploy-prod:
             requires:
                 - hold
