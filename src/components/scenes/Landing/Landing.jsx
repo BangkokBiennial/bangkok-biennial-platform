@@ -21,12 +21,15 @@ const Landing = ({ firebase }) => {
   useEffect(() => {
     if (firebase) {
       const fetch = async () => {
+        setLoading(true)
         try {
           const basicInfoSnapshot = await firebase.getPavilionBasicInfo();
           const basicInfoData = basicInfoSnapshot.docs.map(b => b.data())
           setPendingPavilions(basicInfoData)
           console.log(basicInfoData)
+          setLoading(false)
         } catch (err) {
+          setLoading(false)
           console.log(err)
         } 
       }
