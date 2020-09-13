@@ -122,6 +122,8 @@ class Firebase {
 
   // ** use for admin only **
   getPavilionAdvanceInfo = () => this.db.collection('pavilion-advance-info').get()
+
+  getPavilionBasicInfo = () => this.db.collection('pavilion-basic').get()
 }
 
 let firebase;

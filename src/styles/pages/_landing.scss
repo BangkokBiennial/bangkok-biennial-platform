@@ -16,8 +16,8 @@
   
   &__secondary {
     font-size: 60px;
-    color: $color-secondary;
-    margin-top: 20px;
+    color: $color-dangerous;
+    margin-top: 0px;
     @include breakpoint('to-tablet-l') {
       font-size: 36px;
     }
@@ -41,7 +41,45 @@
   }
 }
 
+.landing__text-content > ul {
+  padding-left: 0px;
+}
+
 .landing__text-content > ul > li {
   list-style: none;
   line-height: 2rem;
+}
+
+
+.landing {
+  &__list-pavilion {
+
+    &__title {
+      font-size: 36px;
+    }
+    &__container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    &__component {
+      width: 400px;
+      padding: 20px;
+      border: 2px solid $color-dangerous;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+
+    &__topic {
+      color: $color-dangerous;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    &__text {
+      color: $color-dangerous;
+    }
+  }
 }

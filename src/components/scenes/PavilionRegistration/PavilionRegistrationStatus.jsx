@@ -32,12 +32,12 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         setLoading(true)
         try {
           const userSnapshot = await firebase.getUser(firebase.getCurrentUserId())
-          const user = userSnapshot.data()
-          if (user.dateLaunch) {
-            setBbTakePlaced(user.dateLaunch)
+          const userData = userSnapshot.data()
+          if (userData.dateLaunch) {
+            setBbTakePlaced(userData.dateLaunch)
             setAllowedToSubmit(false)
           }
-          await setUser(user)
+          await setUser(userData)
           setLoading(false)
         } catch (error) {
           console.log(error)
