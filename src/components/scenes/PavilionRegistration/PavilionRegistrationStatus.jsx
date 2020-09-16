@@ -70,11 +70,11 @@ const PavilionRegistrationStatus = ({ firebase }) => {
   const getStatus = (status) => {
     switch (status) {
       case RegistrationStatus.FINISHED_BASIC:
-        return '2/3 - you finished the basic information, please click the button below to proceed the second part'
+        return '2/3 - you finished the basic information. please wait for the next registration.'
       case RegistrationStatus.FINISHED_ADVANCE:
-        return '3/3 - wait for the approval to go public'
+        return '3/3 - wait for the approval to go public.'
       default:
-        return '1/3 - please click the button below to proceed the registration'
+        return '1/3 - please wait for the next registration.'
     }
   }
 
@@ -143,8 +143,8 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <h2 className="home__title">Status of Pavilion Registration: </h2>
         <h4> { getStatus(user.registrationStatus)} </h4>
       </div>
-      { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
-          && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />}
+      {/* { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
+          && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />} */}
       {
         user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
           && (

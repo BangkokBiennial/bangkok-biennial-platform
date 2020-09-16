@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Collapse } from 'react-collapse';
 import { withFirebase } from '../../../utils/Firebase'
 import Loading from '../../atoms/Loading'
-import Button from '../../atoms/Button'
-import axios from 'axios'
 
 const AdminPanel = ({ firebase }) => {
 

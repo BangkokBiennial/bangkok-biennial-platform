@@ -8,7 +8,8 @@ import {
 } from '../utils/Session';
 import PavilionInfoRegister from '../components/scenes/PavilionRegistration/PavilionInfoRegister';
 
-const condition = authUser => !!authUser;
+// const condition = authUser => !!authUser;
+const condition = () => false;
 const PavilionInfoRegisterPage = compose(
   withEmailVerification,
   withAuthorization(condition),
