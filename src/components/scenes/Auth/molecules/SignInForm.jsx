@@ -63,13 +63,15 @@ class SignInForm extends Component {
 
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
-          await navigate(PAVILION_DETAIL_REGISTER);
+          // await navigate(PAVILION_DETAIL_REGISTER);
+          await navigate(REGISTRATION_STATUS);
           break;
         case RegistrationStatus.FINISHED_ADVANCE:
           await navigate(REGISTRATION_STATUS);
           break;
         default:
-          await navigate(PAVILION_INFO_REGISTER);
+          // await navigate(PAVILION_INFO_REGISTER);
+          await navigate(REGISTRATION_STATUS);
       }
     } catch (error) {
       await this.setState({ error, loading: false });
