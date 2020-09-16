@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../../../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER } from '../../../../../../constants/routes';
+import { PAVILION_INFO_REGISTER, REGISTRATION_STATUS } from '../../../../../../constants/routes';
 import RegistrationStatus from '../../../../../../constants/registrationStatus';
 import { navigate } from 'gatsby';
 import Input from '../../../../../atoms/Input';
@@ -49,7 +49,8 @@ class SignUpFormBase extends Component {
       await this.setState({ ...INITIAL_STATE })
       await this.setState({ loading: false });
       
-      navigate(PAVILION_INFO_REGISTER);
+      // navigate(PAVILION_INFO_REGISTER);
+      navigate(REGISTRATION_STATUS);
 
       event.preventDefault();
     } catch (error) {
