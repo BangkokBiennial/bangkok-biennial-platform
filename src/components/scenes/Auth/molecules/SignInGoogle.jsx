@@ -42,7 +42,8 @@ const SignInGoogle = ({ firebase }) => {
             roles: 'user',
             registrationStatus: RegistrationStatus.NEW_USER
           });
-          await navigate(PAVILION_INFO_REGISTER);
+          // await navigate(PAVILION_INFO_REGISTER);
+          await navigate(REGISTRATION_STATUS);
 
           await setError(null);
           return
@@ -55,13 +56,15 @@ const SignInGoogle = ({ firebase }) => {
       }
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
-          await navigate(PAVILION_DETAIL_REGISTER);
+          // await navigate(PAVILION_DETAIL_REGISTER);
+          await navigate(REGISTRATION_STATUS);
           break;
         case RegistrationStatus.FINISHED_ADVANCE:
           await navigate(REGISTRATION_STATUS);
           break;
         default:
-          await navigate(PAVILION_INFO_REGISTER);
+          // await navigate(PAVILION_INFO_REGISTER);
+          await navigate(REGISTRATION_STATUS);
       } 
     } catch (error) {
       if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
