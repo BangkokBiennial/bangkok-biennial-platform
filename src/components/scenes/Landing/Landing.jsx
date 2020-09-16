@@ -66,7 +66,7 @@ const Landing = ({ firebase }) => {
           </ul>
           Ready to join BB2020? <Link to={SIGN_UP}> Create an account here </Link>
         </p> */}
-        <h5 className="landing__list-pavilion__title">List of the pending pavilion</h5>
+        <h5 className="landing__list-pavilion__title">List of the pending pavilions</h5>
         <div className="landing__list-pavilion__container">
         {
           pendingPavilions.map(pp => (
