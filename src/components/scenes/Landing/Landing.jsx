@@ -49,7 +49,7 @@ const Landing = ({ firebase }) => {
   return (
     <CursorProvider>
       <div className="landing__container">
-        <h2 className="landing__title__main"> BANGKOK BIENNAL </h2>
+        <h2 className="landing__title__main"> BANGKOK BIENNIAL </h2>
         <h4 className="landing__title__secondary">Platform</h4>
         {/* <p className="landing__text-content">
           Welcome to Bangkok Biennial 2020’s Pavilion Platform! This is where 
