@@ -124,6 +124,22 @@ class Firebase {
   getPavilionAdvanceInfo = () => this.db.collection('pavilion-advance-info').get()
 
   getPavilionBasicInfo = () => this.db.collection('pavilion-basic').get()
+
+  approvePavilion = (data, uid) => {
+    const publicRef = this.db.collection('pavilion-public').doc(uid)
+    const pendingRef = this.db.collection('pavilion-advance-info').doc(uid)
+    const batch = this.db.batch()
+    batch.set(publicRef, data)
+    batch.update(pendingRef, {"status": "approved"});
+    batch.commit()
+  }
+
+  declinePavilion = (uid) => {
+    const pendingRef = this.db.collection('pavilion-advance-info').doc(uid)
+    const batch = this.db.batch()
+    batch.update(pendingRef, {"status": "declined"});
+    batch.commit()
+  }
 }
 
 let firebase;

@@ -1,18 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import { Collapse } from 'react-collapse';
 import { withFirebase } from '../../../utils/Firebase'
+import { useToasts } from 'react-toast-notifications'
 import Loading from '../../atoms/Loading'
+import moment from 'moment'
+import Button from '../../atoms/Button';
 
 const AdminPanel = ({ firebase }) => {
 
   const [_initFirebase, setInitFirebase] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState([])
+  const [pavilion, setPavilion] = useState([])
   const [isOpen, setIsOpen] = useState([])
+
+  const { addToast } = useToasts()
+
+  const fetch = async () => {
+    setLoading(true)
+    try {
+      const pavilionAdvanceInfoSnapshot = await firebase.getPavilionAdvanceInfo()
+      const pavilionData = []
+      pavilionAdvanceInfoSnapshot.forEach((pavilionAdvanceInfo => {     
+        pavilionData.push({ id: pavilionAdvanceInfo.id, ...pavilionAdvanceInfo.data() })
+      }))
+      const pd = await Promise.all(pavilionData.map(async (p) => {
+        const userDataSnapshot = await firebase.getUser(p.id)
+        return {
+          ...p,
+          userInformation: userDataSnapshot.data()
+        }
+      }))
+      const finalPavilionData = await Promise.all(pd.map(async (pavilion) => {
+        const posterWithPics = await Promise.all(pavilion.posters.map(async (poster) => {
+          const url = await firebase.downloadImage(poster.fullPath)
+          return {
+            ...poster,
+            url,
+          }
+        }))
+        const artistWithPics = await Promise.all(pavilion.artists.map(async (artist) => {
+          const url = await firebase.downloadImage(artist.workImageUrl.fullPath)
+          return {
+            ...artist,
+            workImageUrl: {
+              ...artist.workImageUrl,
+              url
+            },
+          }
+        }))
+        return {
+          ...pavilion,
+          artists: artistWithPics,
+          posters: posterWithPics
+        }
+      }))
+      setPavilion(finalPavilionData)
+      setIsOpen(pavilionData.map(() => false))
+
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
 
   const handleSetIsOpen = (index) => {
     const newIsOpen = isOpen.map((a, i) => i === index ? !a : a)
     setIsOpen(newIsOpen)
+  }
+
+  const handleApprove = async (pavilionIndex) => {
+    setLoading(true)
+    try {
+      const pavilionData = pavilion[pavilionIndex]
+      await firebase.approvePavilion(pavilionData, pavilionData.id)
+      addToast('Successfully approved', { appearance: 'success' })
+      setLoading(false)
+      await fetch()
+    } catch (error) {
+      setLoading(false)
+      addToast(`${error.message}`, { appearance: 'error', autoDismiss: false })
+    }
+  }
+
+  const handleDecline = async (pavilionIndex) => {
+    setLoading(true)
+    try {
+      const pavilionData = pavilion[pavilionIndex]
+      await firebase.declinePavilion(pavilionData.id)
+      addToast('Successfully declined', { appearance: 'success' })
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      addToast(`${error.message}`, { appearance: 'error', autoDismiss: false })
+    }
   }
 
   useEffect(() => {
@@ -24,56 +106,6 @@ const AdminPanel = ({ firebase }) => {
 
   useEffect(() => {
     if (firebase) {
-      const fetch = async () => {
-        setLoading(true)
-        try {
-          const pavilionAdvanceInfoSnapshot = await firebase.getPavilionAdvanceInfo()
-          const pavilionData = []
-          pavilionAdvanceInfoSnapshot.forEach((pavilionAdvanceInfo => {     
-            pavilionData.push({ id: pavilionAdvanceInfo.id, ...pavilionAdvanceInfo.data() })
-          }))
-          const pd = await Promise.all(pavilionData.map(async (p) => {
-            const userDataSnapshot = await firebase.getUser(p.id)
-            return {
-              ...p,
-              userInformation: userDataSnapshot.data()
-            }
-          }))
-          const finalPavilionData = await Promise.all(pd.map(async (pavilion) => {
-            const posterWithPics = await Promise.all(pavilion.posters.map(async (poster) => {
-              const url = await firebase.downloadImage(poster.fullPath)
-              return {
-                ...poster,
-                url,
-              }
-            }))
-            const artistWithPics = await Promise.all(pavilion.artists.map(async (artist) => {
-              const url = await firebase.downloadImage(artist.workImageUrl.fullPath)
-              return {
-                ...artist,
-                workImageUrl: {
-                  ...artist.workImageUrl,
-                  url
-                },
-              }
-            }))
-            return {
-              ...pavilion,
-              artists: artistWithPics,
-              posters: posterWithPics
-            }
-          }))
-          console.log(finalPavilionData)
-          setData(finalPavilionData)
-          setIsOpen(pavilionData.map(() => false))
-
-          setLoading(false)
-        } catch (error) {
-          console.log(error)
-          setLoading(false)
-        }
-      }
-
       fetch()
     }
   }, [firebase])
@@ -89,11 +121,23 @@ const AdminPanel = ({ firebase }) => {
   return (
     <div className="admin-panel">
       {
-        data && data.map((proposal, pIndex) => {
+        pavilion && pavilion.map((proposal, pIndex) => {
           return (<>
-            <p className="admin-panel__toggle" onClick={() => handleSetIsOpen(pIndex)}>
-              {isOpen[pIndex] ? '▼' : '►'} {proposal.userInformation.username}: {proposal.userInformation.email}
-            </p>
+            <div className="admin-panel__toggle" onClick={() => handleSetIsOpen(pIndex)}>
+              <div className="admin-panel__toggle__label">
+                {isOpen[pIndex] ? '▼' : '►'} {proposal.userInformation.username}: {proposal.userInformation.email}
+              </div>
+              {
+                proposal.status === "approved"
+                  ? <div className="admin-panel__approved-text">approved</div>
+                  : proposal.status === "declined"
+                    ? <div className="admin-panel__declined-text">declined</div>
+                    : <>
+                        <button onClick={() => handleApprove(pIndex)}>Approve</button>
+                        <button onClick={() => handleDecline(pIndex)}>Decline</button>
+                    </>
+              }
+            </div>
             <Collapse isOpened={isOpen[pIndex]}>
               <div className="admin-panel__content" key={`proposal-${proposal.id}`}>
                 {

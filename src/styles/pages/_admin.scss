@@ -16,9 +16,21 @@
     */
     -ms-user-select: none;
     user-select: none;
-    &:hover {
-      color: $color-secondary;
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    &__label {
+      word-break: keep-all;
     }
+  }
+
+  &__approved-text {
+    color: $color-approve;
+  }
+
+  &__declined-text {
+    color: $color-dangerous;
   }
 
   &__content {
