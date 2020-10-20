@@ -143,8 +143,8 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <h2 className="home__title">Status of Pavilion Registration: </h2>
         <h4> { getStatus(user.registrationStatus)} </h4>
       </div>
-      {/* { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
-          && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />} */}
+      { user.registrationStatus !== RegistrationStatus.FINISHED_ADVANCE 
+          && <Button style={{ width: '200px', float: 'left' }} onClick={handleOnClick} text="Register" />}
       {
         user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
           && (

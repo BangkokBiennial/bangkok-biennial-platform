@@ -252,38 +252,46 @@ const AdminPanel = ({ firebase }) => {
                   )
                 }
                 <div className="admin-panel__container">
-                  <h2>shortTextOpenCalls</h2>
+                  <h2>short Text OpenCalls</h2>
                   <p>{proposal.shortTextOpenCalls}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <h2>streetAddress</h2>
+                  <h2>street Address</h2>
                   <p>{proposal.streetAddress}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <h2>submissionRequirements</h2>
+                  <h2>submission Requirements</h2>
                   <p>{proposal.submissionRequirements}</p>
                 </div>
                 {
                   proposal.supportMaterials && (
                     <div className="admin-panel__container">
-                      <h2>supportMaterials</h2>
+                      <h2>support Materials</h2>
                       { proposal.supportMaterials.map(supportMaterial => (<p key={`supportMaterial-${supportMaterial.name}`}>{supportMaterial.name}</p>)) }
                     </div>
                   )
                 }
                 <div className="admin-panel__container">
-                  <h2>telephoneNumber</h2>
+                  <h2>start date</h2>
+                  <p>{moment(proposal.startDate, 'x').format('DD MMM YYYY')}</p>
+                </div>
+                <div className="admin-panel__container">
+                  <h2>end date</h2>
+                  <p>{moment(proposal.endDate, 'x').format('DD MMM YYYY')}</p>
+                </div>
+                <div className="admin-panel__container">
+                  <h2>telephone Number</h2>
                   <p>{proposal.telephoneNumber}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <h2>venueLocation</h2>
+                  <h2>venue Location</h2>
                   <p>{proposal.venueLocation}</p>
                 </div>
                 <div className="admin-panel__container">
-                  <h2>videoMaterial</h2>
+                  <h2>video Material</h2>
                   <p>{proposal.videoMaterial}</p>
                 </div>
-              </div>
+              </div>   x  xq
             </Collapse>
           </>)
         })

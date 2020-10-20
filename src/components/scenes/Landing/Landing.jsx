@@ -51,7 +51,7 @@ const Landing = ({ firebase }) => {
       <div className="landing__container">
         <h2 className="landing__title__main"> BANGKOK BIENNIAL </h2>
         <h4 className="landing__title__secondary">Platform</h4>
-        {/* <p className="landing__text-content">
+        <p className="landing__text-content">
           Welcome to Bangkok Biennial 2020’s Pavilion Platform! This is where 
           you register a pavilion to be part of “BB2020”. 
           There are a few steps in the process of registering and you will need to prepare 
@@ -65,7 +65,7 @@ const Landing = ({ firebase }) => {
             <li> 3. complete the full information on the last page (this third step can be saved and edited up until you press “submit” </li>
           </ul>
           Ready to join BB2020? <Link to={SIGN_UP}> Create an account here </Link>
-        </p> */}
+        </p>
         <h5 className="landing__list-pavilion__title">List of the pending pavilions</h5>
         <div className="landing__list-pavilion__container">
         {
