@@ -4,7 +4,6 @@ import { withFirebase } from '../../../utils/Firebase'
 import { useToasts } from 'react-toast-notifications'
 import Loading from '../../atoms/Loading'
 import moment from 'moment'
-import Button from '../../atoms/Button';
 
 const AdminPanel = ({ firebase }) => {
 

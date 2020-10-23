@@ -4,12 +4,47 @@ import { SIGN_UP } from '../../../constants/routes';
 import { CursorProvider } from '../../../utils/withCursor'
 import { withFirebase } from '../../../utils/Firebase';
 import Loading from '../../atoms/Loading'
-
+import { useToasts } from 'react-toast-notifications'
+import { transformToPublicThumbnails } from '../../../utils/transform'
+ 
 const Landing = ({ firebase }) => {
+
+  const { addToast } = useToasts();
 
   const [_initFirebase, setInitFirebase] = useState(false)
   const [loading, setLoading] = useState(true);
   const [pendingPavilions, setPendingPavilions] = useState([]);
+  const [publicPavilionThumbnails, setPublicPavilionThumbnails] = useState([]);
+
+  const fetchPublicPavilion = async () => {
+    setLoading(true)
+    try {
+      const publicPavilionSnapshot = await firebase.getPavilionPublicInfo();
+      const publicPavilionData = publicPavilionSnapshot.docs.map(b => b.data())
+      const pavilionThumbnails = transformToPublicThumbnails(publicPavilionData)
+
+      setPublicPavilionThumbnails(pavilionThumbnails)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      addToast(`${error.message}`, { appearance: 'error', autoDismiss: false })
+    }
+    
+  }
+
+  const fetchPendingPavilion = async () => {
+    setLoading(true)
+    try {
+      const basicInfoPavilionSnapshot = await firebase.getPavilionBasicInfo();
+      const basicPavilionInfoData = basicInfoPavilionSnapshot.docs.map(b => b.data())
+
+      setPendingPavilions(basicPavilionInfoData)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      addToast(`${error.message}`, { appearance: 'error', autoDismiss: false })
+    } 
+  }
 
   useEffect(() => {
     if (firebase && !_initFirebase) {
@@ -20,22 +55,9 @@ const Landing = ({ firebase }) => {
 
   useEffect(() => {
     if (firebase) {
-      const fetch = async () => {
-        setLoading(true)
-        try {
-          const basicInfoSnapshot = await firebase.getPavilionBasicInfo();
-          const basicInfoData = basicInfoSnapshot.docs.map(b => b.data())
-          setPendingPavilions(basicInfoData)
-          console.log(basicInfoData)
-          setLoading(false)
-        } catch (err) {
-          setLoading(false)
-          console.log(err)
-        } 
-      }
-      fetch()
+      fetchPendingPavilion()
+      fetchPublicPavilion()
     }
-
   }, [firebase])
 
   if (loading) {
@@ -66,6 +88,17 @@ const Landing = ({ firebase }) => {
           </ul>
           Ready to join BB2020? <Link to={SIGN_UP}> Create an account here </Link>
         </p>
+        <h5 className="landing__list-pavilion__title">Pavilions list</h5>
+        <div className="landing__list-pavilion__container">
+          {
+            publicPavilionThumbnails.map(pt => (
+              <div className="landing__thumbnail__component">
+                <p className="landing__thumbnail__topic"> Pavilion Name </p>
+                <p className="landing__thumbnail__text">{pt.name}</p>
+              </div>
+            ))
+          }
+        </div>
         <h5 className="landing__list-pavilion__title">List of the pending pavilions</h5>
         <div className="landing__list-pavilion__container">
         {

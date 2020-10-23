@@ -119,11 +119,12 @@ class Firebase {
 
   savePavilionAdvanceInfo = (data, uid) => this.db.collection('pavilion-advance-info').doc(uid).set(data)
 
+  // *** public ****
+  getPavilionBasicInfo = () => this.db.collection('pavilion-basic').get()
+  getPavilionPublicInfo = () => this.db.collection('pavilion-public').get()
 
   // ** use for admin only **
   getPavilionAdvanceInfo = () => this.db.collection('pavilion-advance-info').get()
-
-  getPavilionBasicInfo = () => this.db.collection('pavilion-basic').get()
 
   approvePavilion = (data, uid) => {
     const publicRef = this.db.collection('pavilion-public').doc(uid)
