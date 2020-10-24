@@ -1,53 +1,53 @@
-import React from 'react';
-import { navigate } from 'gatsby';
+import React from 'react'
+import { navigate } from 'gatsby'
 
-import AuthUserContext from './context';
-import { withFirebase } from '../Firebase';
-import { SIGN_IN, ADMIN } from '../../constants/routes';
+import AuthUserContext from './context'
+import { withFirebase } from '../Firebase'
+import { SIGN_IN, ADMIN } from '../../constants/routes'
 
-const withAuthorization = condition => Component => {
+const withAuthorization = (condition) => (Component) => {
   class WithAuthorization extends React.Component {
-    _initFirebase = false;
+    _initFirebase = false
 
     firebaseInit = () => {
       if (this.props.firebase && !this._initFirebase) {
-        this._initFirebase = true;
+        this._initFirebase = true
 
         this.listener = this.props.firebase.onAuthUserListener(
-          authUser => {
+          (authUser) => {
             if (!condition(authUser)) {
-              navigate(SIGN_IN);
+              navigate(SIGN_IN)
             }
           },
           () => navigate(SIGN_IN),
-        );
+        )
       }
-    };
+    }
 
     componentDidMount() {
-      this.firebaseInit();
+      this.firebaseInit()
     }
 
     componentDidUpdate() {
-      this.firebaseInit();
+      this.firebaseInit()
     }
 
     componentWillUnmount() {
-      this.listener && this.listener();
+      this.listener && this.listener()
     }
 
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser =>
+          {(authUser) =>
             condition(authUser) ? <Component {...this.props} /> : null
           }
         </AuthUserContext.Consumer>
-      );
+      )
     }
   }
 
-  return withFirebase(WithAuthorization);
-};
+  return withFirebase(WithAuthorization)
+}
 
-export default withAuthorization;
+export default withAuthorization

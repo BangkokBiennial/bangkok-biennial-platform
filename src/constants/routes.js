@@ -1,10 +1,10 @@
-export const LANDING = '/';
-export const SIGN_UP = '/signup';
-export const SIGN_IN = '/signin';
-export const ACCOUNT = '/account';
-export const PASSWORD_FORGET = '/pw-forget';
-export const ADMIN = '/admin';
-export const ADMIN_DETAILS = '/admin/:id';
+export const LANDING = '/'
+export const SIGN_UP = '/signup'
+export const SIGN_IN = '/signin'
+export const ACCOUNT = '/account'
+export const PASSWORD_FORGET = '/pw-forget'
+export const ADMIN = '/admin'
+export const ADMIN_DETAILS = '/admin/:id'
 export const REGISTRATION_STATUS = '/registration-status'
 export const PAVILION_INFO_REGISTER = '/pavilion-register'
 export const PAVILION_DETAIL_REGISTER = '/pavilion-detail-register'

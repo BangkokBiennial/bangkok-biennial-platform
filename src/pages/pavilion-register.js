@@ -1,26 +1,26 @@
-import React from 'react';
-import { compose } from 'recompose';
-import Layout from '../utils/layout';
-import { graphql } from 'gatsby';
+import React from 'react'
+import { compose } from 'recompose'
+import Layout from '../utils/layout'
+import { graphql } from 'gatsby'
 import {
   withAuthorization,
   withEmailVerification,
-} from '../utils/Session';
-import PavilionInfoRegister from '../components/scenes/PavilionRegistration/PavilionInfoRegister';
+} from '../utils/Session'
+import PavilionInfoRegister from '../components/scenes/PavilionRegistration/PavilionInfoRegister'
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser
 const PavilionInfoRegisterPage = compose(
   withEmailVerification,
   withAuthorization(condition),
-)(PavilionInfoRegister);
+)(PavilionInfoRegister)
 
 export default () => {
   return (
     <Layout>
       <PavilionInfoRegisterPage />
     </Layout>
-  );
-};
+  )
+}
 
 export const query = graphql`
   query PavilionInfoRegisterPageSeo {
@@ -37,4 +37,4 @@ export const query = graphql`
       }
     }
   }
-`;
+`

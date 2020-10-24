@@ -1,54 +1,51 @@
-import React from 'react';
+import React from 'react'
 
-import AuthUserContext from './context';
-import { withFirebase } from '../Firebase';
+import AuthUserContext from './context'
+import { withFirebase } from '../Firebase'
 
-const withAuthentication = Component => {
+const withAuthentication = (Component) => {
   class WithAuthentication extends React.Component {
-    _initFirebase = false;
+    _initFirebase = false
 
     constructor(props) {
-      super(props);
+      super(props)
 
       this.state = {
         authUser: null,
-      };
+      }
     }
 
     firebaseInit = () => {
       if (this.props.firebase && !this._initFirebase) {
-        this._initFirebase = true;
+        this._initFirebase = true
 
         this.listener = this.props.firebase.onAuthUserListener(
-          authUser => {
-            localStorage.setItem(
-              'authUser',
-              JSON.stringify(authUser),
-            );
-            this.setState({ authUser });
+          (authUser) => {
+            localStorage.setItem('authUser', JSON.stringify(authUser))
+            this.setState({ authUser })
           },
           () => {
-            localStorage.removeItem('authUser');
-            this.setState({ authUser: null });
+            localStorage.removeItem('authUser')
+            this.setState({ authUser: null })
           },
-        );
+        )
       }
-    };
+    }
 
     componentDidMount() {
       this.setState({
         authUser: JSON.parse(localStorage.getItem('authUser')),
-      });
+      })
 
-      this.firebaseInit();
+      this.firebaseInit()
     }
 
     componentDidUpdate() {
-      this.firebaseInit();
+      this.firebaseInit()
     }
 
     componentWillUnmount() {
-      this.listener && this.listener();
+      this.listener && this.listener()
     }
 
     render() {
@@ -56,11 +53,11 @@ const withAuthentication = Component => {
         <AuthUserContext.Provider value={this.state.authUser}>
           <Component {...this.props} />
         </AuthUserContext.Provider>
-      );
+      )
     }
   }
 
-  return withFirebase(WithAuthentication);
-};
+  return withFirebase(WithAuthentication)
+}
 
-export default withAuthentication;
+export default withAuthentication

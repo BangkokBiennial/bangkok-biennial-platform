@@ -1,55 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { navigate } from 'gatsby';
+import { navigate } from 'gatsby'
 
 import {
   PAVILION_INFO_REGISTER,
   REGISTRATION_STATUS,
   PAVILION_DETAIL_REGISTER,
-  ADMIN
-} from '../../../../constants/routes';
-import RegistrationStatus from '../../../../constants/registrationStatus';
+  ADMIN,
+} from '../../../../constants/routes'
+import RegistrationStatus from '../../../../constants/registrationStatus'
 
-import { FaGoogle } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa'
 
 const ERROR_CODE_ACCOUNT_EXISTS =
-  'auth/account-exists-with-different-credential';
+  'auth/account-exists-with-different-credential'
 
 const ERROR_MSG_ACCOUNT_EXISTS = `
   An account with an E-Mail address to
   this social account already exists. Try to login from
   this account instead and associate your social accounts on
   your personal account page.
-`;
+`
 
 const SignInGoogle = ({ firebase }) => {
   const [error, setError] = useState(null)
 
-  const onSubmit = async event => {
-    event.preventDefault();
+  const onSubmit = async (event) => {
+    event.preventDefault()
     try {
-      const socialAuthUser = await firebase
-        .doSignInWithGoogle()
+      const socialAuthUser = await firebase.doSignInWithGoogle()
 
-      const userSnapshot = await firebase.getUser(socialAuthUser.user.uid)
+      const userSnapshot = await firebase.getUser(
+        socialAuthUser.user.uid,
+      )
       const user = userSnapshot.data()
 
       if (!user) {
-        await firebase.user(socialAuthUser.user.uid)
-          .set({
-            username: socialAuthUser.user.displayName,
-            email: socialAuthUser.user.email,
-            roles: 'user',
-            registrationStatus: RegistrationStatus.NEW_USER
-          });
-          // await navigate(PAVILION_INFO_REGISTER);
-          await navigate(REGISTRATION_STATUS);
+        await firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.user.displayName,
+          email: socialAuthUser.user.email,
+          roles: 'user',
+          registrationStatus: RegistrationStatus.NEW_USER,
+        })
+        // await navigate(PAVILION_INFO_REGISTER);
+        await navigate(REGISTRATION_STATUS)
 
-          await setError(null);
-          return
+        await setError(null)
+        return
       }
-      
-      await setError(null);
+
+      await setError(null)
       if (user.roles === 'admin') {
         await navigate(ADMIN)
         return
@@ -57,23 +57,23 @@ const SignInGoogle = ({ firebase }) => {
       switch (user.registrationStatus) {
         case RegistrationStatus.FINISHED_BASIC:
           // await navigate(PAVILION_DETAIL_REGISTER);
-          await navigate(REGISTRATION_STATUS);
-          break;
+          await navigate(REGISTRATION_STATUS)
+          break
         case RegistrationStatus.FINISHED_ADVANCE:
-          await navigate(REGISTRATION_STATUS);
-          break;
+          await navigate(REGISTRATION_STATUS)
+          break
         default:
           // await navigate(PAVILION_INFO_REGISTER);
-          await navigate(REGISTRATION_STATUS);
-      } 
+          await navigate(REGISTRATION_STATUS)
+      }
     } catch (error) {
       if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-        error.message = ERROR_MSG_ACCOUNT_EXISTS;
+        error.message = ERROR_MSG_ACCOUNT_EXISTS
       }
       setError(error)
     }
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   return (
     <div className="login__content__providers__container">
@@ -85,9 +85,9 @@ const SignInGoogle = ({ firebase }) => {
           <FaGoogle />
         </button>
       </form>
-      { error &&  <p style={{ color: '#FC0000' }}>{error.message}</p> }
+      {error && <p style={{ color: '#FC0000' }}>{error.message}</p>}
     </div>
-  );
+  )
 }
 
 export default SignInGoogle

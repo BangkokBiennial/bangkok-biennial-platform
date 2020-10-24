@@ -1,6 +1,6 @@
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
 const Button = ({
   text = 'Submit',
@@ -9,7 +9,7 @@ const Button = ({
   onClick,
   className,
   children,
-  style
+  style,
 }) => {
   return (
     <button
@@ -21,21 +21,17 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {
-        children
-          ? <span>{children}</span>
-          : <span>{text}</span>
-      }
+      {children ? <span>{children}</span> : <span>{text}</span>}
     </button>
-  );
-};
+  )
+}
 
 Button.propTypes = {
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 Button.defaultProps = {
-  style: {}
+  style: {},
 }
 
-export default Button;
+export default Button

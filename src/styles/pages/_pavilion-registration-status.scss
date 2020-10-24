@@ -1,18 +1,17 @@
 .pavilion-registration-status {
-
   &____waiting-for-approval {
     margin-top: 30px;
     width: 50%;
-  
+
     &__text {
       font-size: 20px;
     }
-  
+
     > ul {
       list-style-type: circle;
       padding: 1rem;
     }
-  
+
     > ul > li {
       line-height: 1.5rem;
       margin: 0 0 1rem 0;

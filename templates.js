@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = [
   {
@@ -8,4 +8,4 @@ module.exports = [
     context: ['slug', 'title', 'description'], // the fields from the collection that will be requested at build time, then you can access the data from this.props.pageContext
     fileName: 'post', // the file from pages folder
   },
-];
+]

@@ -1,6 +1,6 @@
-import React from 'react';
-import { SIGN_IN, SIGN_UP } from '../../../../../../constants/routes';
-import { Link } from 'gatsby';
+import React from 'react'
+import { SIGN_IN, SIGN_UP } from '../../../../../../constants/routes'
+import { Link } from 'gatsby'
 
 const SignUpLink = ({ isRegister }) => (
   <p className="register__link">
@@ -14,6 +14,6 @@ const SignUpLink = ({ isRegister }) => (
       </>
     )}
   </p>
-);
+)
 
-export default SignUpLink;
+export default SignUpLink

@@ -1,6 +1,6 @@
-import React from 'react';
-import Input from '../../../atoms/Input';
-import Button from '../../../atoms/Button';
+import React from 'react'
+import Input from '../../../atoms/Input'
+import Button from '../../../atoms/Button'
 
 const PasswordForgetForm = ({
   onSubmit,
@@ -29,7 +29,7 @@ const PasswordForgetForm = ({
 
       {error && <p>{error.message}</p>}
     </form>
-  );
-};
+  )
+}
 
-export default PasswordForgetForm;
+export default PasswordForgetForm

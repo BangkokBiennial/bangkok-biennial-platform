@@ -232,7 +232,7 @@
       }
 
       &__error {
-        color: $color-dangerous
+        color: $color-dangerous;
       }
     }
 
@@ -242,7 +242,7 @@
     &__term-and-condition > a {
       text-decoration: none;
       color: $color-main;
-  
+
       &:hover {
         color: $color-secondary;
       }

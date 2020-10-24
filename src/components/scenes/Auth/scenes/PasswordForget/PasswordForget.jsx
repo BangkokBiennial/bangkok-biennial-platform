@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PasswordForgetForm from '../../../../molecules/PasswordForget/PasswordForget';
+import React, { Component } from 'react'
+import PasswordForgetForm from '../../../../molecules/PasswordForget/PasswordForget'
 
 class PasswordForget extends Component {
   render() {
@@ -8,8 +8,8 @@ class PasswordForget extends Component {
         <h1>PasswordForget</h1>
         <PasswordForgetForm />
       </div>
-    );
+    )
   }
 }
 
-export default PasswordForget;
+export default PasswordForget

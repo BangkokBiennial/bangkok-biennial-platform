@@ -31,7 +31,7 @@ jobs:
           command: npm run clean
       - run:
           name: build
-          command: npm run build 
+          command: npm run build
       - store_artifacts:
           path: ./public
       - run:
@@ -73,13 +73,13 @@ jobs:
           name: Firebase Deploy
           command: pwd && ls -la && ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --project bangkok-biennial
 workflows:
-    build-and-test:
-      jobs:
-        - deploy-dev
-        - hold:
-            type: approval
-            requires:
-                - deploy-dev
-        - deploy-prod:
-            requires:
-                - hold
+  build-and-test:
+    jobs:
+      - deploy-dev
+      - hold:
+          type: approval
+          requires:
+            - deploy-dev
+      - deploy-prod:
+          requires:
+            - hold

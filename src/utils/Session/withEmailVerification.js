@@ -1,45 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import AuthUserContext from './context';
-import { withFirebase } from '../Firebase';
-import Button from '../../components/atoms/Button';
-import Loading from '../../components/atoms/Loading';
- 
-const needsEmailVerification = authUser => {
-  return authUser &&
+import AuthUserContext from './context'
+import { withFirebase } from '../Firebase'
+import Button from '../../components/atoms/Button'
+import Loading from '../../components/atoms/Loading'
+
+const needsEmailVerification = (authUser) => {
+  return (
+    authUser &&
     !authUser.emailVerified &&
     authUser.providerData
-      .map(provider => provider.providerId)
-      .includes('password');
+      .map((provider) => provider.providerId)
+      .includes('password')
+  )
 }
-  
 
-const withEmailVerification = Component => {
+const withEmailVerification = (Component) => {
   const WithEmailVerification = (props) => {
-
     const [isSent, setIsSent] = useState(false)
 
     const onSendEmailVerification = async () => {
       await props.firebase.doSendEmailVerification()
-      setIsSent(true);
-    };
+      setIsSent(true)
+    }
 
     return (
       <AuthUserContext.Consumer>
-        {authUser =>
+        {(authUser) =>
           needsEmailVerification(authUser) ? (
             <div className="email-verification container">
               {isSent ? (
                 <p>
                   E-Mail confirmation sent: Check you E-Mails (Spam
-                  folder included) for a confirmation E-Mail.
-                  Refresh this page once you confirmed your E-Mail.
+                  folder included) for a confirmation E-Mail. Refresh
+                  this page once you confirmed your E-Mail.
                 </p>
               ) : (
                 <>
                   <p>
-                    E-Mail confirmation sent: please Check you E-Mails (Spam folder
-                    included) for a confirmation E-Mail or send another confirmation E-Mail.
+                    E-Mail confirmation sent: please Check you E-Mails
+                    (Spam folder included) for a confirmation E-Mail
+                    or send another confirmation E-Mail.
                   </p>
                   <Button
                     type="button"
@@ -56,10 +57,10 @@ const withEmailVerification = Component => {
           )
         }
       </AuthUserContext.Consumer>
-    );
+    )
   }
 
-  return withFirebase(WithEmailVerification);
-};
+  return withFirebase(WithEmailVerification)
+}
 
-export default withEmailVerification;
+export default withEmailVerification

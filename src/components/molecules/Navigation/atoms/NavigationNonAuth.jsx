@@ -1,6 +1,10 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import { LANDING, SIGN_IN, SIGN_UP } from '../../../../constants/routes';
+import React from 'react'
+import { Link } from 'gatsby'
+import {
+  LANDING,
+  SIGN_IN,
+  SIGN_UP,
+} from '../../../../constants/routes'
 
 const NavigationNonAuth = () => (
   <div className="navbar">
@@ -8,7 +12,9 @@ const NavigationNonAuth = () => (
       <div className="navbar__left">
         <div className="navbar__links">
           <div className="navbar__link">
-            <Link to={LANDING}><b>Bangkok Biennial</b></Link>
+            <Link to={LANDING}>
+              <b>Bangkok Biennial</b>
+            </Link>
           </div>
         </div>
       </div>
@@ -25,6 +31,6 @@ const NavigationNonAuth = () => (
       </div>
     </div>
   </div>
-);
+)
 
-export default NavigationNonAuth;
+export default NavigationNonAuth

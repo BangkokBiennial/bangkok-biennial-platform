@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   siteUrl: 'https://naughty-clarke-9af4d5.netlify.com',
@@ -31,8 +31,7 @@ module.exports = {
   author: {
     name: 'Bangkok Biennial, ThoughtWorks Arts TH',
     photo: '/photo.jpg',
-    bio:
-      '#',
+    bio: '#',
     contacts: {
       email: '#',
       telegram: '#',
@@ -42,4 +41,4 @@ module.exports = {
       vkontakte: '#',
     },
   },
-};
+}

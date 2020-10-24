@@ -1,7 +1,11 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import { LANDING, REGISTRATION_STATUS, ACCOUNT } from '../../../../constants/routes';
-import SignOutButton from './SignOutButton';
+import React from 'react'
+import { Link } from 'gatsby'
+import {
+  LANDING,
+  REGISTRATION_STATUS,
+  ACCOUNT,
+} from '../../../../constants/routes'
+import SignOutButton from './SignOutButton'
 
 const NavigationAuth = () => (
   <div className="navbar">
@@ -27,6 +31,6 @@ const NavigationAuth = () => (
       </div>
     </div>
   </div>
-);
+)
 
-export default NavigationAuth;
+export default NavigationAuth

@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-const siteConfig = require('./config.js');
+const siteConfig = require('./config.js')
 
 module.exports = {
   siteMetadata: {
@@ -34,4 +34,4 @@ module.exports = {
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-robots-txt`,
   ],
-};
+}

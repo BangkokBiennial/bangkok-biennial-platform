@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
-import { withFirebase } from '../../../../../../utils/Firebase';
-import { PAVILION_INFO_REGISTER, REGISTRATION_STATUS } from '../../../../../../constants/routes';
-import RegistrationStatus from '../../../../../../constants/registrationStatus';
-import { navigate } from 'gatsby';
-import Input from '../../../../../atoms/Input';
-import Button from '../../../../../atoms/Button';
+import React, { Component } from 'react'
+import { withFirebase } from '../../../../../../utils/Firebase'
+import {
+  PAVILION_INFO_REGISTER,
+  REGISTRATION_STATUS,
+} from '../../../../../../constants/routes'
+import RegistrationStatus from '../../../../../../constants/registrationStatus'
+import { navigate } from 'gatsby'
+import Input from '../../../../../atoms/Input'
+import Button from '../../../../../atoms/Button'
 import Loading from '../../../../../atoms/Loading'
 
 const INITIAL_STATE = {
@@ -14,10 +17,10 @@ const INITIAL_STATE = {
   passwordTwo: '',
   isAdmin: false,
   error: null,
-  loading: false
-};
+  loading: false,
+}
 
-const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
+const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use'
 
 const ERROR_MSG_ACCOUNT_EXISTS = `
     An account with this E-Mail address already exists.
@@ -25,51 +28,54 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
     account is already used from one of the social logins, try
     to sign in with one of them. Afterward, associate your accounts
     on your personal account page.
-  `;
+  `
 
 class SignUpFormBase extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = { ...INITIAL_STATE };
+    this.state = { ...INITIAL_STATE }
   }
 
   onSubmit = async (event) => {
-    const { email, passwordOne } = this.state;
-    await this.setState({ loading: true });
+    const { email, passwordOne } = this.state
+    await this.setState({ loading: true })
     try {
-      const socialAuthUser = await this.props.firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
+      const socialAuthUser = await this.props.firebase.doCreateUserWithEmailAndPassword(
+        email,
+        passwordOne,
+      )
       await this.props.firebase.user(socialAuthUser.user.uid).set({
         username: this.state.username,
         email: socialAuthUser.user.email,
         roles: 'user',
-        registrationStatus: RegistrationStatus.NEW_USER
-      });
+        registrationStatus: RegistrationStatus.NEW_USER,
+      })
       await this.props.firebase.doSendEmailVerification()
       await this.setState({ ...INITIAL_STATE })
-      await this.setState({ loading: false });
-      
-      // navigate(PAVILION_INFO_REGISTER);
-      navigate(REGISTRATION_STATUS);
+      await this.setState({ loading: false })
 
-      event.preventDefault();
+      // navigate(PAVILION_INFO_REGISTER);
+      navigate(REGISTRATION_STATUS)
+
+      event.preventDefault()
     } catch (error) {
       if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-        error.message = ERROR_MSG_ACCOUNT_EXISTS;
+        error.message = ERROR_MSG_ACCOUNT_EXISTS
       }
       console.log(error)
 
-      await this.setState({ loading: false, error });
+      await this.setState({ loading: false, error })
     }
-  };
+  }
 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
 
-  onChangeCheckbox = event => {
-    this.setState({ [event.target.name]: event.target.checked });
-  };
+  onChangeCheckbox = (event) => {
+    this.setState({ [event.target.name]: event.target.checked })
+  }
 
   render() {
     const {
@@ -78,13 +84,13 @@ class SignUpFormBase extends Component {
       passwordOne,
       passwordTwo,
       error,
-    } = this.state;
+    } = this.state
 
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      username === ''
 
     return (
       <div>
@@ -131,14 +137,22 @@ class SignUpFormBase extends Component {
           onClick={this.onSubmit}
           style={{ height: '60px' }}
         >
-          { this.state.loading ? <Loading size={24} containerStyle={{ marginTop: '-10px' }}/> : 'sign up'}
+          {this.state.loading ? (
+            <Loading
+              size={24}
+              containerStyle={{ marginTop: '-10px' }}
+            />
+          ) : (
+            'sign up'
+          )}
         </Button>
 
-        
-        {error && <p class="register__form__error">{error.message}</p>}
+        {error && (
+          <p class="register__form__error">{error.message}</p>
+        )}
       </div>
-    );
+    )
   }
 }
 
-export default withFirebase(SignUpFormBase);
+export default withFirebase(SignUpFormBase)

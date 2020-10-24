@@ -1,9 +1,9 @@
-import React from 'react';
-import Layout from '../utils/layout';
-import SignUp from '../components/scenes/Auth/scenes/SignUp/SignUp';
+import React from 'react'
+import Layout from '../utils/layout'
+import SignUp from '../components/scenes/Auth/scenes/SignUp/SignUp'
 
 export default () => (
   <Layout>
     <SignUp />
   </Layout>
-);
+)

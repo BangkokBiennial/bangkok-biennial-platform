@@ -1,4 +1,6 @@
-export const transformToPublicThumbnails = (firebasePublicPavilions) => {
+export const transformToPublicThumbnails = (
+  firebasePublicPavilions,
+) => {
   return firebasePublicPavilions.map((firebasePublicPavilion) => {
     return {
       name: firebasePublicPavilion.pavilionWebsite,

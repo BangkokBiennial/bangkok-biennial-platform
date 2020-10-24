@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { withFirebase } from '../../../../../utils/Firebase';
-import SocialLoginToggle from './atoms/SocialLoginToggle';
+import { withFirebase } from '../../../../../utils/Firebase'
+import SocialLoginToggle from './atoms/SocialLoginToggle'
 import {
   FaGithub,
   FaFacebookF,
   FaGoogle,
   FaTwitter,
-} from 'react-icons/fa';
+} from 'react-icons/fa'
 
 const SIGN_IN_METHODS = [
   {
@@ -22,72 +22,72 @@ const SIGN_IN_METHODS = [
   //   name: 'facebook',
   //   Icon: FaFacebookF,
   // },
-];
+]
 
 class LoginManagement extends Component {
-  _initFirebase = false;
+  _initFirebase = false
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       activeSignInMethods: [],
       error: null,
-    };
+    }
   }
 
   firebaseInit = () => {
     if (this.props.firebase && !this._initFirebase) {
-      this._initFirebase = true;
+      this._initFirebase = true
 
-      this.fetchSignInMethods();
+      this.fetchSignInMethods()
     }
-  };
+  }
 
   componentDidMount() {
-    this.firebaseInit();
+    this.firebaseInit()
   }
 
   componentDidUpdate() {
-    this.firebaseInit();
+    this.firebaseInit()
   }
 
   fetchSignInMethods = () => {
     this.props.firebase.auth
       .fetchSignInMethodsForEmail(this.props.authUser.email)
-      .then(activeSignInMethods =>
+      .then((activeSignInMethods) =>
         this.setState({ activeSignInMethods, error: null }),
       )
-      .catch(error => this.setState({ error }));
-  };
+      .catch((error) => this.setState({ error }))
+  }
 
-  onSocialLoginLink = provider => {
+  onSocialLoginLink = (provider) => {
     this.props.firebase.auth.currentUser
       .linkWithPopup(this.props.firebase[provider])
       .then(this.fetchSignInMethods)
-      .catch(error => this.setState({ error }));
-  };
+      .catch((error) => this.setState({ error }))
+  }
 
-  onUnlink = providerId => {
+  onUnlink = (providerId) => {
     this.props.firebase.auth.currentUser
       .unlink(providerId)
       .then(this.fetchSignInMethods)
-      .catch(error => this.setState({ error }));
-  };
+      .catch((error) => this.setState({ error }))
+  }
 
   render() {
-    const { activeSignInMethods, error } = this.state;
-    const { className } = this.props;
+    const { activeSignInMethods, error } = this.state
+    const { className } = this.props
 
     return (
       <div className={className}>
         <p>Sign In Methods</p>
         <div>
-          {SIGN_IN_METHODS.map(signInMethod => {
-            const onlyOneLeft = activeSignInMethods.length === 1;
+          {SIGN_IN_METHODS.map((signInMethod) => {
+            const onlyOneLeft = activeSignInMethods.length === 1
             const isEnabled = activeSignInMethods.includes(
               signInMethod.id,
-            );
+            )
 
             return (
               <div key={signInMethod.id}>
@@ -99,13 +99,13 @@ class LoginManagement extends Component {
                   onUnlink={this.onUnlink}
                 />
               </div>
-            );
+            )
           })}
         </div>
         {error && error.message}
       </div>
-    );
+    )
   }
 }
 
-export default withFirebase(LoginManagement);
+export default withFirebase(LoginManagement)

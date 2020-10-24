@@ -1,8 +1,8 @@
-import React from 'react';
-import SignUpFormBase from './molecules/SignUpFormBase';
-import SignInGoogle from '../../molecules/SignInGoogle';
-import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink';
-import { Link } from 'gatsby';
+import React from 'react'
+import SignUpFormBase from './molecules/SignUpFormBase'
+import SignInGoogle from '../../molecules/SignInGoogle'
+import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink'
+import { Link } from 'gatsby'
 import { TERM_AND_CONDITION } from '../../../../../constants/routes'
 
 const SignUp = () => {
@@ -21,16 +21,17 @@ const SignUp = () => {
             </div>
             <div className="register__content__or">
               <span className="register__content__or__line" />
-              <span className="register__content__or__text">
-                or
-              </span>
+              <span className="register__content__or__text">or</span>
               <span className="register__content__or__line" />
             </div>
             <div className="register__content__providers">
               <SignInGoogle />
             </div>
             <div className="register__content__term-and-condition">
-              <Link to={TERM_AND_CONDITION}> TERM AND CONDITIONS </Link>
+              <Link to={TERM_AND_CONDITION}>
+                {' '}
+                TERM AND CONDITIONS{' '}
+              </Link>
             </div>
             <div className="register__content__register">
               <SignUpLink />
@@ -39,7 +40,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default SignUp;
+export default SignUp

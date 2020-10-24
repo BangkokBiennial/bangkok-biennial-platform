@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
-import Layout from '../utils/layout';
-import PostBase from '../components/scenes/Post/Post';
-import { compose } from 'recompose';
+import React, { Component } from 'react'
+import Layout from '../utils/layout'
+import PostBase from '../components/scenes/Post/Post'
+import { compose } from 'recompose'
 import {
   withAuthorization,
   withEmailVerification,
-} from '../utils/Session';
+} from '../utils/Session'
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser
 
 const PostPage = compose(
   withEmailVerification,
   withAuthorization(condition),
-)(PostBase);
+)(PostBase)
 
 export class Post extends Component {
   render() {
     const {
       pageContext: { title, description, slug },
       uri,
-    } = this.props;
+    } = this.props
 
-    const uriItems = uri.split('/');
+    const uriItems = uri.split('/')
 
-    const uriSlug = uriItems[uriItems.length - 1];
+    const uriSlug = uriItems[uriItems.length - 1]
 
-    const isLoaded = uriSlug === slug;
+    const isLoaded = uriSlug === slug
 
     return (
       <Layout>
@@ -36,8 +36,8 @@ export class Post extends Component {
           isLoaded={isLoaded}
         />
       </Layout>
-    );
+    )
   }
 }
 
-export default Post;
+export default Post

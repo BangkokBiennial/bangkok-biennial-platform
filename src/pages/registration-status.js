@@ -1,22 +1,22 @@
-import React from 'react';
-import { compose } from 'recompose';
-import Layout from '../utils/layout';
+import React from 'react'
+import { compose } from 'recompose'
+import Layout from '../utils/layout'
 import {
   withAuthorization,
   withEmailVerification,
-} from '../utils/Session';
-import PavilionRegistrationStatus from '../components/scenes/PavilionRegistration/PavilionRegistrationStatus';
+} from '../utils/Session'
+import PavilionRegistrationStatus from '../components/scenes/PavilionRegistration/PavilionRegistrationStatus'
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser
 const PavilionRegistrationStatusPage = compose(
   withEmailVerification,
   withAuthorization(condition),
-)(PavilionRegistrationStatus);
+)(PavilionRegistrationStatus)
 
 export default () => {
   return (
     <Layout>
       <PavilionRegistrationStatusPage />
     </Layout>
-  );
-};
+  )
+}

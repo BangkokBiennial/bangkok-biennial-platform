@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import Input from '../../../../../atoms/Input';
-import Button from '../../../../../atoms/Button';
+import React, { Component } from 'react'
+import Input from '../../../../../atoms/Input'
+import Button from '../../../../../atoms/Button'
 
 class DefaultLoginToggle extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = { passwordOne: '', passwordTwo: '' };
+    this.state = { passwordOne: '', passwordTwo: '' }
   }
 
-  onSubmit = event => {
-    event.preventDefault();
+  onSubmit = (event) => {
+    event.preventDefault()
 
-    this.props.onLink(this.state.passwordOne);
-    this.setState({ passwordOne: '', passwordTwo: '' });
-  };
+    this.props.onLink(this.state.passwordOne)
+    this.setState({ passwordOne: '', passwordTwo: '' })
+  }
 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
 
   render() {
     const {
@@ -26,12 +26,12 @@ class DefaultLoginToggle extends Component {
       isEnabled,
       signInMethod,
       onUnlink,
-    } = this.props;
+    } = this.props
 
-    const { passwordOne, passwordTwo } = this.state;
+    const { passwordOne, passwordTwo } = this.state
 
     const isInvalid =
-      passwordOne !== passwordTwo || passwordOne === '';
+      passwordOne !== passwordTwo || passwordOne === ''
 
     return isEnabled ? (
       <button
@@ -67,8 +67,8 @@ class DefaultLoginToggle extends Component {
           text={`Link ${signInMethod.id}`}
         />
       </form>
-    );
+    )
   }
 }
 
-export default DefaultLoginToggle;
+export default DefaultLoginToggle

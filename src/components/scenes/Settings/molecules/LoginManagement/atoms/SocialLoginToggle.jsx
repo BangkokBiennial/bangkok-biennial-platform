@@ -1,5 +1,5 @@
-import React from 'react';
-import classNames from 'classnames';
+import React from 'react'
+import classNames from 'classnames'
 
 const SocialLoginToggle = ({
   onlyOneLeft,
@@ -30,6 +30,6 @@ const SocialLoginToggle = ({
     >
       {<signInMethod.Icon />}
     </button>
-  );
+  )
 
-export default SocialLoginToggle;
+export default SocialLoginToggle

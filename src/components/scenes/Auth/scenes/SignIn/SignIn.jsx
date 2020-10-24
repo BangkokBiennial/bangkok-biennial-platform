@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import SignInForm from '../../molecules/SignInForm';
-import SignInGoogle from '../../molecules/SignInGoogle';
-import { withFirebase } from '../../../../../utils/Firebase';
-import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink';
-import PasswordForgetLink from '../../../../molecules/PasswordForget/atoms/PasswordForgetLink';
+import SignInForm from '../../molecules/SignInForm'
+import SignInGoogle from '../../molecules/SignInGoogle'
+import { withFirebase } from '../../../../../utils/Firebase'
+import SignUpLink from '../../scenes/SignUp/atoms/SignUpLink'
+import PasswordForgetLink from '../../../../molecules/PasswordForget/atoms/PasswordForgetLink'
 import Loading from '../../../../atoms/Loading'
 
 const SignIn = ({ firebase }) => {
   const [_initFirebase, setInitFirebase] = useState(false)
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (firebase && !_initFirebase) {
@@ -21,7 +21,7 @@ const SignIn = ({ firebase }) => {
   if (loading) {
     return (
       <div className="home container">
-         <Loading />
+        <Loading />
       </div>
     )
   }
@@ -48,7 +48,7 @@ const SignIn = ({ firebase }) => {
               <span className="login__content__or__line" />
             </div>
             <div className="login__content__providers register__content__providers">
-                <SignInGoogle firebase={firebase} />
+              <SignInGoogle firebase={firebase} />
             </div>{' '}
             <div className="login__content__creator">
               <div className="login__content__creator__inner">
@@ -69,7 +69,7 @@ const SignIn = ({ firebase }) => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default withFirebase(SignIn);
+export default withFirebase(SignIn)
