@@ -1,12 +1,17 @@
 .admin-panel {
-  margin-top: 30px;
-  padding: 100px;
+  padding-top: 120px;
+  padding-left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 
   &__toggle {
     font-weight: 400;
     color: $color-main;
     font-size: 20px;
     cursor: pointer;
+    margin-top: 20px;
+
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -17,10 +22,14 @@
     */
     -ms-user-select: none;
     user-select: none;
-    width: 800px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
+    
+    &__action-btn {
+      margin-left: 30px;
+    }
+
     &__label {
       word-break: keep-all;
     }
@@ -28,10 +37,12 @@
 
   &__approved-text {
     color: $color-approve;
+    margin-left: 30px;
   }
 
   &__declined-text {
     color: $color-dangerous;
+    margin-left: 30px;
   }
 
   &__content {

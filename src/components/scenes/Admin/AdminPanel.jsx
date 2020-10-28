@@ -163,14 +163,14 @@ const AdminPanel = ({ firebase }) => {
                     declined
                   </div>
                 ) : (
-                  <>
+                  <div className="admin-panel__toggle__action-btn">
                     <button onClick={() => handleApprove(pIndex)}>
                       Approve
                     </button>
                     <button onClick={() => handleDecline(pIndex)}>
                       Decline
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
               <Collapse isOpened={isOpen[pIndex]}>
