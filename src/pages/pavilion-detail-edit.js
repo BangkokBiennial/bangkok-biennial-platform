@@ -5,18 +5,18 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../utils/Session'
-import PavilionInfoRegister from '../components/scenes/PavilionRegistration/PavilionInfoRegister'
+import PavilionDetailRegister from '../components/scenes/PavilionRegistration/PavilionDetailRegister'
 
 const condition = (authUser) => !!authUser
-const PavilionInfoRegisterPage = compose(
+const PavilionDetailRegisterPage = compose(
   withEmailVerification,
   withAuthorization(condition),
-)(PavilionInfoRegister)
+)(PavilionDetailRegister)
 
 export default () => {
   return (
     <Layout>
-      <PavilionInfoRegisterPage />
+      <PavilionDetailRegisterPage isPublic />
     </Layout>
   )
 }

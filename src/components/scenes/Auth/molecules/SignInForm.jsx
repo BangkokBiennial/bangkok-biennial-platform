@@ -4,8 +4,6 @@ import { navigate } from 'gatsby'
 
 import { withFirebase } from '../../../../utils/Firebase'
 import {
-  PAVILION_INFO_REGISTER,
-  PAVILION_DETAIL_REGISTER,
   REGISTRATION_STATUS,
   ADMIN,
 } from '../../../../constants/routes'

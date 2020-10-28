@@ -5,6 +5,7 @@ import 'firebase/functions'
 import 'firebase/storage'
 
 import config from '../../../firebaseConfig'
+import registrationStatus from '../../constants/registrationStatus'
 
 class Firebase {
   constructor() {
@@ -134,8 +135,14 @@ class Firebase {
   // *** public ****
   getPavilionBasicInfo = () =>
     this.db.collection('pavilion-basic').get()
+  getPavilionBasicInfoDetail = (uid) =>
+    this.db.collection('pavilion-basic').doc(uid).get()
   getPavilionPublicInfo = () =>
     this.db.collection('pavilion-public').get()
+  getPavilionPublicInfoDetail = (uid) =>
+    this.db.collection('pavilion-public').doc(uid).get()
+  savePublicPavilion = (data, uid) =>
+    this.db.collection('pavilion-public').doc(uid).set(data)
 
   // ** use for admin only **
   getPavilionAdvanceInfo = () =>
@@ -146,9 +153,11 @@ class Firebase {
     const pendingRef = this.db
       .collection('pavilion-advance-info')
       .doc(uid)
+    const userRef = this.db.collection('users').doc(uid)
     const batch = this.db.batch()
     batch.set(publicRef, data)
     batch.update(pendingRef, { status: 'approved' })
+    batch.update(userRef, { registrationStatus: registrationStatus.PUBLIC })
     batch.commit()
   }
 

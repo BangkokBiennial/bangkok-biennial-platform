@@ -3,7 +3,9 @@ export const transformToPublicThumbnails = (
 ) => {
   return firebasePublicPavilions.map((firebasePublicPavilion) => {
     return {
-      name: firebasePublicPavilion.pavilionWebsite,
+      website: firebasePublicPavilion.pavilionWebsite,
+      name: firebasePublicPavilion.pavilionName,
+      id: firebasePublicPavilion.id
     }
   })
 }

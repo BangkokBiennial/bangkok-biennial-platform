@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'gatsby'
+import { navigate } from 'gatsby'
 import { SIGN_UP } from '../../../constants/routes'
 import { CursorProvider } from '../../../utils/withCursor'
 import { withFirebase } from '../../../utils/Firebase'
@@ -126,13 +127,13 @@ const Landing = ({ firebase }) => {
         </h5>
         <div className="landing__list-pavilion__container">
           {publicPavilionThumbnails.map((pt) => (
-            <div className="landing__thumbnail__component">
+            <div onClick={() => navigate(`/pavilion-detail/${pt.id}`)} className="landing__thumbnail__component">
               <p className="landing__thumbnail__topic"> {pt.name}</p>
             </div>
           ))}
         </div>
         <h5 className="landing__list-pavilion__title">
-          List of the pending pavilions
+          Pending Pavilions List
         </h5>
         <div className="landing__list-pavilion__container">
           {pendingPavilions.map((pp) => (

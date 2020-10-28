@@ -10,7 +10,7 @@ import Button from '../../atoms/Button'
 import {
   PAVILION_INFO_REGISTER,
   PAVILION_DETAIL_REGISTER,
-  REGISTRATION_STATUS,
+  PAVILION_PUBLIC_EDIT,
 } from '../../../constants/routes'
 
 const PavilionRegistrationStatus = ({ firebase }) => {
@@ -59,8 +59,12 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       case RegistrationStatus.FINISHED_BASIC:
         navigate(PAVILION_DETAIL_REGISTER)
         break
+      case RegistrationStatus.PUBLIC:
+        navigate(PAVILION_PUBLIC_EDIT)
+        break
       default:
         navigate(PAVILION_INFO_REGISTER)
+        break
     }
   }
 
@@ -78,6 +82,8 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         return '2/3 - you finished the basic information. please wait for the next registration.'
       case RegistrationStatus.FINISHED_ADVANCE:
         return '3/3 - wait for the approval to go public.'
+      case RegistrationStatus.PUBLIC:
+        return 'your pavilion is approved! - you can edit the information by clicking below'
       default:
         return '1/3 - please wait for the next registration.'
     }
@@ -171,7 +177,7 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <Button
           style={{ width: '200px', float: 'left' }}
           onClick={handleOnClick}
-          text="Register"
+          text="proceed"
         />
       )}
       {user.registrationStatus ===

@@ -4,6 +4,7 @@ import { withFirebase } from '../../../utils/Firebase'
 import { useToasts } from 'react-toast-notifications'
 import Loading from '../../atoms/Loading'
 import moment from 'moment'
+import { omit } from 'lodash';
 
 const AdminPanel = ({ firebase }) => {
   const [_initFirebase, setInitFirebase] = useState(false)
@@ -85,8 +86,10 @@ const AdminPanel = ({ firebase }) => {
   const handleApprove = async (pavilionIndex) => {
     setLoading(true)
     try {
-      const pavilionData = pavilion[pavilionIndex]
-      await firebase.approvePavilion(pavilionData, pavilionData.id)
+      const pavilionAdvanceInfoData = omit(pavilion[pavilionIndex], ['userInformation'])
+      const pavilionBasic = await firebase.getPavilionBasicInfoDetail(pavilionAdvanceInfoData.id)
+      console.log(pavilionBasic.data())
+      await firebase.approvePavilion({ ...pavilionAdvanceInfoData, ...pavilionBasic.data() }, pavilionAdvanceInfoData.id)
       addToast('Successfully approved', { appearance: 'success' })
       setLoading(false)
       await fetch()
@@ -348,7 +351,6 @@ const AdminPanel = ({ firebase }) => {
                     <p>{proposal.videoMaterial}</p>
                   </div>
                 </div>{' '}
-                x xq
               </Collapse>
             </>
           )
