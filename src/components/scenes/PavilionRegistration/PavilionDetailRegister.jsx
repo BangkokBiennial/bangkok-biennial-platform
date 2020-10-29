@@ -193,44 +193,54 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
               }),
             )
 
-            await setLoadingPicArtist(artistImages)
+            setLoadingPicArtist(artistImages)
 
-            await Promise.all(
-              data.artists.map(async (artist, artistIndex) => {
-                await setValue(
-                  `artists[${artistIndex}].name`,
-                  artist.name,
-                )
-                await setValue(
-                  `artists[${artistIndex}].artistLink`,
-                  artist.artistLink,
-                )
-                await setValue(
-                  `artists[${artistIndex}].shortBio`,
-                  artist.shortBio,
-                )
-                artist.workImageUrl
-                  ? await setValue(
-                      `artists[${artistIndex}].workImageUrl`,
-                      artistImages[artistIndex].files,
-                    )
-                  : await setValue(
-                      `artists[${artistIndex}].workImageUrl`,
-                      '',
-                    )
-              }),
-            )
+            data.artists.forEach((artist, artistIndex) => {
+              setValue(
+                `artists[${artistIndex}].name`,
+                artist.name,
+              )
+              setValue(
+                `artists[${artistIndex}].artistLink`,
+                artist.artistLink,
+              )
+              setValue(
+                `artists[${artistIndex}].shortBio`,
+                artist.shortBio,
+              )
+              artist.workImageUrl
+                ? setValue(
+                    `artists[${artistIndex}].workImageUrl`,
+                    artistImages[artistIndex].files,
+                  )
+                : setValue(
+                    `artists[${artistIndex}].workImageUrl`,
+                    '',
+                  )
+            })
           }
 
           if (data.curators && data.curators.length > 0 && !fetched) {
-            data.curators.forEach((curator) => {
+            data.curators.forEach((curator, curatorIndex) => {
               Curators.append({
                 curators: {
-                  name: curator.name,
-                  curatorLink: curator.curatorLink,
-                  shortBio: curator.shortBio,
+                  name: "",
+                  curatorLink: "",
+                  shortBio: "",
                 },
               })
+              setValue(
+                `curators[${curatorIndex}].name`,
+                curator.name,
+              )
+              setValue(
+                `curators[${curatorIndex}].curatorLink`,
+                curator.curatorLink,
+              )
+              setValue(
+                `curators[${curatorIndex}].shortBio`,
+                curator.shortBio,
+              )
             })
           }
           if (
@@ -238,14 +248,26 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
             data.organizers.length > 0 &&
             !fetched
           ) {
-            data.organizers.forEach((organizer) => {
+            data.organizers.forEach((organizer, organizerIndex) => {
               Organizers.append({
                 organizers: {
-                  name: organizer.name,
-                  organizerLink: organizer.organizerLink,
-                  shortBio: organizer.shortBio,
+                  name: "",
+                  organizerLink: "",
+                  shortBio: "",
                 },
               })
+              setValue(
+                `organizers[${organizerIndex}].name`,
+                organizer.name,
+              )
+              setValue(
+                `organizers[${organizerIndex}].organizerLink`,
+                organizer.organizerLink,
+              )
+              setValue(
+                `organizers[${organizerIndex}].shortBio`,
+                organizer.shortBio,
+              )
             })
           }
           Object.keys(data).map(async (key) => {
@@ -878,13 +900,13 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
                     <Input
                       name={`organizers[${index}].organizerLink`}
                       type="text"
-                      labelName="Individual artist’s links (website, portfolio, etc)"
+                      labelName="Organizer’s links (website, portfolio, etc)"
                       reference={register()}
                     />
                     <Input
                       name={`organizers[${index}].shortBio`}
                       type="textarea"
-                      labelName="​Short Bio of each artist (Max 250 words)"
+                      labelName="​Short Bio of each organizer (Max 250 words)"
                       reference={register()}
                     />
                   </div>
