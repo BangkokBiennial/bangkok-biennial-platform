@@ -4,7 +4,8 @@ import { withFirebase } from '../../../utils/Firebase'
 import { useToasts } from 'react-toast-notifications'
 import Loading from '../../atoms/Loading'
 import moment from 'moment'
-import { omit } from 'lodash';
+import { omit } from 'lodash'
+import { transformDateLaunchToReadable } from '../../../constants/dateLaunch'
 
 const AdminPanel = ({ firebase }) => {
   const [_initFirebase, setInitFirebase] = useState(false)
@@ -88,7 +89,6 @@ const AdminPanel = ({ firebase }) => {
     try {
       const pavilionAdvanceInfoData = omit(pavilion[pavilionIndex], ['userInformation'])
       const pavilionBasic = await firebase.getPavilionBasicInfoDetail(pavilionAdvanceInfoData.id)
-      console.log(pavilionBasic.data())
       await firebase.approvePavilion({ ...pavilionAdvanceInfoData, ...pavilionBasic.data() }, pavilionAdvanceInfoData.id)
       addToast('Successfully approved', { appearance: 'success' })
       setLoading(false)
@@ -212,6 +212,16 @@ const AdminPanel = ({ firebase }) => {
                         </p>
                       ))}
                     </div>
+                  )}
+                  {proposal.userInformation.dateLaunch && (
+                    <div className="admin-panel__container">
+                    <h2>Date launch</h2>
+                    {
+                      proposal.userInformation.dateLaunch.map((launch) => (
+                        <p>{transformDateLaunchToReadable(launch)}</p>
+                      ))
+                    }
+                  </div>
                   )}
                   <div className="admin-panel__container">
                     <h2>audio Material</h2>

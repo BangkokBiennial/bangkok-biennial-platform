@@ -123,16 +123,17 @@ const Landing = ({ firebase }) => {
           <Link to={SIGN_UP}> Create an account here </Link>
         </p> */}
         <h5 className="landing__list-pavilion__title">
-          BB2020 1<sup>st</sup> phase pavilions (Oct 31<sup>st</sup>-Nov 21<sup>st</sup>, 2020)
+          BB2020 1<sup>st</sup> phase pavilions (Oct 31<sup>st</sup> - Nov 21<sup>st</sup>, 2020)
         </h5>
         <h6 className="landing__list-pavilion__subtitle">
           2<sup>nd</sup> & 3<sup>rd</sup> phase pavilions to follow 
-          (March 13<sup>th</sup>-April 3<sup>rd</sup> & Sept. 17<sup>th</sup>-Oct 9<sup>th</sup>, 2021)
+          (March 13<sup>th</sup> - April 3<sup>rd</sup> & Sept. 17<sup>th</sup> - Oct 9<sup>th</sup>, 2021)
         </h6>
         <div className="landing__list-pavilion__container">
           {publicPavilionThumbnails.map((pt) => (
             <div onClick={() => navigate(`/pavilion-detail/${pt.id}`)} className="landing__thumbnail__component">
               <p className="landing__thumbnail__topic"> {pt.name}</p>
+              <p className="landing__thumbnail__content"> {pt.description}</p>
             </div>
           ))}
         </div>

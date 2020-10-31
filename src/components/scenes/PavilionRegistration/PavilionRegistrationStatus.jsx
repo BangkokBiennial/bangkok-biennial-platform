@@ -12,6 +12,7 @@ import {
   PAVILION_DETAIL_REGISTER,
   PAVILION_PUBLIC_EDIT,
 } from '../../../constants/routes'
+import DateLaunch from '../../../constants/dateLaunch'
 
 const PavilionRegistrationStatus = ({ firebase }) => {
   const { addToast } = useToasts()
@@ -89,12 +90,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
     }
   }
 
-  const dateLaunch = {
-    OCT31_TO_NOV21_2020: 'OCT31_TO_NOV21_2020',
-    MAR13_TO_APR3_2021: 'MAR13_TO_APR3_2021',
-    SEP17_TO_OCT9_2021: 'SEP17_TO_OCT9_2021',
-    NONE_OF_THE_ABOVE: 'NONE_OF_THE_ABOVE',
-  }
 
   const isChecked = (date) => bbTakePlaced.find((el) => el === date)
   const toggle = (date) => {
@@ -132,26 +127,26 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       </p>
       <CheckBox
         disabled={!allowedToSubmit}
-        onClick={() => toggle(dateLaunch.OCT31_TO_NOV21_2020)}
-        value={isChecked(dateLaunch.OCT31_TO_NOV21_2020)}
+        onClick={() => toggle(DateLaunch.OCT31_TO_NOV21_2020)}
+        value={isChecked(DateLaunch.OCT31_TO_NOV21_2020)}
         staticLabel="Oct 31st-Nov 21st 2020"
       />
       <CheckBox
         disabled={!allowedToSubmit}
-        onClick={() => toggle(dateLaunch.MAR13_TO_APR3_2021)}
-        value={isChecked(dateLaunch.MAR13_TO_APR3_2021)}
+        onClick={() => toggle(DateLaunch.MAR13_TO_APR3_2021)}
+        value={isChecked(DateLaunch.MAR13_TO_APR3_2021)}
         staticLabel="March 13th-April 3rd 2021"
       />
       <CheckBox
         disabled={!allowedToSubmit}
-        onClick={() => toggle(dateLaunch.SEP17_TO_OCT9_2021)}
-        value={isChecked(dateLaunch.SEP17_TO_OCT9_2021)}
+        onClick={() => toggle(DateLaunch.SEP17_TO_OCT9_2021)}
+        value={isChecked(DateLaunch.SEP17_TO_OCT9_2021)}
         staticLabel="Sept 17th-Oct 9th  2021"
       />
       <CheckBox
         disabled={!allowedToSubmit}
-        onClick={() => toggle(dateLaunch.NONE_OF_THE_ABOVE)}
-        value={isChecked(dateLaunch.NONE_OF_THE_ABOVE)}
+        onClick={() => toggle(DateLaunch.NONE_OF_THE_ABOVE)}
+        value={isChecked(DateLaunch.NONE_OF_THE_ABOVE)}
         staticLabel="none of the above"
       />
       <Button disabled={!allowedToSubmit} onClick={onSubmit}>
