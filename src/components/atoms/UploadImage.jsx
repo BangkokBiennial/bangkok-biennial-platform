@@ -39,7 +39,7 @@ class UploadImage extends React.Component {
       if (this.props.loadingPictures) {
         this.setState({
           pictures: this.props.loadingPictures.pictures,
-          files: this.props.loadingPictures.files,
+          files: [...this.props.loadingPictures.files],
         })
       }
     }
