@@ -175,14 +175,14 @@ const PavilionDetail = ({ firebase, id }) => {
         <h2>pavilion Website</h2>
         <p>{pavilionDetail.pavilionWebsite}</p>
       </div>
-      <div className="pavilion-detail__container">
-        <h2>person Email Contact</h2>
+      {/* <div className="pavilion-detail__container">
+        <h2>Person Email Contact</h2>
         <p>{pavilionDetail.personEmailContact}</p>
       </div>
       <div className="pavilion-detail__container">
-        <h2>person Name Contact</h2>
+        <h2>Person Name Contact</h2>
         <p>{pavilionDetail.personNameContact}</p>
-      </div>
+      </div> */}
       {pavilionDetail.posters && (
         <div className="pavilion-detail__container">
           <h2>Posters</h2>

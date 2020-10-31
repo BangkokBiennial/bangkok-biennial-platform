@@ -24,9 +24,9 @@ const NavigationNonAuth = () => (
           <div className="navbar__link">
             <Link to={SIGN_IN}>Sign in</Link>
           </div>
-          <div className="navbar__link">
+          {/* <div className="navbar__link">
             <Link to={SIGN_UP}>Sign up</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
