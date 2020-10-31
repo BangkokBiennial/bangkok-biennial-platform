@@ -58,6 +58,7 @@
       flex-direction: row;
       width: 100%;
       flex-wrap: wrap;
+      line-height: 26px;
     }
 
     &__component {
@@ -89,6 +90,7 @@
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
+      line-height: 26px;
     }
 
     &__text {
