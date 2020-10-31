@@ -34,6 +34,7 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
   })
   const [loadingPicArtist, setLoadingPicArtist] = useState([])
   const [saving, setSaving] = useState(false)
+  const [basicInfo, setBasicInfo] = useState({})
 
   const {
     handleSubmit,
@@ -325,6 +326,14 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
             }
           })
           setLoading(false)
+          if (isPublic) {
+            setBasicInfo({
+              id: data.id,
+              pavilionName: data.pavilionName,
+              pavilionBriefDescription: data.pavilionBriefDescription,
+              listOfArtistsAndCurators: data.listOfArtistsAndCurators
+            })
+          }
         } catch (error) {
           setLoading(false)
           await addToast(`${error.message}`, {
@@ -545,7 +554,6 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
         value.artists.length > 0
           ? await Promise.all(
               value.artists.map(async (artist) => {
-                console.log(artist)
                 if (artist.workImageUrl.length > 0) {
                   const file = artist.workImageUrl[0]
                   const response = await firebase.uploadImage(
@@ -607,6 +615,7 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
           : ''
       const finalizedData = {
         ...value,
+        ...basicInfo,
         supportMaterials: finalSupportedMaterials,
         posters: finalPosters,
         telephoneNumber: value.telephoneNumber || '',
@@ -630,11 +639,11 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
           registrationStatus: RegistrationStatus.FINISHED_ADVANCE,
         })
       }
-      navigate(REGISTRATION_STATUS)
-      setLoading(false)
       addToast('the information is saved successfully', {
         appearance: 'success',
       })
+      navigate(REGISTRATION_STATUS)
+      setLoading(false)
     } catch (error) {
       console.log(error)
       setLoading(false)

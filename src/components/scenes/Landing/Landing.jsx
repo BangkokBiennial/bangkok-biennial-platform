@@ -132,7 +132,7 @@ const Landing = ({ firebase }) => {
             </div>
           ))}
         </div>
-        <h5 className="landing__list-pavilion__title">
+        {/* <h5 className="landing__list-pavilion__title">
           Pending Pavilions List
         </h5>
         <div className="landing__list-pavilion__container">
@@ -161,7 +161,7 @@ const Landing = ({ firebase }) => {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </CursorProvider>
   )
