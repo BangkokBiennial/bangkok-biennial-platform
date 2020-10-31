@@ -123,7 +123,7 @@ const Landing = ({ firebase }) => {
           <Link to={SIGN_UP}> Create an account here </Link>
         </p> */}
         <h5 className="landing__list-pavilion__title">
-          BB2020 1<sup>st</sup> phase pavilions (Oct 31st-Nov 21st, 2020)
+          BB2020 1<sup>st</sup> phase pavilions (Oct 31<sup>st</sup>-Nov 21<sup>st</sup>, 2020)
         </h5>
         <h6 className="landing__list-pavilion__subtitle">
           2<sup>nd</sup> & 3<sup>rd</sup> phase pavilions to follow 
