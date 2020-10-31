@@ -88,7 +88,16 @@
   &__list-pavilion {
     &__title {
       font-size: 36px;
+      margin-bottom: 15px;
+      font-weight: 800;
     }
+    &__subtitle {
+      font-size: 22px;
+      margin: 0;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
     &__container {
       display: flex;
       flex-direction: row;
