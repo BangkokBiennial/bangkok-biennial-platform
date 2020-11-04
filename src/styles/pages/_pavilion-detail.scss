@@ -2,6 +2,10 @@
   margin-top: 90px;
   padding: 50px 100px;
 
+  @include breakpoint('phone') {
+    padding: 30px;
+  }
+
   &__toggle {
     font-weight: 400;
     color: $color-main;
@@ -34,11 +38,15 @@
     color: $color-dangerous;
   }
 
-  &__content {
-    max-width: 800px;
-  }
-
   &__container {
     margin-bottom: 50px;
   }
+
+  &__content > img {
+    @include breakpoint('phone') {
+      width: 320px;
+      height: 200px;
+    }
+  }
 }
+

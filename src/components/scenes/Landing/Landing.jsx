@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import { Link } from 'gatsby'
 import { navigate } from 'gatsby'
-// import { SIGN_UP } from '../../../constants/routes'
-import { CursorProvider } from '../../../utils/withCursor'
 import { withFirebase } from '../../../utils/Firebase'
 import Loading from '../../atoms/Loading'
 import { useToasts } from 'react-toast-notifications'
@@ -81,7 +78,6 @@ const Landing = ({ firebase }) => {
   }
 
   return (
-    // <CursorProvider>
       <div className="landing__container">
         <h2 className="landing__title__main"> BANGKOK BIENNIAL </h2>
         <h4 className="landing__title__secondary">Platform</h4>
@@ -166,7 +162,6 @@ const Landing = ({ firebase }) => {
           ))}
         </div> */}
       </div>
-    // </CursorProvider>
   )
 }
 

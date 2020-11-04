@@ -29,10 +29,10 @@ const styles = {
     height: '100%'
   },
   bmMenu: {
-    background: '#fffffff5',
+    background: '#ffffff',
     padding: '2.5em 0em 0',
     fontSize: '2.15em',
-    // borderRight: '5px solid #000'
+    borderLeft: '1px solid #000'
   },
   bmMorphShape: {
     fill: '#000'

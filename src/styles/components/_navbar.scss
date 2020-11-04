@@ -48,11 +48,16 @@
 
 .navbar-mobile {
   border-bottom: 1px solid $color-main;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 999;
   &__left {
     padding: 22px;
   }
   &__right {
     position: absolute;
-    top: 0px;
+    top: 0;
   }
 }

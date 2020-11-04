@@ -8,6 +8,7 @@
     height: auto;
     padding: 30px;
     margin: 0 auto;
+    margin-top: 80px;
   }
 
   &__content {
@@ -139,6 +140,9 @@
       flex-direction: column;
       align-items: center;
       flex: 3;
+      @include breakpoint('phone') {
+        margin-top: 30px;
+      }
     }
     &__form {
       display: flex;

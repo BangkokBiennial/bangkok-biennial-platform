@@ -88,7 +88,7 @@ const PavilionDetail = ({ firebase, id }) => {
         <div className="pavilion-detail__container">
           <h2>Artists</h2>
           {pavilionDetail.artists.map((artist) => (
-            <div key={`poster-${artist.name}`}>
+            <div className="pavilion-detail__content" key={`poster-${artist.name}`}>
               <p>
                 <b>Name</b> {artist.name}
               </p>
@@ -96,7 +96,6 @@ const PavilionDetail = ({ firebase, id }) => {
                 <b>Short Bio</b> {artist.shortBio}
               </p>
               <img
-                height="400"
                 src={artist.workImageUrl.url}
               />
             </div>
@@ -188,8 +187,8 @@ const PavilionDetail = ({ firebase, id }) => {
           <h2>Posters</h2>
           {pavilionDetail.posters.map((poster) => {
             return (
-              <div key={`poster-${poster.name}`}>
-                <img height="400" src={poster.url} />
+              <div className="pavilion-detail__content" key={`poster-${poster.name}`}>
+                <img src={poster.url} />
               </div>
             )
           })}
@@ -212,7 +211,9 @@ const PavilionDetail = ({ firebase, id }) => {
           <h2>support Materials</h2>
           {pavilionDetail.supportMaterials.map(
             (supportMaterial) => (
-              <img height="400" src={supportMaterial.url} />
+              <div className="pavilion-detail__content" key={`supportMaterial-${supportMaterial.name}}`}>
+                <img src={supportMaterial.url} />
+              </div>
             ),
           )}
         </div>
