@@ -3,5 +3,8 @@
     position: absolute;
     top: 50%;
     left: 45%;
+    @include breakpoint('to-tablet-l') {
+      left: 40%;
+    }
   }
 }

@@ -8,18 +8,12 @@
   position: fixed;
   top: 0;
   z-index: 999;
-  @include breakpoint('phone') {
-    height: auto;
-  }
   &__inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
     width: 100%;
-    @include breakpoint('phone') {
-      flex-direction: column;
-    }
   }
   &__left {
     display: flex;
@@ -49,5 +43,16 @@
         color: $color-secondary;
       }
     }
+  }
+}
+
+.navbar-mobile {
+  border-bottom: 1px solid $color-main;
+  &__left {
+    padding: 22px;
+  }
+  &__right {
+    position: absolute;
+    top: 0px;
   }
 }
