@@ -39,33 +39,33 @@ const SignIn = ({ firebase }) => {
             <div className="login__content__form">
               <SignInForm />
             </div>
-            <div className="login__content__password-forget">
-              <PasswordForgetLink />
-            </div>
-            <div className="login__content__or">
-              <span className="login__content__or__line" />
-              <span className="login__content__or__text">or</span>
-              <span className="login__content__or__line" />
-            </div>
-            <div className="login__content__providers register__content__providers">
-              <SignInGoogle firebase={firebase} />
-            </div>{' '}
-            <div className="login__content__creator">
-              <div className="login__content__creator__inner">
-                <p>This project is an opensource.</p>
-                <iframe
-                  src="https://ghbtns.com/github-btn.html?user=BangkokBiennial&repo=bangkok-biennial-platform&type=star&count=true"
-                  frameBorder="0"
-                  scrolling="0"
-                  width="80px"
-                  height="20px"
-                />
-              </div>
+          </div>
+          <div className="login__content__password-forget">
+            <PasswordForgetLink />
+          </div>
+          <div className="login__content__or">
+            <span className="login__content__or__line" />
+            <span className="login__content__or__text">or</span>
+            <span className="login__content__or__line" />
+          </div>
+          <div className="login__content__providers register__content__providers">
+            <SignInGoogle firebase={firebase} />
+          </div>{' '}
+          <div className="login__content__creator">
+            <div className="login__content__creator__inner">
+              <p>This project is an opensource.</p>
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user=BangkokBiennial&repo=bangkok-biennial-platform&type=star&count=true"
+                frameBorder="0"
+                scrolling="0"
+                width="80px"
+                height="20px"
+              />
             </div>
           </div>
-          <div className="login__content__register">
+          {/* <div className="login__content__register">
             <SignUpLink isRegister />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

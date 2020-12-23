@@ -157,7 +157,9 @@ class Firebase {
     const batch = this.db.batch()
     batch.set(publicRef, data)
     batch.update(pendingRef, { status: 'approved' })
-    batch.update(userRef, { registrationStatus: registrationStatus.PUBLIC })
+    batch.update(userRef, {
+      registrationStatus: registrationStatus.PUBLIC,
+    })
     batch.commit()
   }
 

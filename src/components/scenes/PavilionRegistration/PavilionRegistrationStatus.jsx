@@ -90,7 +90,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
     }
   }
 
-
   const isChecked = (date) => bbTakePlaced.find((el) => el === date)
   const toggle = (date) => {
     isChecked(date)

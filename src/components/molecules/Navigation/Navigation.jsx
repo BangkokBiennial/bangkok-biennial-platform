@@ -6,27 +6,26 @@ import NavigationNonAuth from './atoms/NavigationNonAuth'
 import NavigationMobileNonAuth from './atoms/NavigationMobileNonAuth'
 
 const Navigation = () => {
-
-  const [isMobile, setDesktop] = useState(window.innerWidth < 376);
+  const [isMobile, setDesktop] = useState(window.innerWidth < 376)
 
   const updateMedia = () => {
-    setDesktop(window.innerWidth < 376);
-  };
+    setDesktop(window.innerWidth < 376)
+  }
 
   useEffect(() => {
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  });
-  
+    window.addEventListener('resize', updateMedia)
+    return () => window.removeEventListener('resize', updateMedia)
+  })
+
   return (
     <AuthUserContext.Consumer>
       {(authUser) =>
         authUser ? (
           <NavigationAuth authUser={authUser} />
+        ) : isMobile ? (
+          <NavigationMobileNonAuth />
         ) : (
-          isMobile
-            ? ( <NavigationMobileNonAuth/ >)
-            : ( <NavigationNonAuth /> ) 
+          <NavigationNonAuth />
         )
       }
     </AuthUserContext.Consumer>

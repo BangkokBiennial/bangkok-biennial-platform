@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { navigate } from 'gatsby'
+import { navigate, Link } from 'gatsby'
 import { withFirebase } from '../../../utils/Firebase'
 import Loading from '../../atoms/Loading'
 import { useToasts } from 'react-toast-notifications'
 import { transformToPublicThumbnails } from '../../../utils/transform'
+import { SIGN_UP } from "../../../constants/routes"
 
 const Landing = ({ firebase }) => {
   const { addToast } = useToasts()
 
   const [_initFirebase, setInitFirebase] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [pendingPavilions, setPendingPavilions] = useState([])
   const [
     publicPavilionThumbnails,
     setPublicPavilionThumbnails,
@@ -38,25 +38,6 @@ const Landing = ({ firebase }) => {
     }
   }
 
-  const fetchPendingPavilion = async () => {
-    setLoading(true)
-    try {
-      const basicInfoPavilionSnapshot = await firebase.getPavilionBasicInfo()
-      const basicPavilionInfoData = basicInfoPavilionSnapshot.docs.map(
-        (b) => b.data(),
-      )
-
-      setPendingPavilions(basicPavilionInfoData)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      addToast(`${error.message}`, {
-        appearance: 'error',
-        autoDismiss: false,
-      })
-    }
-  }
-
   useEffect(() => {
     if (firebase && !_initFirebase) {
       setInitFirebase(true)
@@ -66,22 +47,29 @@ const Landing = ({ firebase }) => {
 
   useEffect(() => {
     if (firebase) {
-      fetchPendingPavilion()
       fetchPublicPavilion()
     }
   }, [firebase])
 
   if (loading) {
-    return (
-      <Loading />
-    )
+    return <Loading />
   }
 
   return (
-      <div className="landing__container">
-        <h2 className="landing__title__main"> BANGKOK BIENNIAL </h2>
-        <h4 className="landing__title__secondary">Platform</h4>
-        {/* <p className="landing__text-content">
+    <div className="landing__container">
+      <div className="landing__header">
+        <div className="landing__title__main-wrapper">
+          <h2 className="landing__title__main"> BANGKOK </h2>
+          <h2 className="landing__title__main"> BIENNIAL </h2>
+        </div>
+        <div>
+          <p className="landing__title__welcome">
+            {' '}
+            Welcome to Bangkok Biennial 2020’s Pavilion Platform!
+          </p>
+        </div>
+      </div>
+      <p className="landing__text-content">
           Welcome to Bangkok Biennial 2020’s Pavilion Platform! This
           is where you register a pavilion to be part of “BB2020”.
           There are a few steps in the process of registering and you
@@ -115,53 +103,32 @@ const Landing = ({ firebase }) => {
           </ul>
           Ready to join BB2020?{' '}
           <Link to={SIGN_UP}> Create an account here </Link>
-        </p> */}
-        <h5 className="landing__list-pavilion__title">
-          BB2020 1<sup>st</sup> phase pavilions (Oct 31<sup>st</sup> - Nov 21<sup>st</sup>, 2020)
-        </h5>
-        <h6 className="landing__list-pavilion__subtitle">
-          2<sup>nd</sup> & 3<sup>rd</sup> phase pavilions to follow 
-          (March 13<sup>th</sup> - April 3<sup>rd</sup> & Sept. 17<sup>th</sup> - Oct 9<sup>th</sup>, 2021)
-        </h6>
-        <div className="landing__list-pavilion__container">
-          {publicPavilionThumbnails.map((pt) => (
-            <div onClick={() => navigate(`/pavilion-detail/${pt.id}`)} className="landing__thumbnail__component">
-              <p className="landing__thumbnail__topic"> {pt.name}</p>
-              <p className="landing__thumbnail__content"> {pt.description}</p>
-            </div>
-          ))}
-        </div>
-        {/* <h5 className="landing__list-pavilion__title">
-          Pending Pavilions List
-        </h5>
-        <div className="landing__list-pavilion__container">
-          {pendingPavilions.map((pp) => (
-            <div className="landing__list-pavilion__component">
-              <p className="landing__list-pavilion__topic">
-                {' '}
-                Pavilion Name{' '}
-              </p>
-              <p className="landing__list-pavilion__text">
-                {pp.pavilionName}
-              </p>
-              <p className="landing__list-pavilion__topic">
-                {' '}
-                Pavilion Brief Description{' '}
-              </p>
-              <p className="landing__list-pavilion__text">
-                {pp.pavilionBriefDescription}
-              </p>
-              <p className="landing__list-pavilion__topic">
-                {' '}
-                List Of Artists And Curators{' '}
-              </p>
-              <p className="landing__list-pavilion__text">
-                {pp.listOfArtistsAndCurators}
-              </p>
-            </div>
-          ))}
-        </div> */}
+        </p>
+      <h5 className="landing__list-pavilion__title">
+        BB2020 1<sup>st</sup> phase pavilions (Oct 31<sup>st</sup> -
+        Nov 21<sup>st</sup>, 2020)
+      </h5>
+      <h6 className="landing__list-pavilion__subtitle">
+        2<sup>nd</sup> & 3<sup>rd</sup> phase pavilions to follow
+        (March 13<sup>th</sup> - April 3<sup>rd</sup> & Sept. 17
+        <sup>th</sup> - Oct 9<sup>th</sup>, 2021)
+      </h6>
+
+      <div className="landing__list-pavilion__container">
+        {publicPavilionThumbnails.map((pt) => (
+          <div
+            onClick={() => navigate(`/pavilion-detail/${pt.id}`)}
+            className="landing__thumbnail__component"
+          >
+            <p className="landing__thumbnail__topic"> {pt.name}</p>
+            <p className="landing__thumbnail__content">
+              {' '}
+              {pt.description}
+            </p>
+          </div>
+        ))}
       </div>
+    </div>
   )
 }
 

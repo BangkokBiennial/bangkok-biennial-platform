@@ -1,0 +1,43 @@
+.detail-card {
+  width: 400px;
+  margin-right: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-shadow: 0px 0px 25px 6px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 25px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 25px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+
+  @include breakpoint('phone') {
+    width: 100%;
+  }
+
+  > p {
+    line-height: 22px;
+    word-break: break-word;
+  }
+
+  &__name {
+    font-size: 24px;
+    font-weight: bold;
+    color: $color-dangerous;
+    word-break: break-word;
+    @include breakpoint('phone') {
+      font-size: 22px;
+    }
+  }
+
+  &__link {
+    color: $color-secondary;
+    word-break: break-word;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__image {
+    margin-top: 20px;
+    max-width: 350px;
+  }
+}

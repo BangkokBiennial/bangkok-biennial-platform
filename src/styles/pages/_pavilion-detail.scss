@@ -1,52 +1,176 @@
 .pavilion-detail {
+  margin: 0px;
   margin-top: 90px;
   padding: 50px 100px;
 
   @include breakpoint('phone') {
-    padding: 30px;
-  }
-
-  &__toggle {
-    font-weight: 400;
-    color: $color-main;
-    font-size: 20px;
-    cursor: pointer;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-
-    /*
-      Introduced in Internet Explorer 10.
-      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-    */
-    -ms-user-select: none;
-    user-select: none;
-    width: 800px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    &__label {
-      word-break: keep-all;
-    }
-  }
-
-  &__approved-text {
-    color: $color-approve;
-  }
-
-  &__declined-text {
-    color: $color-dangerous;
+    margin-top: 50px;
+    padding: 20px;
   }
 
   &__container {
     margin-bottom: 50px;
+    > h2 {
+      font-size: 40px;
+      @include breakpoint('phone') {
+        font-size: 28px;
+      }
+    }
+    > h3 {
+      font-size: 26px;
+      @include breakpoint('phone') {
+        font-size: 20px;
+      }
+    }
   }
 
-  &__content > img {
-    @include breakpoint('phone') {
-      width: 320px;
-      height: 200px;
+  &__content {
+    &__title {
+      font-size: 60px;
+      color: $color-dangerous;
+      text-align: center;
+      font-family: 'ROBOTO SLAB';
+      @include breakpoint('phone') {
+        font-size: 48px;
+      }
+    }
+    &__text {
+      text-indent: 30px;
+      line-height: 25px;
+      word-break: break-word;
+      font-size: 20px;
+
+      @include breakpoint('phone') {
+        font-size: 17px;
+        color: $color-main;
+        text-align: justify;
+        line-height: 22px;
+      }
+    }
+  }
+
+  &__poster {
+    &__container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      @include breakpoint('phone') {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    &__content {
+      > img {
+        margin-right: 20px;
+        height: 600px;
+        @include breakpoint('phone') {
+          height: auto;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  &__support-material {
+    &__container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      @include breakpoint('phone') {
+        flex-direction: column;
+      }
+    }
+    &__content {
+      > img {
+        margin-right: 20px;
+        height: 500px;
+
+        @include breakpoint('phone') {
+          height: auto;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+
+  &__social-media {
+    &__icon {
+      
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__open-calls {
+    &__text {
+      font-size: 20px;
+      width: 600px;
+      line-height: 25px;
+      @include breakpoint('phone') {
+        width: 100%;
+        font-size: 16px;
+        text-align: justify;  
+        line-height: 22px;
+      }
+    }
+    &__link {
+      font-size: 20px;
+      color: $color-secondary;
+      @include breakpoint('phone') {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__venues {
+    &__text {
+      font-size: 20px;
+      word-break: break-word;
+      @include breakpoint('phone') {
+        width: 100%;
+        font-size: 16px;
+        text-align: justify;  
+        line-height: 22px;
+      }
+    }
+    &__link {
+      font-size: 20px;
+      color: $color-secondary;
+      @include breakpoint('phone') {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__organizer {
+    &__container {
+      display: flex;
+      flex-direction: row;
+      @include breakpoint('phone') {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__curator {
+    &__container {
+      display: flex;
+      flex-direction: row;
+      @include breakpoint('phone') {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__artist {
+    &__container {
+      display: flex;
+      flex-direction: row;
+      @include breakpoint('phone') {
+        flex-direction: column;
+      }
     }
   }
 }
-

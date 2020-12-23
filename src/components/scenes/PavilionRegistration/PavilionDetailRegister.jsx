@@ -36,6 +36,17 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
   const [saving, setSaving] = useState(false)
   const [basicInfo, setBasicInfo] = useState({})
 
+  const [
+    isWillingToBeContactedByMedia,
+    setIsWillingToBeContactedByMedia,
+  ] = useState(true)
+  const [isVenueChecked, setIsVenueChecked] = useState(true)
+  const [isVenueSecured, setIsVenueSecured] = useState(true)
+  const [isJoinedSeekingVenues, setIsJoinedSeekingVenues] = useState(
+    true,
+  )
+  const [isOpenCalls, setIsOpenCalls] = useState(true)
+
   const {
     handleSubmit,
     register,
@@ -129,220 +140,218 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
     })
   }
 
-  useEffect(() => {
-    if (firebase && firebase.auth && firebase.auth.currentUser) {
-      const fetch = async () => {
-        setLoading(true)
-        try {
-          const savedPavilionInfo = isPublic
-            ? await firebase.getPavilionPublicInfoDetail(
-              firebase.getCurrentUserId(),
-            )
-            : await firebase.getTemporaryPavilionAdvanceInfo(
-              firebase.getCurrentUserId(),
-            )
-          const data = await savedPavilionInfo.data()
+  const fetch = async () => {
+    setLoading(true)
+    try {
+      const savedPavilionInfo = isPublic
+        ? await firebase.getPavilionPublicInfoDetail(
+            firebase.getCurrentUserId(),
+          )
+        : await firebase.getTemporaryPavilionAdvanceInfo(
+            firebase.getCurrentUserId(),
+          )
+      const data = await savedPavilionInfo.data()
 
-          if (!data) {
-            setLoading(false)
-            return
-          }
+      if (!data) {
+        setLoading(false)
+        return
+      }
 
-          if (data.artists && data.artists.length > 0 && !fetched) {
-            data.artists.forEach((_, index) => {
-              if (index > 0) {
-                Artists.append({
-                  artists: {
-                    name: '',
-                    artistLink: '',
-                    shortBio: '',
-                    workImageUrl: '',
-                  },
-                })
-              }
+      if (data.artists && data.artists.length > 0 && !fetched) {
+        data.artists.forEach((_, index) => {
+          if (index > 0) {
+            Artists.append({
+              artists: {
+                name: '',
+                artistLink: '',
+                shortBio: '',
+                workImageUrl: '',
+              },
             })
+          }
+        })
 
-            const artistImages = await Promise.all(
-              data.artists.map(async (artist) => {
-                if (artist.workImageUrl) {
-                  const url = await firebase.downloadImage(
-                    artist.workImageUrl.fullPath,
-                  )
-                  const response = await axios({
-                    url,
-                    method: 'GET',
-                    responseType: 'blob',
-                  })
-                  const file = new File(
-                    [response.data],
-                    artist.workImageUrl.name,
-                  )
-                  const link = new DataTransfer()
-                  await link.items.add(file)
-                  const dataUrl = await encodeFileToData(file)
+        const artistImages = await Promise.all(
+          data.artists.map(async (artist) => {
+            if (artist.workImageUrl) {
+              const url = await firebase.downloadImage(
+                artist.workImageUrl.fullPath,
+              )
+              const response = await axios({
+                url,
+                method: 'GET',
+                responseType: 'blob',
+              })
+              const file = new File(
+                [response.data],
+                artist.workImageUrl.name,
+              )
+              const link = new DataTransfer()
+              await link.items.add(file)
+              const dataUrl = await encodeFileToData(file)
 
-                  return {
-                    pictures: [dataUrl],
-                    files: link.files,
-                  }
-                } else {
-                  return {
-                    pictures: [],
-                    files: [],
-                  }
-                }
+              return {
+                pictures: [dataUrl],
+                files: link.files,
+              }
+            } else {
+              return {
+                pictures: [],
+                files: [],
+              }
+            }
+          }),
+        )
+
+        setLoadingPicArtist(artistImages)
+
+        data.artists.forEach((artist, artistIndex) => {
+          setValue(`artists[${artistIndex}].name`, artist.name)
+          setValue(
+            `artists[${artistIndex}].artistLink`,
+            artist.artistLink,
+          )
+          setValue(
+            `artists[${artistIndex}].shortBio`,
+            artist.shortBio,
+          )
+          artist.workImageUrl
+            ? setValue(
+                `artists[${artistIndex}].workImageUrl`,
+                artistImages[artistIndex].files,
+              )
+            : setValue(`artists[${artistIndex}].workImageUrl`, '')
+        })
+      }
+
+      if (data.curators && data.curators.length > 0 && !fetched) {
+        data.curators.forEach((curator, curatorIndex) => {
+          Curators.append({
+            curators: {
+              name: '',
+              curatorLink: '',
+              shortBio: '',
+            },
+          })
+          setValue(`curators[${curatorIndex}].name`, curator.name)
+          setValue(
+            `curators[${curatorIndex}].curatorLink`,
+            curator.curatorLink,
+          )
+          setValue(
+            `curators[${curatorIndex}].shortBio`,
+            curator.shortBio,
+          )
+        })
+      }
+      if (
+        data.organizers &&
+        data.organizers.length > 0 &&
+        !fetched
+      ) {
+        data.organizers.forEach((organizer, organizerIndex) => {
+          Organizers.append({
+            organizers: {
+              name: '',
+              organizerLink: '',
+              shortBio: '',
+            },
+          })
+          setValue(
+            `organizers[${organizerIndex}].name`,
+            organizer.name,
+          )
+          setValue(
+            `organizers[${organizerIndex}].organizerLink`,
+            organizer.organizerLink,
+          )
+          setValue(
+            `organizers[${organizerIndex}].shortBio`,
+            organizer.shortBio,
+          )
+        })
+      }
+      Object.keys(data).map(async (key) => {
+        if (key === 'posters' || key === 'supportMaterials') {
+          if (data[key].length > 0) {
+            const fileList = await Promise.all(
+              data[key].map(async (pic) => {
+                const url = await firebase.downloadImage(
+                  pic.fullPath,
+                )
+                const response = await axios({
+                  url,
+                  method: 'GET',
+                  responseType: 'blob',
+                })
+                return new File([response.data], pic.name)
               }),
             )
 
-            setLoadingPicArtist(artistImages)
-
-            data.artists.forEach((artist, artistIndex) => {
-              setValue(
-                `artists[${artistIndex}].name`,
-                artist.name,
-              )
-              setValue(
-                `artists[${artistIndex}].artistLink`,
-                artist.artistLink,
-              )
-              setValue(
-                `artists[${artistIndex}].shortBio`,
-                artist.shortBio,
-              )
-              artist.workImageUrl
-                ? setValue(
-                    `artists[${artistIndex}].workImageUrl`,
-                    artistImages[artistIndex].files,
-                  )
-                : setValue(
-                    `artists[${artistIndex}].workImageUrl`,
-                    '',
-                  )
+            const link = new DataTransfer()
+            fileList.forEach((file) => {
+              link.items.add(file)
+            })
+            const urls = await Promise.all(
+              fileList.map(async (file) => {
+                const dataUrl = await encodeFileToData(file)
+                return dataUrl
+              }),
+            )
+            setValue(key, link.files)
+            setLoadingPics({
+              [key]: {
+                pictures: urls,
+                files: fileList,
+              },
             })
           }
-
-          if (data.curators && data.curators.length > 0 && !fetched) {
-            data.curators.forEach((curator, curatorIndex) => {
-              Curators.append({
-                curators: {
-                  name: "",
-                  curatorLink: "",
-                  shortBio: "",
-                },
-              })
-              setValue(
-                `curators[${curatorIndex}].name`,
-                curator.name,
-              )
-              setValue(
-                `curators[${curatorIndex}].curatorLink`,
-                curator.curatorLink,
-              )
-              setValue(
-                `curators[${curatorIndex}].shortBio`,
-                curator.shortBio,
-              )
-            })
+        } else if (
+          key === 'startDate' ||
+          key === 'endDate' ||
+          key === 'openingHours' ||
+          key === 'closingHours'
+        ) {
+          if (data[key]) {
+            setValue(key, data[key].toDate())
+          } else {
+            setValue(key, '')
           }
-          if (
-            data.organizers &&
-            data.organizers.length > 0 &&
-            !fetched
-          ) {
-            data.organizers.forEach((organizer, organizerIndex) => {
-              Organizers.append({
-                organizers: {
-                  name: "",
-                  organizerLink: "",
-                  shortBio: "",
-                },
-              })
-              setValue(
-                `organizers[${organizerIndex}].name`,
-                organizer.name,
-              )
-              setValue(
-                `organizers[${organizerIndex}].organizerLink`,
-                organizer.organizerLink,
-              )
-              setValue(
-                `organizers[${organizerIndex}].shortBio`,
-                organizer.shortBio,
-              )
-            })
-          }
-          Object.keys(data).map(async (key) => {
-            if (key === 'posters' || key === 'supportMaterials') {
-              if (data[key].length > 0) {
-                const fileList = await Promise.all(
-                  data[key].map(async (pic) => {
-                    const url = await firebase.downloadImage(
-                      pic.fullPath,
-                    )
-                    const response = await axios({
-                      url,
-                      method: 'GET',
-                      responseType: 'blob',
-                    })
-                    return new File([response.data], pic.name)
-                  }),
-                )
-
-                const link = new DataTransfer()
-                fileList.forEach((file) => {
-                  link.items.add(file)
-                })
-                const urls = await Promise.all(
-                  fileList.map(async (file) => {
-                    const dataUrl = await encodeFileToData(file)
-                    return dataUrl
-                  }),
-                )
-                setValue(key, link.files)
-                setLoadingPics({
-                  [key]: {
-                    pictures: urls,
-                    files: fileList,
-                  },
-                })
-              }
-            } else if (
-              key === 'startDate' ||
-              key === 'endDate' ||
-              key === 'openingHours' ||
-              key === 'closingHours'
-            ) {
-              if (data[key]) {
-                setValue(key, data[key].toDate())
-              } else {
-                setValue(key, '')
-              }
-            } else if (
-              key !== 'artists' &&
-              key !== 'organizers' &&
-              key !== 'curators'
-            ) {
-              setValue(key, data[key])
-            }
-          })
-          setLoading(false)
-          if (isPublic) {
-            setBasicInfo({
-              id: data.id,
-              pavilionName: data.pavilionName,
-              pavilionBriefDescription: data.pavilionBriefDescription,
-              listOfArtistsAndCurators: data.listOfArtistsAndCurators
-            })
-          }
-        } catch (error) {
-          setLoading(false)
-          await addToast(`${error.message}`, {
-            appearance: 'error',
-            autoDismiss: false,
-          })
+        } else if (
+          key !== 'artists' &&
+          key !== 'organizers' &&
+          key !== 'curators'
+        ) {
+          setValue(key, data[key])
         }
-      }
+      })
 
+      setIsVenueChecked(!!data.isVenueChecked)
+      setIsVenueSecured(!!data.isVenueSecured)
+      setIsJoinedSeekingVenues(!!data.isJoinedSeekingVenues)
+      setIsWillingToBeContactedByMedia(!!data.isWillingToBeContactedByMedia)
+      setIsOpenCalls(!!data.isOpenCalls)
+
+      setLoading(false)
+      if (isPublic) {
+        setBasicInfo({
+          id: data.id,
+          pavilionName: data.pavilionName,
+          pavilionBriefDescription: data.pavilionBriefDescription,
+          listOfArtistsAndCurators: data.listOfArtistsAndCurators,
+        })
+      }
+    } catch (error) {
+      setLoading(false)
+      await addToast(`${error.message}`, {
+        appearance: 'error',
+        autoDismiss: false,
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (firebase && firebase.auth && firebase.auth.currentUser) {
       fetch()
       setFetched(true)
     }
@@ -350,17 +359,6 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
     firebase && firebase.auth && firebase.auth.currentUser,
     fetched,
   ])
-
-  const [
-    isWillingToBeContactedByMedia,
-    setIsWillingToBeContactedByMedia,
-  ] = useState(true)
-  const [isVenueChecked, setIsVenueChecked] = useState(true)
-  const [isVenueSecured, setIsVenueSecured] = useState(true)
-  const [isJoinedSeekingVenues, setIsJoinedSeekingVenues] = useState(
-    true,
-  )
-  const [isOpenCalls, setIsOpenCalls] = useState(true)
 
   useEffect(() => {
     if (isVenueChecked && isVenueSecured) {
@@ -409,8 +407,8 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
     setIsJoinedSeekingVenues(!isJoinedSeekingVenues)
   const handleSwitchOpenCalls = () => setIsOpenCalls(!isOpenCalls)
 
-  const handleChangeTelephoneNumber = (telephoneNumber) => {
-    setValue('telephoneNumber', telephoneNumber)
+  const handleChangeTelephoneNumber = (telNumber) => {
+    setValue('telephoneNumber', telNumber)
     clearError('telephoneNumber')
   }
 
@@ -526,6 +524,11 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
         openingHours: watchedData.openingHours || '',
         closingHours: watchedData.closingHours || '',
         artists: finalArtists,
+        isVenueChecked,
+        isVenueSecured,
+        isJoinedSeekingVenues,
+        isOpenCalls,
+        isWillingToBeContactedByMedia
       }
       await firebase.saveTemporaryPavilionAdvanceInfo(
         finalizedData,
@@ -624,26 +627,34 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
         openingHours: value.openingHours || '',
         closingHours: value.closingHours || '',
         artists: finalArtists,
+        isVenueChecked,
+        isVenueSecured,
+        isJoinedSeekingVenues,
+        isOpenCalls,
+        isWillingToBeContactedByMedia
       }
-      isPublic 
+      isPublic
         ? await firebase.savePublicPavilion(
-          finalizedData,
-          firebase.getCurrentUserId()
-        )
+            finalizedData,
+            firebase.getCurrentUserId(),
+          )
         : await firebase.savePavilionAdvanceInfo(
-          finalizedData,
-          firebase.getCurrentUserId(),
-        )
+            finalizedData,
+            firebase.getCurrentUserId(),
+          )
       if (!isPublic) {
         await firebase.updateUser(firebase.getCurrentUserId(), {
           registrationStatus: RegistrationStatus.FINISHED_ADVANCE,
         })
       }
-      addToast('the information is saved successfully', {
+      await addToast('the information is saved successfully', {
+        appearance: 'success',
+      })
+      setLoading(false)
+      await addToast('the information is saved successfully', {
         appearance: 'success',
       })
       navigate(REGISTRATION_STATUS)
-      setLoading(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -684,22 +695,22 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
         <Loading style={{ position: 'fixed', top: '50%' }} />
       )}
       <div className="home container" style={{ opacity }}>
-      {
-        !isPublic && (
+        {!isPublic && (
           <div className="home__intro">
             <p className="home__intro__text">
-              Welcome to Bangkok Biennial 2020’s Pavilion Platform! This
-              page contains all the info you need to provide in order to
-              register a pavilion to be part of the BB2020 (Bangkok
-              Biennial 2020). This page can be saved and edited up until
-              September 15th or until you press “submit”. If you don’t
-              press ‘submit’ before September 15th, you pavilion will
-              not be a part of BB2020. Once you ‘submit’ the
-              information, it will go through a manual validation
-              process to filter for ineligible activities and then be
-              used to create a page for your pavilion on the Pavilions
-              Platform. Once your page becomes available, you will be
-              able to edit the information at any time.
+              Welcome to Bangkok Biennial 2020’s Pavilion Platform!
+              This page contains all the info you need to provide in
+              order to register a pavilion to be part of the BB2020
+              (Bangkok Biennial 2020). This page can be saved and
+              edited up until September 15th or until you press
+              “submit”. If you don’t press ‘submit’ before September
+              15th, you pavilion will not be a part of BB2020. Once
+              you ‘submit’ the information, it will go through a
+              manual validation process to filter for ineligible
+              activities and then be used to create a page for your
+              pavilion on the Pavilions Platform. Once your page
+              becomes available, you will be able to edit the
+              information at any time.
             </p>
             <p className="home__intro__text">
               Please be aware that the Bangkok Biennial is run 100% by
@@ -715,12 +726,14 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
               bbteam@bangkokbiennial.com
             </p>
           </div>
-        )
-      }
+        )}
 
         <div className="home__details">
           <h1 className="home__title">
-            More detail on Pavilion Registration
+            {isPublic 
+              ? "Edit pavilion detail"
+              : "More detail on Pavilion Registration"
+            }
           </h1>
         </div>
 
@@ -1373,8 +1386,7 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
                 errors={errors}
               />
               <div className="home__register__form__footer">
-              {
-                !isPublic && (
+                {!isPublic && (
                   <Button
                     className="home__register__form__footer__button"
                     type="primary"
@@ -1382,12 +1394,13 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
                   >
                     Save
                   </Button>
-                )
-              }
+                )}
                 <Button
                   className="home__register__form__footer__button"
                   type="submit"
-                />
+                >
+                  {isPublic ? "Save" : "Submit"}
+                </Button>
               </div>
             </form>
           </div>

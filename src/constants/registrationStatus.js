@@ -7,5 +7,5 @@ export default {
   NEW_USER,
   FINISHED_BASIC,
   FINISHED_ADVANCE,
-  PUBLIC
+  PUBLIC,
 }

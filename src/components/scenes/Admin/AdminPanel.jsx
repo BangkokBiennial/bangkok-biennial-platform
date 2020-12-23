@@ -87,9 +87,16 @@ const AdminPanel = ({ firebase }) => {
   const handleApprove = async (pavilionIndex) => {
     setLoading(true)
     try {
-      const pavilionAdvanceInfoData = omit(pavilion[pavilionIndex], ['userInformation'])
-      const pavilionBasic = await firebase.getPavilionBasicInfoDetail(pavilionAdvanceInfoData.id)
-      await firebase.approvePavilion({ ...pavilionAdvanceInfoData, ...pavilionBasic.data() }, pavilionAdvanceInfoData.id)
+      const pavilionAdvanceInfoData = omit(pavilion[pavilionIndex], [
+        'userInformation',
+      ])
+      const pavilionBasic = await firebase.getPavilionBasicInfoDetail(
+        pavilionAdvanceInfoData.id,
+      )
+      await firebase.approvePavilion(
+        { ...pavilionAdvanceInfoData, ...pavilionBasic.data() },
+        pavilionAdvanceInfoData.id,
+      )
       addToast('Successfully approved', { appearance: 'success' })
       setLoading(false)
       await fetch()
@@ -215,13 +222,15 @@ const AdminPanel = ({ firebase }) => {
                   )}
                   {proposal.userInformation.dateLaunch && (
                     <div className="admin-panel__container">
-                    <h2>Date launch</h2>
-                    {
-                      proposal.userInformation.dateLaunch.map((launch) => (
-                        <p>{transformDateLaunchToReadable(launch)}</p>
-                      ))
-                    }
-                  </div>
+                      <h2>Date launch</h2>
+                      {proposal.userInformation.dateLaunch.map(
+                        (launch) => (
+                          <p>
+                            {transformDateLaunchToReadable(launch)}
+                          </p>
+                        ),
+                      )}
+                    </div>
                   )}
                   <div className="admin-panel__container">
                     <h2>audio Material</h2>

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { withFirebase } from '../../../utils/Firebase'
 import Loading from '../../atoms/Loading'
-import moment from 'moment'
+import {
+  FaInstagramSquare,
+  FaFacebookSquare,
+  FaTwitterSquare,
+} from 'react-icons/fa'
+import DetailCard from './atoms/DetailCard'
 
 const PavilionDetail = ({ firebase, id }) => {
   const [_initFirebase, setInitFirebase] = useState(false)
@@ -12,11 +17,10 @@ const PavilionDetail = ({ firebase, id }) => {
     try {
       const result = await firebase.getPavilionPublicInfoDetail(id)
       const pavilion = result.data()
+      console.log(pavilion)
       const posterWithPics = await Promise.all(
         pavilion.posters.map(async (poster) => {
-          const url = await firebase.downloadImage(
-            poster.fullPath,
-          )
+          const url = await firebase.downloadImage(poster.fullPath)
           return {
             ...poster,
             url,
@@ -44,15 +48,15 @@ const PavilionDetail = ({ firebase, id }) => {
           )
           return {
             ...supportMaterial,
-            url
+            url,
           }
-        })
+        }),
       )
       setPavilionDetail({
         ...pavilion,
         artists: artistWithPics,
         posters: posterWithPics,
-        supportMaterials: supportMaterialsWithPics
+        supportMaterials: supportMaterialsWithPics,
       })
       setLoading(false)
     } catch (error) {
@@ -82,170 +86,249 @@ const PavilionDetail = ({ firebase, id }) => {
     )
   }
 
-  return (
-    <div className="pavilion-detail">
-      {pavilionDetail.artists && (
-        <div className="pavilion-detail__container">
-          <h2>Artists</h2>
-          {pavilionDetail.artists.map((artist) => (
-            <div className="pavilion-detail__content" key={`poster-${artist.name}`}>
-              <p>
-                <b>Name</b> {artist.name}
-              </p>
-              <p>
-                <b>Short Bio</b> {artist.shortBio}
-              </p>
-              <img
-                src={artist.workImageUrl.url}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-      {pavilionDetail.organizers && (
-        <div className="pavilion-detail__container">
-          <p>
-            <b>organizers</b>
-          </p>
-          {pavilionDetail.organizers.map((organizer) => (
-            <p key={`organizer-${organizer.name}`}>
-              {organizer.name}
-            </p>
-          ))}
-        </div>
-      )}
+  const renderPosters = () => {
+    if (!pavilionDetail.posters) {
+      return null
+    }
+    return (
       <div className="pavilion-detail__container">
-        <h2>audio Material</h2>
-        <p>{pavilionDetail.audioMaterial}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>longer TextOpenCalls</h2>
-        <p>{pavilionDetail.longerTextOpenCalls}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>open Calls Other Public Contact</h2>
-        <p>{pavilionDetail.openCallsOtherPublicContact}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>opencalls Phone Number</h2>
-        <p>{pavilionDetail.opencallsPhoneNumber}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>opencalls Public Email</h2>
-        <p>{pavilionDetail.opencallsPublicEmail}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>opencalls Url</h2>
-        <p>{pavilionDetail.opencallsUrl}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Facebook</h2>
-        <p>{pavilionDetail.pavilionFacebook}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Instagram</h2>
-        <p>{pavilionDetail.pavilionInstagram}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Long Description</h2>
-        <p>{pavilionDetail.pavilionLongDescription}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Mailing Address</h2>
-        <p>{pavilionDetail.pavilionMailingAddress}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Other Contact</h2>
-        <p>{pavilionDetail.pavilionOtherContac}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Other Social Medias</h2>
-        <p>{pavilionDetail.pavilionOtherSocialMedias}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Public Email</h2>
-        <p>{pavilionDetail.pavilionPublicEmail}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Twitter</h2>
-        <p>{pavilionDetail.pavilionTwitter}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>pavilion Website</h2>
-        <p>{pavilionDetail.pavilionWebsite}</p>
-      </div>
-      {/* <div className="pavilion-detail__container">
-        <h2>Person Email Contact</h2>
-        <p>{pavilionDetail.personEmailContact}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>Person Name Contact</h2>
-        <p>{pavilionDetail.personNameContact}</p>
-      </div> */}
-      {pavilionDetail.posters && (
-        <div className="pavilion-detail__container">
-          <h2>Posters</h2>
+        <div className="pavilion-detail__poster__container">
           {pavilionDetail.posters.map((poster) => {
             return (
-              <div className="pavilion-detail__content" key={`poster-${poster.name}`}>
+              <div
+                className="pavilion-detail__poster__content"
+                key={`poster-${poster.name}`}
+              >
                 <img src={poster.url} />
               </div>
             )
           })}
         </div>
-      )}
-      <div className="pavilion-detail__container">
-        <h2>short Text OpenCalls</h2>
-        <p>{pavilionDetail.shortTextOpenCalls}</p>
       </div>
+    )
+  }
+
+  const renderArtists = () => {
+    if (!pavilionDetail.artists) {
+      return null
+    }
+
+    return (
       <div className="pavilion-detail__container">
-        <h2>street Address</h2>
-        <p>{pavilionDetail.streetAddress}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>submission Requirements</h2>
-        <p>{pavilionDetail.submissionRequirements}</p>
-      </div>
-      {pavilionDetail.supportMaterials && (
-        <div className="pavilion-detail__container">
-          <h2>support Materials</h2>
-          {pavilionDetail.supportMaterials.map(
-            (supportMaterial) => (
-              <div className="pavilion-detail__content" key={`supportMaterial-${supportMaterial.name}}`}>
-                <img src={supportMaterial.url} />
-              </div>
-            ),
-          )}
+        <h2>Artists</h2>
+        <div className="pavilion-detail__artist__container">
+          {pavilionDetail.artists.map((artist) => (
+            <DetailCard
+              name={artist.name}
+              shortBio={artist.shortBio}
+              link={artist.artistLink}
+              imageUrl={artist.workImageUrl.url}
+              key={`artist-${artist.name}`}
+            />
+          ))}
         </div>
-      )}
+      </div>
+    )
+  }
+
+  const renderOrganizers = () => {
+    if (!pavilionDetail.organizers) {
+      return null
+    }
+
+    return (
       <div className="pavilion-detail__container">
-        <h2>start date</h2>
-        <p>
-          {moment(pavilionDetail.startDate, 'x').format(
-            'DD MMM YYYY',
+        <h2>Organizers</h2>
+        <div className="pavilion-detail__organizer__container">
+          {pavilionDetail.organizers.map((organizer) => (
+            <DetailCard
+              name={organizer.name}
+              shortBio={organizer.shortBio}
+              link={organizer.organizerLink}
+              key={`organiser-${organizer.name}`}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const renderCurators = () => {
+    if (!pavilionDetail.curators) {
+      return null
+    }
+
+    return (
+      <div className="pavilion-detail__container">
+        <h2>Curators</h2>
+        <div className="pavilion-detail__curator__container">
+          {pavilionDetail.curators.map((curator) => (
+            <DetailCard
+              name={curator.name}
+              shortBio={curator.shortBio}
+              link={curator.artistLink}
+              key={`curator-${curator.name}`}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const renderMaterials = () => {
+    const renderSupportMaterials = () => {
+      if (!pavilionDetail.supportMaterials) {
+        return null
+      }
+
+      return (
+        <div className="pavilion-detail__container">
+          <div className="pavilion-detail__support-material__container">
+            {pavilionDetail.supportMaterials.map(
+              (supportMaterial) => (
+                <div
+                  className="pavilion-detail__support-material__content"
+                  key={`supportMaterial-${supportMaterial.name}}`}
+                >
+                  <img src={supportMaterial.url} />
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="pavilion-detail__container">
+        <h2>Materials</h2>
+        {renderSupportMaterials()}
+      </div>
+    )
+  }
+
+  const renderOpenCalls = () => {
+    const isOpenCallsOpen = pavilionDetail.shortTextOpenCalls
+      || pavilionDetail.longerTextOpenCalls
+      || pavilionDetail.openCallsOtherPublicContact
+      || pavilionDetail.opencallsPhoneNumber
+      || pavilionDetail.opencallsPublicEmail
+      || pavilionDetail.opencallsUrl
+      || pavilionDetail.submissionRequirements
+
+    if (!isOpenCallsOpen) {
+      return null
+    }
+
+    return (
+      <div className="pavilion-detail__container">
+        <h2>Open Calls</h2>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.shortTextOpenCalls}</p>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.longerTextOpenCalls}</p>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.submissionRequirements}</p>
+        <h3>Contacts</h3>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.opencallsPhoneNumber}</p>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.opencallsPublicEmail}</p>
+        <a href={pavilionDetail.opencallsUrl} 
+          target="_blank" 
+          rel="noreferrer"
+          className="pavilion-detail__open-calls__link">
+          {pavilionDetail.opencallsUrl
+        }</a>
+        <p className="pavilion-detail__open-calls__text">{pavilionDetail.openCallsOtherPublicContact}</p>
+      </div>
+    )
+  }
+
+  const renderSocialMedias = () => {
+    return (
+      <div className="pavilion-detail__container">
+        <h2>Social Medias</h2>
+        <div className="pavilion-detail__social-media">
+          {pavilionDetail.pavilionInstagram && (
+            <FaInstagramSquare
+              className="pavilion-detail__social-media__icon"
+              size="40"
+              onClick={() =>
+                window.open(pavilionDetail.pavilionInstagram)
+              }
+            />
           )}
+          {pavilionDetail.pavilionFacebook && (
+            <FaFacebookSquare
+              className="pavilion-detail__social-media__icon"
+              size="40"
+              onClick={() =>
+                window.open(pavilionDetail.pavilionFacebook)
+              }
+            />
+          )}
+          {pavilionDetail.pavilionTwitter && (
+            <FaTwitterSquare
+              className="pavilion-detail__social-media__icon"
+              size="40"
+              onClick={() =>
+                window.open(pavilionDetail.pavilionTwitter)
+              }
+            />
+          )}
+          {pavilionDetail.pavilionTwitter && (
+            <FaTwitterSquare
+              className="pavilion-detail__social-media__icon"
+              size="40"
+              onClick={() =>
+                window.open(pavilionDetail.pavilionTwitter)
+              }
+            />
+          )}
+          
+        </div>
+      </div>
+    )
+  }
+
+  const renderVenues = () => {
+    return (
+      <div className="pavilion-detail__container">
+        <h2>Venues</h2>
+        <p className="pavilion-detail__venues__text"><b>{pavilionDetail.venueLocation}</b></p>
+        <p className="pavilion-detail__venues__text">{pavilionDetail.streetAddress}</p>
+        <a className="pavilion-detail__venues__link" href={pavilionDetail.googleMapLink}>
+          {pavilionDetail.googleMapLink}
+        </a>
+      </div>
+    )
+  }
+
+  const renderContacts = () => {
+    
+  }
+
+  return (
+    <div className="pavilion-detail">
+      <div className="pavilion-detail__container">
+        <p className="pavilion-detail__content__title">
+          {pavilionDetail.pavilionName}
         </p>
       </div>
       <div className="pavilion-detail__container">
-        <h2>end date</h2>
-        <p>
-          {moment(pavilionDetail.endDate, 'x').format(
-            'DD MMM YYYY',
-          )}
+        <p className="pavilion-detail__content__text">
+          {pavilionDetail.pavilionBriefDescription}
         </p>
       </div>
       <div className="pavilion-detail__container">
-        <h2>telephone Number</h2>
-        <p>{pavilionDetail.telephoneNumber}</p>
+        <p className="pavilion-detail__content__text">
+          {pavilionDetail.pavilionLongDescription}
+        </p>
       </div>
-      <div className="pavilion-detail__container">
-        <h2>venue Location</h2>
-        <p>{pavilionDetail.venueLocation}</p>
-      </div>
-      <div className="pavilion-detail__container">
-        <h2>video Material</h2>
-        <p>{pavilionDetail.videoMaterial}</p>
-      </div>
+      {renderPosters()}
+      {renderVenues()}
+      {renderArtists()}
+      {renderOrganizers()}
+      {renderCurators()}
+      {renderMaterials()}
+      {renderOpenCalls()}
+      {renderSocialMedias()}
     </div>
   )
 }
