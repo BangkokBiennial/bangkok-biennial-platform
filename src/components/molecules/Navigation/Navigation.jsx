@@ -6,13 +6,18 @@ import NavigationNonAuth from './atoms/NavigationNonAuth'
 import NavigationMobileNonAuth from './atoms/NavigationMobileNonAuth'
 
 const Navigation = () => {
-  const [isMobile, setDesktop] = useState(window.innerWidth < 376)
+  const [isMobile, setDesktop] = useState(false)
 
   const updateMedia = () => {
+    console.log(isMobile)
     setDesktop(window.innerWidth < 376)
   }
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    updateMedia()
+
     window.addEventListener('resize', updateMedia)
     return () => window.removeEventListener('resize', updateMedia)
   })
