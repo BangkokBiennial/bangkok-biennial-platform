@@ -138,6 +138,7 @@
     &__link {
       font-size: 20px;
       color: $color-secondary;
+      word-break: break-all;
       @include breakpoint('phone') {
         font-size: 16px;
       }
@@ -148,6 +149,8 @@
     &__container {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
       @include breakpoint('phone') {
         flex-direction: column;
       }
@@ -158,6 +161,8 @@
     &__container {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
       @include breakpoint('phone') {
         flex-direction: column;
       }
@@ -168,6 +173,8 @@
     &__container {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
       @include breakpoint('phone') {
         flex-direction: column;
       }
