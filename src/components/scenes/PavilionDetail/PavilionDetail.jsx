@@ -87,7 +87,7 @@ const PavilionDetail = ({ firebase, id }) => {
   }
 
   const renderPosters = () => {
-    if (!pavilionDetail.posters) {
+    if (!pavilionDetail.posters || pavilionDetail.posters.length === 0) {
       return null
     }
     return (
@@ -109,7 +109,7 @@ const PavilionDetail = ({ firebase, id }) => {
   }
 
   const renderArtists = () => {
-    if (!pavilionDetail.artists) {
+    if (!pavilionDetail.artists || pavilionDetail.artists.length === 0) {
       return null
     }
 
@@ -132,7 +132,7 @@ const PavilionDetail = ({ firebase, id }) => {
   }
 
   const renderOrganizers = () => {
-    if (!pavilionDetail.organizers) {
+    if (!pavilionDetail.organizers || pavilionDetail.organizers.length === 0) {
       return null
     }
 
@@ -154,7 +154,7 @@ const PavilionDetail = ({ firebase, id }) => {
   }
 
   const renderCurators = () => {
-    if (!pavilionDetail.curators) {
+    if (!pavilionDetail.curators || pavilionDetail.curators.length === 0) {
       return null
     }
 
@@ -177,7 +177,7 @@ const PavilionDetail = ({ firebase, id }) => {
 
   const renderMaterials = () => {
     const renderSupportMaterials = () => {
-      if (!pavilionDetail.supportMaterials) {
+      if (!pavilionDetail.supportMaterials || pavilionDetail.supportMaterials.length === 0) {
         return null
       }
 
