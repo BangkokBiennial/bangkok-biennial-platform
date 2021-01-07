@@ -4,9 +4,9 @@ module.exports = {
   siteUrl: 'https://bangkok-biennial.firebaseapp.com/',
   app: {
     url: 'https://bangkok-biennial.firebaseapp.com/',
-    title: 'Bangkok Bienial Platform',
-    description: 'Bangkok Bienial Platform',
-    titleTemplate: 'Bangkok Bienial Platform',
+    title: 'Bangkok Biennial Platform',
+    description: 'Bangkok Biennial Platform',
+    titleTemplate: 'Bangkok Biennial Platform',
     subtitle: '2020',
     copyright: '© All rights reserved.',
     disqusShortname: '',
