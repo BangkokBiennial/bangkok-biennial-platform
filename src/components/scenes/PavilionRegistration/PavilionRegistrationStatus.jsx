@@ -170,6 +170,9 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
         || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
         <div className="pavilion-registration-status__waiting-for-approval">
+          <h3 className="home__title">
+            Pavilion Dates
+          </h3>
           <p className="pavilion-registration-status__cautious-text">
             May I have your attention, please ?
           </p>
