@@ -1369,20 +1369,12 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
                 name="videoMaterial"
                 type="text"
                 labelName="Youtube or vimeo links for video material"
-                required
-                reference={register({
-                  required: 'this field is required',
-                })}
                 errors={errors}
               />
               <Input
                 name="audioMaterial"
                 type="text"
                 labelName="Links for audio material (soundcloud, bandcamp, etc)"
-                required
-                reference={register({
-                  required: 'this field is required',
-                })}
                 errors={errors}
               />
               <div className="home__register__form__footer">
