@@ -217,6 +217,13 @@ const PavilionRegistrationStatus = ({ firebase }) => {
               edit it.
             </li>
           </ul>
+        </div>
+      )}
+
+
+      {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
+        || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
+        <div>
           <p className="pavilion-registration-status__waiting-for-approval__text">
             If you have any questions/concerns/thoughts/jokes please
             contact us at bbteam@bangkokbiennial.com . If you need a
