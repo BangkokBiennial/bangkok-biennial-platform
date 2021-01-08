@@ -167,8 +167,8 @@ const PavilionRegistrationStatus = ({ firebase }) => {
           text="proceed"
         />
       )}
-      {user.registrationStatus ===
-        RegistrationStatus.FINISHED_ADVANCE && (
+      {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
+        || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
         <div className="pavilion-registration-status__waiting-for-approval">
           <p className="pavilion-registration-status__cautious-text">
             May I have your attention, please ?
@@ -187,7 +187,11 @@ const PavilionRegistrationStatus = ({ firebase }) => {
               renderCheckDateBox()
             )}
           </div>
+        </div>
+      )}
 
+      {user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE && (
+        <div>
           <p className="pavilion-registration-status__waiting-for-approval__text">
             Ok! Now you have finished the process of registering your
             Pavilion for BB2020 (Bangkok Biennial 2020). What happens
