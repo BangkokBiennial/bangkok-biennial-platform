@@ -22,7 +22,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
   const [user, setUser] = useState({})
   const [bbTakePlaced, setBbTakePlaced] = useState([])
   const [loadSending, setLoadSending] = useState(false)
-  const [allowedToSubmit, setAllowedToSubmit] = useState(true)
 
   useEffect(() => {
     if (firebase && !_initFirebase) {
@@ -41,7 +40,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
           const userData = userSnapshot.data()
           if (userData.dateLaunch) {
             setBbTakePlaced(userData.dateLaunch)
-            setAllowedToSubmit(false)
           }
           await setUser(userData)
           setLoading(false)
@@ -105,7 +103,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         dateLaunch: bbTakePlaced,
       })
       setLoadSending(false)
-      setAllowedToSubmit(false)
       addToast('Thank you! the information is saved successfully.', {
         appearance: 'success',
       })
@@ -125,30 +122,26 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         select all that apply
       </p>
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.OCT31_TO_NOV21_2020)}
         value={isChecked(DateLaunch.OCT31_TO_NOV21_2020)}
         staticLabel="Oct 31st-Nov 21st 2020"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.MAR13_TO_APR3_2021)}
         value={isChecked(DateLaunch.MAR13_TO_APR3_2021)}
         staticLabel="March 13th-April 3rd 2021"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.SEP17_TO_OCT9_2021)}
         value={isChecked(DateLaunch.SEP17_TO_OCT9_2021)}
         staticLabel="Sept 17th-Oct 9th  2021"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.NONE_OF_THE_ABOVE)}
         value={isChecked(DateLaunch.NONE_OF_THE_ABOVE)}
         staticLabel="none of the above"
       />
-      <Button disabled={!allowedToSubmit} onClick={onSubmit}>
+      <Button onClick={onSubmit}>
         submit
       </Button>
     </>
