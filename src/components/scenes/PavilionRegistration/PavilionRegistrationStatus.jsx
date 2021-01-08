@@ -226,10 +226,10 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         <div>
           <p className="pavilion-registration-status__waiting-for-approval__text">
             If you have any questions/concerns/thoughts/jokes please
-            contact us at bbteam@bangkokbiennial.com . If you need a
-            confirmation letter from us for funding applications of
-            visa applications or anything like that, please also let
-            us know through the same email address.
+            contact us at <a href="mailto:bbteam@bangkokbiennial.com">bbteam@bangkokbiennial.com</a>.
+            If you need a confirmation letter from us for funding
+            applications of visa applications or anything like that,
+            please also let us know through the same email address.
           </p>
         </div>
       )}
