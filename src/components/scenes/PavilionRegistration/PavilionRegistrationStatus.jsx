@@ -22,7 +22,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
   const [user, setUser] = useState({})
   const [bbTakePlaced, setBbTakePlaced] = useState([])
   const [loadSending, setLoadSending] = useState(false)
-  const [allowedToSubmit, setAllowedToSubmit] = useState(true)
 
   useEffect(() => {
     if (firebase && !_initFirebase) {
@@ -41,7 +40,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
           const userData = userSnapshot.data()
           if (userData.dateLaunch) {
             setBbTakePlaced(userData.dateLaunch)
-            setAllowedToSubmit(false)
           }
           await setUser(userData)
           setLoading(false)
@@ -84,7 +82,7 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       case RegistrationStatus.FINISHED_ADVANCE:
         return '3/3 - wait for the approval to go public.'
       case RegistrationStatus.PUBLIC:
-        return 'your pavilion is approved! - you can edit the information by clicking below'
+        return 'your pavilion is approved! - you can edit the information below'
       default:
         return '1/3 - please wait for the next registration.'
     }
@@ -105,7 +103,6 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         dateLaunch: bbTakePlaced,
       })
       setLoadSending(false)
-      setAllowedToSubmit(false)
       addToast('Thank you! the information is saved successfully.', {
         appearance: 'success',
       })
@@ -125,30 +122,26 @@ const PavilionRegistrationStatus = ({ firebase }) => {
         select all that apply
       </p>
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.OCT31_TO_NOV21_2020)}
         value={isChecked(DateLaunch.OCT31_TO_NOV21_2020)}
         staticLabel="Oct 31st-Nov 21st 2020"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.MAR13_TO_APR3_2021)}
         value={isChecked(DateLaunch.MAR13_TO_APR3_2021)}
         staticLabel="March 13th-April 3rd 2021"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.SEP17_TO_OCT9_2021)}
         value={isChecked(DateLaunch.SEP17_TO_OCT9_2021)}
         staticLabel="Sept 17th-Oct 9th  2021"
       />
       <CheckBox
-        disabled={!allowedToSubmit}
         onClick={() => toggle(DateLaunch.NONE_OF_THE_ABOVE)}
         value={isChecked(DateLaunch.NONE_OF_THE_ABOVE)}
         staticLabel="none of the above"
       />
-      <Button disabled={!allowedToSubmit} onClick={onSubmit}>
+      <Button onClick={onSubmit}>
         submit
       </Button>
     </>
@@ -168,17 +161,26 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       </div>
       {user.registrationStatus !==
         RegistrationStatus.FINISHED_ADVANCE && (
+        <div>
+        <h3 className="home__title">
+          Pavilion Details
+        </h3>
+        <p>Update your pavilion information</p>
         <Button
-          style={{ width: '200px', float: 'left' }}
+          className="pavilion-registration-status__edit-details-btn"
           onClick={handleOnClick}
-          text="proceed"
+          text="Edit Details"
         />
+        </div>
       )}
-      {user.registrationStatus ===
-        RegistrationStatus.FINISHED_ADVANCE && (
+      {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
+        || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
         <div className="pavilion-registration-status__waiting-for-approval">
+          <h3 className="home__title">
+            Pavilion Dates
+          </h3>
           <p className="pavilion-registration-status__cautious-text">
-            May I have your attention, please ?
+            Please fill in the dates for your pavilion
           </p>
           <div className="pavilion-registration-status__date-box">
             {loadSending ? (
@@ -194,7 +196,11 @@ const PavilionRegistrationStatus = ({ firebase }) => {
               renderCheckDateBox()
             )}
           </div>
+        </div>
+      )}
 
+      {user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE && (
+        <div>
           <p className="pavilion-registration-status__waiting-for-approval__text">
             Ok! Now you have finished the process of registering your
             Pavilion for BB2020 (Bangkok Biennial 2020). What happens
@@ -220,12 +226,19 @@ const PavilionRegistrationStatus = ({ firebase }) => {
               edit it.
             </li>
           </ul>
+        </div>
+      )}
+
+
+      {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
+        || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
+        <div>
           <p className="pavilion-registration-status__waiting-for-approval__text">
             If you have any questions/concerns/thoughts/jokes please
-            contact us at bbteam@bangkokbiennial.com . If you need a
-            confirmation letter from us for funding applications of
-            visa applications or anything like that, please also let
-            us know through the same email address.
+            contact us at <a href="mailto:bbteam@bangkokbiennial.com">bbteam@bangkokbiennial.com</a>.
+            If you need a confirmation letter from us for funding
+            applications of visa applications or anything like that,
+            please also let us know through the same email address.
           </p>
         </div>
       )}
