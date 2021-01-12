@@ -162,7 +162,7 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       {user.registrationStatus !==
         RegistrationStatus.FINISHED_ADVANCE && (
         <Button
-          style={{ width: '200px' }}
+          className="pavilion-registration-status__edit-details-btn"
           onClick={handleOnClick}
           text="Edit Details"
         />
