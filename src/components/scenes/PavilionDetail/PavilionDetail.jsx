@@ -7,6 +7,7 @@ import {
   FaTwitterSquare,
 } from 'react-icons/fa'
 import DetailCard from './atoms/DetailCard'
+import {default as DateLaunch, transformDateLaunchToReadable} from '../../../constants/dateLaunch'
 
 const PavilionDetail = ({ firebase, id }) => {
   const [_initFirebase, setInitFirebase] = useState(false)
@@ -52,11 +53,13 @@ const PavilionDetail = ({ firebase, id }) => {
           }
         }),
       )
+      const user = await firebase.getUser(id)
       setPavilionDetail({
         ...pavilion,
         artists: artistWithPics,
         posters: posterWithPics,
         supportMaterials: supportMaterialsWithPics,
+        user: user.data()
       })
       setLoading(false)
     } catch (error) {
@@ -304,12 +307,27 @@ const PavilionDetail = ({ firebase, id }) => {
     
   }
 
+  const renderDates = () => {
+    const userItems = pavilionDetail.user.dateLaunch
+          .filter(date => date !== DateLaunch.NONE_OF_THE_ABOVE)
+          .map(date => <li>{transformDateLaunchToReadable(date)}</li>)
+
+    return (
+      <div className="pavilion-detail__dates">
+        <ul className="pavilion-detail__content__text">
+          {userItems}
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <div className="pavilion-detail">
       <div className="pavilion-detail__container">
         <p className="pavilion-detail__content__title">
           {pavilionDetail.pavilionName}
         </p>
+        {renderDates()}
       </div>
       <div className="pavilion-detail__container">
         <p className="pavilion-detail__content__text">
