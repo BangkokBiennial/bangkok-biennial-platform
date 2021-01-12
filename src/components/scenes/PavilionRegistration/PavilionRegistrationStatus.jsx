@@ -82,7 +82,7 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       case RegistrationStatus.FINISHED_ADVANCE:
         return '3/3 - wait for the approval to go public.'
       case RegistrationStatus.PUBLIC:
-        return 'your pavilion is approved! - you can edit the information by clicking below'
+        return 'your pavilion is approved! - you can edit the information below'
       default:
         return '1/3 - please wait for the next registration.'
     }
@@ -161,11 +161,17 @@ const PavilionRegistrationStatus = ({ firebase }) => {
       </div>
       {user.registrationStatus !==
         RegistrationStatus.FINISHED_ADVANCE && (
+        <div>
+        <h3 className="home__title">
+          Pavilion Details
+        </h3>
+        <p>Update your pavilion information</p>
         <Button
           className="pavilion-registration-status__edit-details-btn"
           onClick={handleOnClick}
           text="Edit Details"
         />
+        </div>
       )}
       {(user.registrationStatus === RegistrationStatus.FINISHED_ADVANCE
         || user.registrationStatus === RegistrationStatus.PUBLIC ) && (
