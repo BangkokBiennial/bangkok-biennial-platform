@@ -174,7 +174,7 @@ const PavilionRegistrationStatus = ({ firebase }) => {
             Pavilion Dates
           </h3>
           <p className="pavilion-registration-status__cautious-text">
-            May I have your attention, please ?
+            Please fill in the dates for your pavilion
           </p>
           <div className="pavilion-registration-status__date-box">
             {loadSending ? (

@@ -20,10 +20,10 @@
   &__date-box {
     max-width: 500px;
     padding: 15px;
-    border: 2px dashed $color-dangerous;
+    border: 2px dashed $color-main;
     margin-bottom: 40px;
   }
   &__cautious-text {
-    color: $color-dangerous;
+    color: $color-main;
   }
 }
