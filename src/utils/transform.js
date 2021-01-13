@@ -7,6 +7,7 @@ export const transformToPublicThumbnails = (
       name: firebasePublicPavilion.pavilionName,
       description: firebasePublicPavilion.pavilionBriefDescription,
       id: firebasePublicPavilion.id,
+      user: firebasePublicPavilion.user
     }
   })
 }
