@@ -126,7 +126,9 @@ const Landing = ({ firebase }) => {
         Sept. 17<sup>th</sup> - Oct 9<sup>th</sup>, 2021
       </h6>
       <div className="landing__list-pavilion__container">
-        {publicPavilionThumbnails.filter(pt => pt.user.dateLaunch.includes(DateLaunch.MAR13_TO_APR3_2021)).map((pt) => (
+        {publicPavilionThumbnails
+          .filter(pt => pt.user.dateLaunch.includes(DateLaunch.MAR13_TO_APR3_2021)
+            || pt.user.dateLaunch.includes(DateLaunch.NONE_OF_THE_ABOVE)).map((pt) => (
           <div
             onClick={() => navigate(`/pavilion-detail/${pt.id}`)}
             className="landing__thumbnail__component"
@@ -145,7 +147,9 @@ const Landing = ({ firebase }) => {
         Nov 21<sup>st</sup>, 2020)
       </h5>
       <div className="landing__list-pavilion__container">
-        {publicPavilionThumbnails.filter(pt => pt.user.dateLaunch.includes(DateLaunch.OCT31_TO_NOV21_2020)).map((pt) => (
+        {publicPavilionThumbnails.
+          filter(pt => pt.user.dateLaunch.includes(DateLaunch.OCT31_TO_NOV21_2020) 
+            || pt.user.dateLaunch.includes(DateLaunch.NONE_OF_THE_ABOVE)).map((pt) => (
           <div
             onClick={() => navigate(`/pavilion-detail/${pt.id}`)}
             className="landing__thumbnail__component"
