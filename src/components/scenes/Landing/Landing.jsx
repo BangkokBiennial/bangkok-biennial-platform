@@ -38,7 +38,6 @@ const Landing = ({ firebase }) => {
       const pavilionThumbnails = transformToPublicThumbnails(
         pavilionUsersData,
       )
-      console.log(pavilionThumbnails)
 
       setPublicPavilionThumbnails(pavilionThumbnails)
       setLoading(false)
