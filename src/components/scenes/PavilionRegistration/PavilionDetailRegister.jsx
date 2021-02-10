@@ -617,8 +617,8 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
             )
           : ''
       const finalizedData = {
-        ...value,
         ...basicInfo,
+        ...value,
         supportMaterials: finalSupportedMaterials,
         posters: finalPosters,
         telephoneNumber: value.telephoneNumber || '',
@@ -740,9 +740,24 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
         <div className="home__register">
           <div className="home__register__form">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="home__register__form__title">
+            <div className="home__register__form__title">
                 Pavilion
               </div>
+              {
+                isPublic && <Textarea
+                  name="pavilionBriefDescription"
+                  type="text"
+                  labelName="Short description of the pavilion"
+                  required
+                  reference={register({
+                    required: 'This field is required',
+                  })}
+                  errors={errors}
+                  rows={5}
+                  cols={100}
+                />
+              }
+
               <Textarea
                 name="pavilionLongDescription"
                 type="text"
