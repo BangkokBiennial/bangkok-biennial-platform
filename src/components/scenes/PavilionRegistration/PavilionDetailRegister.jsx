@@ -744,6 +744,18 @@ const PavilionDetailRegister = ({ firebase, isPublic }) => {
                 Pavilion
               </div>
               {
+                isPublic &&  <Input
+                  name="pavilionName"
+                  type="text"
+                  labelName="Name of Pavillion"
+                  reference={register({
+                    required: 'This field is required',
+                  })}
+                  required
+                  errors={errors}
+                />
+              }
+              {
                 isPublic && <Textarea
                   name="pavilionBriefDescription"
                   type="text"
