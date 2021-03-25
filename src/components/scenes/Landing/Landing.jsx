@@ -118,7 +118,7 @@ const Landing = ({ firebase }) => {
       </div>
 
       <h5 className="landing__list-pavilion__title">
-        BB2021(1) 2<sup>nd</sup> phase pavilions (Mar 13<sup>th</sup> -
+        BB2020(1) 2<sup>nd</sup> phase pavilions (Mar 13<sup>th</sup> -
         Apr 3<sup>rd</sup>, 2021)
       </h5>
       <h6 className="landing__list-pavilion__subtitle">
