@@ -2,6 +2,18 @@
   Bangkok Biennial Platform
 </h1>
 
-## 🚀 Quick start
+# 🚀 Quick start
+## Add firebase config of project
+you can see the config in `firebaseConfig.js`
 
-soon
+## Install node version 12 
+
+## Install dependencies
+```
+npm install
+```
+
+## start
+```
+npm start
+```
