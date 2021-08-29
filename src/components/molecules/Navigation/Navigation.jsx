@@ -9,7 +9,6 @@ const Navigation = () => {
   const [isMobile, setDesktop] = useState(false)
 
   const updateMedia = () => {
-    console.log(isMobile)
     setDesktop(window.innerWidth < 376)
   }
 

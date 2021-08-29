@@ -118,13 +118,30 @@ const Landing = ({ firebase }) => {
       </div>
 
       <h5 className="landing__list-pavilion__title">
+        BB2020(1) 3<sup>rd</sup> phase pavilions (Sept. 17<sup>th</sup> -
+        Oct 9<sup>th</sup>, 2021)
+      </h5>
+      <div className="landing__list-pavilion__container">
+        {publicPavilionThumbnails
+          .filter(pt => pt.user.dateLaunch.includes(DateLaunch.SEP17_TO_OCT9_2021)
+            || pt.user.dateLaunch.includes(DateLaunch.NONE_OF_THE_ABOVE)).map((pt) => (
+          <div
+            onClick={() => navigate(`/pavilion-detail/${pt.id}`)}
+            className="landing__thumbnail__component"
+          >
+            <p className="landing__thumbnail__topic"> {pt.name}</p>
+            <p className="landing__thumbnail__content">
+              {' '}
+              {pt.description}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <h5 className="landing__list-pavilion__title">
         BB2020(1) 2<sup>nd</sup> phase pavilions (Mar 13<sup>th</sup> -
         Apr 3<sup>rd</sup>, 2021)
       </h5>
-      <h6 className="landing__list-pavilion__subtitle">
-        3<sup>rd</sup> phase pavilions to follow
-        Sept. 17<sup>th</sup> - Oct 9<sup>th</sup>, 2021
-      </h6>
       <div className="landing__list-pavilion__container">
         {publicPavilionThumbnails
           .filter(pt => pt.user.dateLaunch.includes(DateLaunch.MAR13_TO_APR3_2021)
