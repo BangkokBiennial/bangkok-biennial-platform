@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: node --version
       - node/install:
-          node-version: '12.11.1'
+          node-version: '16'
           install-yarn: true
       - run:
           name: update gcc to v9
